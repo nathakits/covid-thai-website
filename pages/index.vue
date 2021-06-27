@@ -1,5 +1,7 @@
 <template lang="pug">
-  main.container.mx-auto.h-full
+  main.container.mx-auto.h-full.divide-y.divide-gray-200(
+    class="md:divide-y-0"
+  )
     //- vaccination goal
     div.vaccination-block.container-padding
       div.flex-auto.pb-4(
