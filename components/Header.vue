@@ -1,10 +1,13 @@
 <template lang="pug">
   div.header.bg-gray-200
     div.container.mx-auto.h-full
-      div.px-10.py-6
+      div.header-padding
         div.grid.gap-4.h-full.grid-cols-2
           div
-            nuxt-link(to="/")
+            nuxt-link(
+              to="/"
+              class="hover:no-underline hover:text-black"
+            )
               h1.title.flex.items-center
                 span.border-r-2.border-black.pr-3 {{ title }}
                 span.country Thailand
@@ -17,19 +20,13 @@
               target="_blank"
               rel="noopener noreferrer"
             ) {{ link.name }}
-            //- a(
-            //-   v-for="(link, index) in headLinks"
-            //-   :key="link.name"
-            //-   :class="headLinks.length !== (index + 1) ? 'pr-6' : ''"
-            //-   :href="link.path"
-            //- ) {{ link.name }}
 </template>
 
 <script>
 export default {
   data() {
     return {
-      title: "Covid19 Vaccination Tracker",
+      title: "Covid-19 Tracker",
       headLinks: [
         { name: "Twitter Bot", path: "https://twitter.com/THVaccinecount" },
         {
@@ -45,7 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .title {
-  @apply text-3xl font-bold;
+  @apply text-2xl font-bold;
 }
 
 .country {

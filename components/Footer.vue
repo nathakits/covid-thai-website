@@ -1,7 +1,7 @@
 <template lang="pug">
 
   div.container.mx-auto.h-full
-    div.p-10
+    div.container-padding
       div.pt-6(
         :class="checkRoute ? 'border-t' : ''"
       )
