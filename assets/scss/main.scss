@@ -1,15 +1,27 @@
 h1 {
-  @apply text-4xl font-bold;
+  @apply text-3xl font-bold;
 }
 
 h2 {
-  @apply text-3xl font-medium;
+  @apply text-2xl font-medium;
 }
 
 h3 {
-  @apply text-2xl;
+  @apply text-xl font-medium;
 }
 
 a {
   @apply hover:underline hover:text-blue-500;
+}
+
+p {
+  @apply text-sm
+}
+
+.container-padding {
+  @apply sm:px-8 md:px-12 lg:px-20 xl:px-40 px-4 py-4 sm:py-10
+}
+
+.header-padding {
+  @apply sm:px-8 md:px-12 lg:px-20 xl:px-40 px-4 py-4 sm:py-6
 }
