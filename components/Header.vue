@@ -9,13 +9,20 @@
                 span.border-r-2.border-black.pr-3 {{ title }}
                 span.country Thailand
           div.d-flex.justify-end.text-right(class="sm:pt-2")
-            nuxt-link(
+            a(
               v-for="(link, index) in headLinks"
               :key="link.name"
-              class="hover:underline hover:text-blue-500"
+              :href="link.path"
               :class="headLinks.length !== (index + 1) ? 'pr-6' : ''"
-              :to="link.path"
+              target="_blank"
+              rel="noopener noreferrer"
             ) {{ link.name }}
+            //- a(
+            //-   v-for="(link, index) in headLinks"
+            //-   :key="link.name"
+            //-   :class="headLinks.length !== (index + 1) ? 'pr-6' : ''"
+            //-   :href="link.path"
+            //- ) {{ link.name }}
 </template>
 
 <script>
@@ -24,9 +31,12 @@ export default {
     return {
       title: "Covid19 Vaccination Tracker",
       headLinks: [
-        { name: "Projects", path: "/projects/" },
-        { name: "Info", path: "/info/" },
-        { name: "CV", path: "/cv/" },
+        { name: "Twitter Bot", path: "https://twitter.com/THVaccinecount" },
+        {
+          name: "Gituhub",
+          path: "https://github.com/nathakits/covid-thai-website",
+        },
+        { name: "Support", path: "https://ko-fi.com/nathakits" },
       ],
     }
   },
