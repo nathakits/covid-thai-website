@@ -5,7 +5,9 @@
         div.grid.gap-4.h-full.grid-cols-2
           div
             nuxt-link(to="/")
-              h1.text-3xl.font-bold.inline-block {{ title }}
+              h1.title.flex.items-center
+                span.border-r-2.border-black.pr-3 {{ title }}
+                span.country Thailand
           div.d-flex.justify-end.text-right(class="sm:pt-2")
             nuxt-link(
               v-for="(link, index) in headLinks"
@@ -20,11 +22,9 @@
 export default {
   data() {
     return {
-      title: "Covid Vaccine",
+      title: "Covid19 Vaccination Tracker",
       headLinks: [
         { name: "Projects", path: "/projects/" },
-        // { name: "Photo", path: "/photo/" },
-        // { name: "Blog", path: "/blog/" },
         { name: "Info", path: "/info/" },
         { name: "CV", path: "/cv/" },
       ],
@@ -32,3 +32,16 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.title {
+  @apply text-3xl font-bold;
+}
+
+.country {
+  @apply pl-3;
+  @apply font-normal;
+  font-size: 16px;
+  color: #686868;
+}
+</style>
