@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.bg-gray-200
+  div.header.bg-gray-200
     div.container.mx-auto.h-full
       div.px-10.py-6
         div.grid.gap-4.h-full.grid-cols-2
