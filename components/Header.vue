@@ -36,7 +36,7 @@ export default {
       headLinks: [
         { name: "Twitter Bot", path: "https://twitter.com/THVaccinecount" },
         {
-          name: "Gituhub",
+          name: "Github",
           path: "https://github.com/nathakits/covid-thai-website",
         },
         { name: "Support", path: "https://ko-fi.com/nathakits" },
