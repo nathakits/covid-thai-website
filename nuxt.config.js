@@ -50,6 +50,7 @@ export default {
     "@nuxtjs/eslint-module",
     // https://go.nuxtjs.dev/tailwindcss
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/google-analytics",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -59,6 +60,10 @@ export default {
     // https://go.nuxtjs.dev/pwa
     "@nuxtjs/pwa",
   ],
+
+  googleAnalytics: {
+    id: "G-3VDBPVKKPE",
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
