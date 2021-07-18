@@ -11,9 +11,28 @@ export default {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
+      {
+        hid: "description",
+        name: "description",
+        content: "Nathakit Sae-Tan's personal website",
+      },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      },
+    ],
+    script: [
+      {
+        src: "https://d3js.org/d3.v7.min.js",
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -52,5 +71,13 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    filenames: {
+      font: ({ isDev }) =>
+        isDev ? "[path][name].[ext]" : "fonts/[name].[hash:7].[ext]",
+      video: ({ isDev }) =>
+        isDev ? "[path][name].[ext]" : "videos/[name].[hash:7].[ext]",
+    },
+    quiet: false,
+  },
 }

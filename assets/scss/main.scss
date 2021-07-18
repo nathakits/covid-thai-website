@@ -1,3 +1,7 @@
+body {
+  font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif
+}
+
 h1 {
   @apply text-3xl font-bold;
 }
@@ -26,12 +30,52 @@ p + p {
   @apply pt-2
 }
 
+.vaccination-block {
+  @apply grid grid-cols-8 gap-4 sm:gap-10 md:gap-20;
+}
+
+.vaccination-block {
+  div.explainer {
+    @apply col-span-full sm:col-span-full md:col-span-3;
+  }
+  div.progress-bar {
+    @apply col-span-full sm:col-span-full md:col-span-5;
+  }
+}
+
 .container-padding {
   @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-6 sm:py-10
 }
 
 .header-padding {
   @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-6 sm:py-6
+}
+
+.date-padding {
+  @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 pt-6 flex justify-start md:justify-end;
+}
+
+.card-item-padding {
+  &:not(:first-child):not(:last-child) {
+    @apply py-2;
+  }
+  &:first-of-type {
+    @apply pb-2;
+  }
+  &:last-of-type {
+    @apply pt-2;
+  }
+}
+.card {
+  @apply shadow-lg h-full w-full border rounded-lg p-6;
+}
+
+.last-updated {
+  @apply py-1 px-2 bg-blue-200 rounded text-sm;
+}
+
+.button {
+  @apply py-1 px-2 bg-gray-600 rounded text-sm text-white hover:text-white hover:no-underline hover:bg-gray-500;
 }
 
 @media (min-width: 1536px) {

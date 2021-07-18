@@ -1,6 +1,19 @@
 # covid-thai-website
 Thailand: Coronavirus Pandemic Country Tracker
 
+Vaccination goal
+- 100 million doses to "herd immunity"
+Vacctionation chart
+- all data
+Vaccination progress
+- rate of vaccination
+- average
+- compare to other countries
+Vaccination brands
+
+Testing?
+Death?
+
 ## Build Setup
 
 ```bash
