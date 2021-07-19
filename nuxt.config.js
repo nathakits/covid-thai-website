@@ -28,11 +28,6 @@ export default {
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap",
       },
     ],
-    script: [
-      {
-        src: "https://d3js.org/d3.v7.min.js",
-      },
-    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -58,6 +53,7 @@ export default {
     "@nuxtjs/axios",
     // https://go.nuxtjs.dev/pwa
     "@nuxtjs/pwa",
+    "@nuxtjs/sitemap",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -68,6 +64,18 @@ export default {
     manifest: {
       lang: "en",
     },
+  },
+
+  sitemap: {
+    hostname: "https://covidtracker-th.netlify.app",
+    gzip: true,
+    exclude: ["/_nuxt/**"],
+    defaults: {
+      changefreq: "weekly",
+      lastmod: new Date(),
+      lastmodrealtime: true,
+    },
+    trailingSlash: true,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
