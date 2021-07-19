@@ -7,15 +7,11 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "Thailand Covid-19 Vaccination Tracker",
+    title: "Thailand's Covid-19 Vaccination Tracker",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      {
-        hid: "description",
-        name: "description",
-        content: "Nathakit Sae-Tan's personal website",
-      },
+      { name: "msapplication-TileColor", content: "#27AE60" },
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
@@ -62,7 +58,29 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
+      name: "Thailand's Covid-19 Vaccination Tracker",
+      short_name: "Covid19 Vaccination Tracker",
+      description:
+        "Tracking Covid-19 vaccination progress in Thailand (unofficial)",
       lang: "en",
+      theme_color: "#27AE60",
+    },
+    meta: {
+      name: "Thailand's Covid-19 Vaccination Tracker",
+      author: "Nathakit Sae-Tan",
+      description: "Thailand's Covid-19 Vaccination Tracker",
+      theme_color: "#27AE60",
+      ogSiteName: "Thailand's Covid-19 Vaccination Tracker",
+      ogTitle: "Thailand's Covid-19 Vaccination Tracker",
+      ogDescription:
+        "Tracking Covid-19 vaccination progress in Thailand (unofficial)",
+      ogHost: "https://covidtracker-th.netlify.app",
+      ogImage: "/icon.png",
+      twitterSite: "@nathakit_tan",
+      twitterCreator: "@nathakit_tan",
+    },
+    icon: {
+      source: "./static/icon.png",
     },
   },
 
