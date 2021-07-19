@@ -7,7 +7,7 @@ div.chart
 </template>
 
 <script>
-import * as d3 from "d3"
+import { isoParse, timeFormat } from "d3"
 import Chart from "chart.js/auto"
 import { LineController } from "chart.js"
 
@@ -243,8 +243,8 @@ export default {
       return chart
     },
     formatDate(date) {
-      const parseDate = d3.isoParse
-      const formatTime = d3.timeFormat("%d %b")
+      const parseDate = isoParse
+      const formatTime = timeFormat("%d %b")
       const dateArr = date.split("-")
       const year = dateArr.pop()
       const day = dateArr.shift()
@@ -254,8 +254,8 @@ export default {
       return format
     },
     formatFullDate(date) {
-      const parseDate = d3.isoParse
-      const formatTime = d3.timeFormat("%d %b %Y")
+      const parseDate = isoParse
+      const formatTime = timeFormat("%d %b %Y")
       const dateArr = date.split("-")
       const year = dateArr.pop()
       const day = dateArr.shift()
