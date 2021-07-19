@@ -31,4 +31,12 @@ $ npm run start
 $ npm run generate
 ```
 
+## Test Twitter meta tag
+Use LocalTunnel
+
+```bash
+
+npx localtunnel --port 3000
+```
+
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
