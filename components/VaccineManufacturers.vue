@@ -26,14 +26,9 @@ div.vaccination-manufacturers
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Array,
-      default: () => [],
-    },
-  },
   data() {
     return {
+      data: [],
       vacApproval: [
         {
           name: "Sinovac",
@@ -73,69 +68,83 @@ export default {
       ],
     }
   },
+  async fetch() {
+    this.data = await this.$axios.$get(
+      "https://raw.githubusercontent.com/porames/the-researcher-covid-bot/master/components/gis/data/manufacturer-vaccination-data.json"
+    )
+  },
   computed: {
     manufacturers() {
-      const reducer = (accumulator, currentValue) => accumulator + currentValue
-      // filter array by manufacturers
-      const sinovac = this.filterVaccines(this.data, "Sinovac Life Sciences")
-      const astrazeneca = this.filterVaccines(this.data, "AstraZeneca")
-      const sinopharm = this.filterVaccines(this.data, "Sinopharm")
-      // map by doses administered
-      const sinovacMap = sinovac.map((d) => d.doses_administered)
-      const astrazenecaMap = astrazeneca.map((d) => d.doses_administered)
-      const sinopharmMap = sinopharm.map((d) => d.doses_administered)
-      // add up all the doses administered
-      const sinovacDoses = sinovacMap.reduce(reducer)
-      const astrazenecaDoses = astrazenecaMap.reduce(reducer)
-      const sinopharmDoses = sinopharmMap.reduce(reducer)
-      // map doses to array
-      const vaccineArr = this.vacApproval.map((d) => {
-        let obj = {}
-        if (d.name === "Sinovac") {
-          obj = {
-            name: d.name,
-            status: d.status,
-            type: d.type,
-            doses_administered: sinovacDoses,
+      if (!this.$fetchState.pending) {
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue
+        // filter array by manufacturers
+        const sinovac = this.filterVaccines(this.data, "Sinovac Life Sciences")
+        const astrazeneca = this.filterVaccines(this.data, "AstraZeneca")
+        const sinopharm = this.filterVaccines(this.data, "Sinopharm")
+        // map by doses administered
+        const sinovacMap = sinovac.map((d) => d.doses_administered)
+        const astrazenecaMap = astrazeneca.map((d) => d.doses_administered)
+        const sinopharmMap = sinopharm.map((d) => d.doses_administered)
+        // add up all the doses administered
+        const sinovacDoses = sinovacMap.reduce(reducer)
+        const astrazenecaDoses = astrazenecaMap.reduce(reducer)
+        const sinopharmDoses = sinopharmMap.reduce(reducer)
+        // map doses to array
+        const vaccineArr = this.vacApproval.map((d) => {
+          let obj = {}
+          if (d.name === "Sinovac") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: sinovacDoses,
+            }
+          } else if (d.name === "AstraZeneca") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: astrazenecaDoses,
+            }
+          } else if (d.name === "Sinopharm") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: sinopharmDoses,
+            }
+          } else {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: 0,
+            }
           }
-        } else if (d.name === "AstraZeneca") {
-          obj = {
-            name: d.name,
-            status: d.status,
-            type: d.type,
-            doses_administered: astrazenecaDoses,
-          }
-        } else if (d.name === "Sinopharm") {
-          obj = {
-            name: d.name,
-            status: d.status,
-            type: d.type,
-            doses_administered: sinopharmDoses,
-          }
-        } else {
-          obj = {
-            name: d.name,
-            status: d.status,
-            type: d.type,
-            doses_administered: 0,
-          }
-        }
-        return obj
-      })
-      // sort by doses administered
-      vaccineArr.sort((a, b) => b.doses_administered - a.doses_administered)
-      return vaccineArr
+          return obj
+        })
+        // sort by doses administered
+        vaccineArr.sort((a, b) => b.doses_administered - a.doses_administered)
+        return vaccineArr
+      } else {
+        return []
+      }
     },
     getLastUpdated() {
-      const data = this.data
-      const latest = data.pop()
-      const date = latest.date.split("-")
-      console.log(latest)
-      const year = date[0]
-      const month = date[1]
-      const day = date[2]
-      const formattedDate = `${day}/${month}/${year}`
-      return formattedDate
+      if (!this.$fetchState.pending) {
+        const data = this.data
+        const latest = data.pop()
+        const date = latest.date.split("-")
+        console.log(latest)
+        const year = date[0]
+        const month = date[1]
+        const day = date[2]
+        const formattedDate = `${day}/${month}/${year}`
+        return formattedDate
+      } else {
+        return ``
+      }
     },
   },
   methods: {

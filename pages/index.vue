@@ -118,7 +118,7 @@
               span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }}
               span.text-base.text-gray-500.font-light {{ `(+${dailyJSON.second_dose_plus})` }}
             span.text-base.font-bold {{ `${vac2DosePercentage}%` }}
-    VaccineManufacturers(:data="manufacturersJSON")
+    VaccineManufacturers
 </template>
 
 <script>
@@ -135,15 +135,11 @@ export default {
     const fullJSON = await $axios.$get(
       "https://nathakits.github.io/covid-tracker-twitter-bot/data/Thailand.json"
     )
-    const manufacturersJSON = await $axios.$get(
-      "https://raw.githubusercontent.com/porames/the-researcher-covid-bot/master/components/gis/data/manufacturer-vaccination-data.json"
-    )
-    return { dailyJSON, fullCSV, fullJSON, manufacturersJSON }
+    return { dailyJSON, fullCSV, fullJSON }
   },
   data() {
     return {
       population: 69799978,
-      totalVacAllotment: 0,
       vacGoalProgress: 0,
       vacGoalPercentage: 0,
       vacTotalProgress: 0,
