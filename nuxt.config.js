@@ -26,6 +26,12 @@ export default {
     ],
   },
 
+  loadingIndicator: {
+    name: "~/loader.html",
+    color: "#3B8070",
+    background: "white",
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["~/assets/scss/main.scss"],
 
