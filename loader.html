@@ -21,12 +21,12 @@
   @keyframes nuxtLoadingIn {
     0% {
       visibility: hidden;
-      opacity: 0.2;
+      opacity: 0.6;
     }
 
     20% {
       visibility: visible;
-      opacity: 0.2;
+      opacity: 0.6;
     }
 
     100% {
@@ -38,12 +38,12 @@
   @-webkit-keyframes nuxtLoadingIn {
     0% {
       visibility: hidden;
-      opacity: 0.2;
+      opacity: 0.6;
     }
 
     20% {
       visibility: visible;
-      opacity: 0.2;
+      opacity: 0.6;
     }
 
     100% {
@@ -55,8 +55,8 @@
   #nuxt-loading>div,
   #nuxt-loading>div:after {
     border-radius: 50%;
-    width: 5rem;
-    height: 5rem;
+    width: 80px;
+    height: 80px;
   }
 
   #nuxt-loading>div {
@@ -64,7 +64,7 @@
     position: relative;
     text-indent: -9999em;
     border: .5rem solid <%=options.color2 %>;
-    border-left: .5rem solid <%=options.color %>;
+    border-left: .5rem solid #698B68;
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);
     transform: translateZ(0);
@@ -112,10 +112,14 @@
 </script>
 
 <div
-  style="position:absolute;top:-140px;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-  <div style="font-family:Arial, Helvetica, sans-serif;padding-bottom: 24px;">
-    Covid-19 Vaccine Tracker | Thailand
+  style="background-color:#D9DFF5;position:absolute;top:-180px;left:0;right:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+  <div style="font-family:Arial,Helvetica,sans-serif;text-align: center;padding-bottom:8px;">
+    <div style="line-height:1;font-size:24px;color:#090076;font-weight:bold;padding-bottom:8px;">
+      Covid-19 Vaccine Tracker
+    </div>
+    <div style="line-height:1;font-size:16px;color:rgba(9,0,118,0.5)">Thailand</div>
   </div>
+
 </div>
 <div id="nuxt-loading" aria-live="polite" role="status">
   <div>
