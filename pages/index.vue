@@ -1,13 +1,17 @@
 <template lang="pug">
-  //- todo
-  //- update copytext
-  main.container.mx-auto.h-full.divide-y.divide-gray-200(
+main
+  vaccine-overview(:data="dailyJSON")
+  div.container.mx-auto.h-full.divide-y.divide-gray-200(
     class="md:divide-y-0"
   )
+    //- vaccination goal
     div.vaccination-goal
-      div.date-padding
-        div.last-updated {{ `Last updated: ${dailyJSON.date.replaceAll("-", "/")}` }}
-      //- vaccination goal
+      div.date-padding.pt-10.flex.justify-between
+        div.last-updated.dark-blue
+          span {{ `Last updated: ${dailyJSON.date.replaceAll("-", "/")}` }}
+        div.flex
+          facebook-share.pr-2
+          twitter-share
       div.vaccination-block.container-padding
         div.explainer.pb-4(
           class="lg:pb-0"
@@ -16,7 +20,7 @@
           p 
             | Government's vaccination goal of inoculating 50 million people (70% of the population) with 100 million doses of vaccines by the end of 2021
         div.progress-bar
-          h3(style="height:43px;") 100 Million doses
+          h3(style="height:43px;") 100 Million Doses
           div.vac-goal-bar
             div.vac-progress.vac-goal.rounded-full(
               :style="`width:${vacGoalProgress}px;`"
@@ -25,7 +29,8 @@
           div.flex.justify-between.pt-3.font-medium
             span.text-base {{ dailyJSON.total_vaccinations }} / 100,000,000
             span.text-base.font-bold {{ `${vacGoalPercentage}%` }}
-    VaccineEstimate(:dataFull="fullJSON" :dataDaily="dailyJSON")
+    //- vaccine target and estimate
+    vaccine-target(:dataFull="fullJSON" :dataDaily="dailyJSON")
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
@@ -85,8 +90,7 @@
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
             div
-              span.text-base.pr-2 {{ dailyJSON.total_vaccinations }}
-              span.text-base.text-gray-500.font-light {{ `(+${dailyJSON.total_dose_plus})` }}
+              span.text-base.pr-2 {{ dailyJSON.total_vaccinations }} doses
             span.text-base.font-bold {{ `${vacTotalPercentage}%` }}
         //- 1st dose
         div.total-bar.pb-8
@@ -100,8 +104,7 @@
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
             div
-              span.text-base.pr-2 {{ dailyJSON.people_vaccinated }}
-              span.text-base.text-gray-500.font-light {{ `(+${dailyJSON.first_dose_plus})` }}
+              span.text-base.pr-2 {{ dailyJSON.people_vaccinated }} doses
             span.text-base.font-bold {{ `${vac1DosePercentage}%` }}
         //- 2nd dose
         div.total-bar
@@ -115,8 +118,7 @@
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
             div
-              span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }}
-              span.text-base.text-gray-500.font-light {{ `(+${dailyJSON.second_dose_plus})` }}
+              span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }} doses
             span.text-base.font-bold {{ `${vac2DosePercentage}%` }}
     VaccineManufacturers
 </template>
@@ -237,33 +239,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.vac-goal-bar,
-.vac-progress-bar {
-  @apply w-full relative rounded-full;
-  height: 16px;
-}
-.vac-progress {
-  @apply absolute z-10;
-  height: 16px;
-  &.vac-goal {
-    background-color: #064e3b;
-  }
-  &.vac-total {
-    background-color: #059669;
-  }
-  &.vac-1dose {
-    background-color: rgb(168, 218, 181);
-  }
-  &.vac-2dose {
-    background-color: rgb(91, 185, 116);
-  }
-}
-.vac-bar {
-  @apply w-full absolute rounded-full;
-  background-color: #dbdbdb;
-  height: 16px;
-}
-
 // chart
 .responsive {
   padding-bottom: 50%;
