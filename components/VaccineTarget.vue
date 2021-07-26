@@ -1,24 +1,40 @@
 <template lang="pug">
-div.vaccination-block.container-padding
-  div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
-  div.progress-bar
-    div.card.grid.divide-y.divide-gray-300
-      div.card-item-padding.grid.grid-cols-2.gap-8
-        span.text-sm Target dose / day:
-        span.text-sm.flex.justify-end.items-center {{ calcTarget }}
-      div.card-item-padding.grid.grid-cols-2.gap-8
-        span.text-sm 14-day average:
-        span.text-sm.flex.justify-end.items-center {{ calcAverage }}
-      div.card-item-padding.grid.grid-cols-2.gap-8
-        span.text-sm Date till goal reached:
+div
+  div.vaccination-block.container-padding
+    div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
+      p
+        | Currently we are way below the target dose needed to reach the goal by the end of the year.
+      P 
+        | This is due to many factors, such as low inoculation during weekends and vaccine procurement.
+    div.progress-bar
+      div.flex.justify-between
+        h3(style="height:43px;") Target Dose
+        div {{ calcTarget }} doses/day
+      div.vac-goal-bar
+        div.vac-progress.vac-target.rounded-full(
+          :style="`width:${20}px;`"
+        )
+        div.vac-bar(id="vac-target")
+      div.flex.justify-between.pt-3.font-medium
+        p.text-base {{ calcAverage }} (14-Day Average)
         div
-          p.text-sm.text-right ~{{ `${calcGoalDays} Days` }}
-          p.text-sm.text-right.text-gray-400 {{ `(${calcGoalDate})` }}
-      div.card-item-padding.grid.grid-cols-2.gap-8
-        span.text-sm Date till everyone is vaccinated:
-        div
-          p.text-sm.text-right ~{{ `${calcCountryVacDays} Days` }}
-          p.text-sm.text-right.text-gray-400 {{ `(${calcCountryVacDate})` }}
+          p.text-base.font-bold Stll need: {{ calcTargetNeeded }}
+  div.vaccination-block.container-padding
+    div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
+      p
+        | With the current average vaccination rate, we will likely not meet the goal set out by the Thai government.
+    div.progress-bar
+      div.card.grid.divide-y.divide-gray-300
+        div.card-item-padding.grid.grid-cols-2.gap-8
+          span.text-sm Days till goal reached:
+          div
+            p.text-sm.text-right ~{{ `${calcGoalDays} Days` }}
+            p.text-xs.text-right.text-gray-400 {{ `(${calcGoalDate})` }}
+        div.card-item-padding.grid.grid-cols-2.gap-8
+          span.text-sm Days till everyone is vaccinated:
+          div
+            p.text-sm.text-right ~{{ `${calcCountryVacDays} Days` }}
+            p.text-xs.text-right.text-gray-400 {{ `(${calcCountryVacDate})` }}
 </template>
 
 <script>
@@ -42,6 +58,12 @@ export default {
     }
   },
   computed: {
+    calcTargetNeeded() {
+      const avg = Number(this.calcAverage.replaceAll(",", ""))
+      const target = Number(this.calcTarget.replaceAll(",", ""))
+      const targetNeeded = (target - avg).toLocaleString()
+      return targetNeeded
+    },
     calcAverage() {
       const reducer = (accumulator, currentValue) => accumulator + currentValue
       const totalDosePlusArr = this.slicedData(this.dataFull).map((el) =>
