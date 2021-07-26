@@ -1,6 +1,6 @@
 <template lang="pug">
 div.vaccination-manufacturers
-  div.date-padding
+  div.date-padding.dark-blue.pt-6
     div.last-updated {{ `Last updated: ${getLastUpdated}` }}
   div.vaccination-block.container-padding
     div.explainer.pb-4(
