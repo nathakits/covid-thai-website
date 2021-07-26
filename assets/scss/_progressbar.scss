@@ -1,0 +1,29 @@
+.vac-goal-bar,
+.vac-progress-bar {
+  @apply w-full relative rounded-full;
+  height: 16px;
+}
+.vac-progress {
+  @apply absolute z-10;
+  height: 16px;
+  &.vac-goal {
+    background-color: #064e3b;
+  }
+  &.vac-total {
+    background-color: #059669;
+  }
+  &.vac-1dose {
+    background-color: rgb(168, 218, 181);
+  }
+  &.vac-2dose {
+    background-color: rgb(91, 185, 116);
+  }
+  &.vac-target {
+    background-color: rgb(223, 26, 26);
+  }
+}
+.vac-bar {
+  @apply w-full absolute rounded-full;
+  background-color: #dbdbdb;
+  height: 16px;
+}

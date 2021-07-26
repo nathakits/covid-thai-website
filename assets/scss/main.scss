@@ -1,3 +1,6 @@
+@import "color";
+@import "progressbar";
+
 body {
   font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif
 }
@@ -7,7 +10,8 @@ h1 {
 }
 
 h2 {
-  @apply text-2xl font-medium;
+  @apply text-2xl font-bold;
+  color: #090076;
 }
 
 h3 {
@@ -48,11 +52,11 @@ p + p {
 }
 
 .header-padding {
-  @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-6 sm:py-6
+  @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 py-4 sm:py-4
 }
 
 .date-padding {
-  @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 pt-6 flex justify-start md:justify-end;
+  @apply px-6 sm:px-6 md:px-8 lg:px-20 xl:px-32 flex;
 }
 
 .card-item-padding {
