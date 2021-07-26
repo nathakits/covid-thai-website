@@ -67,7 +67,7 @@ export default {
       name: "Thailand's Covid-19 Vaccination Tracker",
       short_name: "Covid19 Vaccination Tracker",
       description:
-        "Tracking Covid-19 vaccination progress in Thailand (unofficial)",
+        "Tracking Covid-19 vaccination progress in Thailand (Unofficial)",
       lang: "en",
       theme_color: "#27AE60",
     },
@@ -79,7 +79,7 @@ export default {
       ogSiteName: "Thailand's Covid-19 Vaccination Tracker",
       ogTitle: "Thailand's Covid-19 Vaccination Tracker",
       ogDescription:
-        "Tracking Covid-19 vaccination progress in Thailand (unofficial)",
+        "Tracking Covid-19 vaccination progress in Thailand (Unofficial)",
       ogHost: "https://covidtracker-th.netlify.app",
       ogImage: "/icon.png",
       twitterSite: "@nathakit_tan",
