@@ -12,16 +12,19 @@ div.vaccination-manufacturers
       p {{ manufacturers.filter(vac => vac.doses_administered > 0).length }} vaccines currently in use.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
+        div.card-item-padding.flex.justify-between
+          div.text-base.font-bold Vaccines
+          span.text-base.font-bold Total doses administered
         div.card-item-padding.grid.grid-cols-2.gap-8(
           v-for="vac in manufacturers"
           :class="`${vac.name.split(' ').join('-').toLowerCase()} ${vac.status !== 'Approved' ? 'text-gray-400' : ''}`"
         )
           div
-            div.text-sm.font-semibold {{ vac.name }}
+            div.text-sm.font-bold {{ vac.name }}
             div
               span.text-sm.text-gray-400.vac-type {{ vac.type }}
               span.text-sm.text-gray-400.vac-status {{ vac.status }}
-          span.text-sm.flex.justify-end.items-center.font-semibold(:class="`${vac.status === 'Approved' ? 'text-gray-900' : ''}`") {{ vac.doses_administered.toLocaleString() }}
+          span.text-base.flex.justify-end.items-center(:class="`${vac.status === 'Approved' ? 'text-black' : ''}`") {{ vac.doses_administered.toLocaleString() }}
 </template>
 
 <script>
