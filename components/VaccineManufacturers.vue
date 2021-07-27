@@ -21,7 +21,7 @@ div.vaccination-manufacturers
             div
               span.text-sm.text-gray-400.vac-type {{ vac.type }}
               span.text-sm.text-gray-400.vac-status {{ vac.status }}
-          span.text-sm.flex.justify-end.items-center.font-semibold(:class="`${vac.status === 'Approved' ? 'text-gray-900' : ''}`") {{ vac.doses_administered.toLocaleString() }} 
+          span.text-sm.flex.justify-end.items-center.font-semibold(:class="`${vac.status === 'Approved' ? 'text-gray-900' : ''}`") {{ vac.doses_administered.toLocaleString() }}
 </template>
 
 <script>
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       data: [],
+      latestData: {},
       vacApproval: [
         {
           name: "Sinovac",
@@ -70,27 +71,18 @@ export default {
   },
   async fetch() {
     this.data = await this.$axios.$get(
-      "https://raw.githubusercontent.com/porames/the-researcher-covid-bot/master/components/gis/data/manufacturer-vaccination-data.json"
+      "https://raw.githubusercontent.com/porames/the-researcher-covid-bot/master/components/gis/data/vaccine-manufacturer-timeseries.json"
     )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
-        const reducer = (accumulator, currentValue) =>
-          accumulator + currentValue
-        // filter array by manufacturers
-        const sinovac = this.filterVaccines(this.data, "Sinovac Life Sciences")
-        const astrazeneca = this.filterVaccines(this.data, "AstraZeneca")
-        const sinopharm = this.filterVaccines(this.data, "Sinopharm")
-        // map by doses administered
-        const sinovacMap = sinovac.map((d) => d.doses_administered)
-        const astrazenecaMap = astrazeneca.map((d) => d.doses_administered)
-        const sinopharmMap = sinopharm.map((d) => d.doses_administered)
-        // add up all the doses administered
-        const sinovacDoses = sinovacMap.reduce(reducer)
-        const astrazenecaDoses = astrazenecaMap.reduce(reducer)
-        const sinopharmDoses = sinopharmMap.reduce(reducer)
-        // map doses to array
+        const array = this.data
+        const latestArray = array[array.length - 1]
+        const astrazenecaDoses = latestArray.AstraZeneca
+        const sinovacDoses = latestArray.Sinovac
+        const sinopharmDoses = latestArray.Sinopharm
+
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
           if (d.name === "Sinovac") {
@@ -124,8 +116,11 @@ export default {
           }
           return obj
         })
-        // sort by doses administered
-        vaccineArr.sort((a, b) => b.doses_administered - a.doses_administered)
+
+        vaccineArr.sort((a, b) => {
+          return b.doses_administered - a.doses_administered
+        })
+
         return vaccineArr
       } else {
         return []
@@ -134,9 +129,8 @@ export default {
     getLastUpdated() {
       if (!this.$fetchState.pending) {
         const data = this.data
-        const latest = data.pop()
+        const latest = data[data.length - 1]
         const date = latest.date.split("-")
-        console.log(latest)
         const year = date[0]
         const month = date[1]
         const day = date[2]
