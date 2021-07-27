@@ -79,44 +79,46 @@ main
         div.total-bar.pb-8
           div.flex.justify-between.items-center
             h3(style="height:43px;") Total
-            span.text-sm.text-gray-400 % of population
+            span.text-lg.font-bold {{ `${vacTotalPercentage}%` }}
+            
           div.vac-progress-bar
             div.vac-progress.vac-total.rounded-full(
               :style="`width:${vacTotalProgress}px;`"
             )
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
+            span.text-sm.text-gray-500 % of population
             div
               span.text-base.pr-2 {{ dailyJSON.total_vaccinations }} doses
-            span.text-base.font-bold {{ `${vacTotalPercentage}%` }}
         //- 1st dose
         div.total-bar.pb-8
           div.flex.justify-between.items-center
             h3(style="height:43px;") 1st Dose
-            span.text-sm.text-gray-400 % of population
+            span.text-lg.font-bold {{ `${vac1DosePercentage}%` }}
           div.vac-progress-bar
             div.vac-progress.vac-1dose.rounded-full(s
               :style="`width:${vac1DoseProgress}px;`"
             )
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
+            span.text-sm.text-gray-500 % of population
             div
               span.text-base.pr-2 {{ dailyJSON.people_vaccinated }} doses
-            span.text-base.font-bold {{ `${vac1DosePercentage}%` }}
         //- 2nd dose
         div.total-bar
           div.flex.justify-between.items-center
             h3(style="height:43px;") 2nd Dose
-            span.text-sm.text-gray-400 % of population
+            span.text-lg.font-bold {{ `${vac2DosePercentage}%` }}
+            
           div.vac-progress-bar
             div.vac-progress.vac-2dose.rounded-full(
               :style="`width:${vacProgress}px;`"
             )
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
+            span.text-sm.text-gray-500 % of population
             div
               span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }} doses
-            span.text-base.font-bold {{ `${vac2DosePercentage}%` }}
     div.border-b.container-margin
     VaccineManufacturers
 </template>
