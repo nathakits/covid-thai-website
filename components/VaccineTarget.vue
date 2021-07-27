@@ -25,13 +25,17 @@ div
         | With the current average vaccination rate, we will likely not meet the goal set out by the Thai government.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
-        div.card-item-padding.grid.grid-cols-2.gap-8
-          span.text-sm Days till goal reached:
+        div.card-item-padding.flex.justify-between
+          div.flex.items-center
+            vaccine-icon
+            div.pl-2.text-sm Time till goal reached
           div
             p.text-sm.text-right ~{{ `${calcGoalDays} Days` }}
             p.text-xs.text-right.text-gray-400 {{ `(${calcGoalDate})` }}
-        div.card-item-padding.grid.grid-cols-2.gap-8
-          span.text-sm Days till everyone is vaccinated:
+        div.card-item-padding.flex.justify-between
+          div.flex.items-center
+            vaccine-icon
+            div.pl-2.text-sm Time till everyone is vaccinated
           div
             p.text-sm.text-right ~{{ `${calcCountryVacDays} Days` }}
             p.text-xs.text-right.text-gray-400 {{ `(${calcCountryVacDate})` }}
