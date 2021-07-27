@@ -1,14 +1,12 @@
 <template lang="pug">
 main
   vaccine-overview(:data="dailyJSON")
-  div.container.mx-auto.h-full.divide-y.divide-gray-200(
-    class="md:divide-y-0"
-  )
+  div.container.mx-auto.h-full
     //- vaccination goal
     div.vaccination-goal
       div.date-padding.pt-10.flex.justify-between
         div.last-updated.dark-blue
-          span {{ `Last updated: ${dailyJSON.date.replaceAll("-", "/")}` }}
+          span {{ `Last updated: ${getLastUpdated}` }}
         div.flex
           facebook-share.pr-2
           twitter-share
@@ -31,6 +29,8 @@ main
             span.text-base.font-bold {{ `${vacGoalPercentage}%` }}
     //- vaccine target and estimate
     vaccine-target(:dataFull="fullJSON" :dataDaily="dailyJSON")
+    div.border-b.container-margin
+    //- vaccination progress
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
@@ -41,42 +41,39 @@ main
           | People who are fully vaccinated may have received more than one dose.
       div.progress-bar
         div.controls.flex.justify-between.items-center
-          div.select-menu.relative(@click="menu = !menu")
-            span {{ selected }}
-            div.dropdown-menu.border.border-gray-200.z-10(v-show="menu")
-              div.pb-2(@click="updateChartType(`Total`)") Total
-              div(@click="updateChartType(`Daily`)") Daily
+          div.flex.text-gray-500
+            div.mr-4.cursor-pointer(
+              :class="selected === `Total` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
+              @click="updateChartType(`Total`)"
+            ) Total
+            div.cursor-pointer(
+              :class="selected === `Daily` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
+              @click="updateChartType(`Daily`)"
+            ) Daily
           div.legend.flex.text-sm
-            div.pr-3
+            div.pr-4.flex.items-center
               span.dot.firstDose
               span 1st Dose
-            div
+            div.flex.items-center
               span.dot.secondDose
               span 2nd Dose
         div.relative
           div.responsive.bg-gray-100.rounded
           VaccineChart(:data="fullJSON")
-    //- vaccination progress
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
       )
-        p.pb-3
+        p.pb-4
           | Percentage of people who have received COVID-19 vaccine,
           | broken down into 3 progress bars.
-        P
-          | Thailand's 2020 population census: 
+        tooltip
           a.link(
             href="https://github.com/owid/covid-19-data/blob/master/scripts/input/un/population_2020.csv"
             target="_blank"
             rel="noreferrer noopenner"
-          ) {{ population.toLocaleString() }}
-        a.link(
-          href="https://ourworldindata.org/"
-          target="_blank"
-          rel="noreferrer noopenner"
-        )
-          p From Our World in Data
+          )
+            span.text-sm Thailand's 2020 population: {{ population.toString().slice(0,2) }} Million
       div.progress-bar
         //- total bar
         div.total-bar.pb-8
@@ -120,6 +117,7 @@ main
             div
               span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }} doses
             span.text-base.font-bold {{ `${vac2DosePercentage}%` }}
+    div.border-b.container-margin
     VaccineManufacturers
 </template>
 
@@ -158,6 +156,19 @@ export default {
   },
   computed: mapState({
     selected: "selected",
+    getLastUpdated() {
+      if (this.dailyJSON) {
+        const data = this.dailyJSON
+        const date = data.date.split("-")
+        const day = Number(date[0]) + 1
+        const month = date[1]
+        const year = date[2]
+        const formattedDate = `${day}/${month}/${year}`
+        return formattedDate
+      } else {
+        return ``
+      }
+    },
   }),
   watch: {
     progressBarWidth() {
@@ -259,8 +270,8 @@ export default {
 .dot {
   display: inline-block;
   border-radius: 50%;
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
   margin-right: 8px;
 
   &.firstDose {
