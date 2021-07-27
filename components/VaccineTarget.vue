@@ -7,18 +7,26 @@ div
       P 
         | This is due to many factors, such as low inoculation during weekends and vaccine procurement.
     div.progress-bar
-      div.flex.justify-between
-        h3(style="height:43px;") Target Dose
-        div {{ calcTarget }} doses/day
-      div.vac-goal-bar
-        div.vac-progress.vac-target.rounded-full(
-          :style="`width:${20}px;`"
-        )
-        div.vac-bar(id="vac-target")
-      div.flex.justify-between.pt-3.font-medium
-        p.text-base {{ calcAverage }} (14-Day Average)
-        div
-          p.text-base.font-bold Stll need: {{ calcTargetNeeded }}
+      div.card.grid.divide-y.divide-gray-300
+        div.card-item-padding.flex.justify-between
+          div.flex.items-center
+            vaccine-icon
+            span.text-lg.pl-4.font-bold Target Dose
+          span.text-lg.font-bold {{ calcTarget }} doses/day
+        div.card-item-padding.flex.justify-between.font-medium
+          div.flex.items-center
+            vaccine-icon
+            span.text-sm.pl-4.mr-2 Current rate
+            span.text-sm.text-gray-500 (14-Day Average)
+          div
+            p.text-sm {{ calcAverage }} doses/day
+        div.card-item-padding.flex.justify-between.font-medium
+          div.flex.items-center
+            vaccine-icon
+            span.text-sm.pl-4.mr-2 To reach target
+          div
+            p.text-sm {{ calcTargetNeeded }} doses/day
+
   div.vaccination-block.container-padding
     div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
       p
@@ -28,17 +36,17 @@ div
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             vaccine-icon
-            div.pl-2.text-sm Time till goal reached
+            div.pl-4.text-sm Time till goal reached
           div
             p.text-sm.text-right ~{{ `${calcGoalDays} Days` }}
-            p.text-xs.text-right.text-gray-400 {{ `(${calcGoalDate})` }}
+            p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             vaccine-icon
-            div.pl-2.text-sm Time till everyone is vaccinated
+            div.pl-4.text-sm Time till everyone is vaccinated
           div
             p.text-sm.text-right ~{{ `${calcCountryVacDays} Days` }}
-            p.text-xs.text-right.text-gray-400 {{ `(${calcCountryVacDate})` }}
+            p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate})` }}
 </template>
 
 <script>
