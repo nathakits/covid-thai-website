@@ -5,7 +5,7 @@ div(style="background-color:rgba(6,1,70,0.2);")
       div.grid.grid-cols-3.container-padding(
         class="gap-4 sm:gap-4 md:gap-6 lg:gap-12 xl:gap-16 sm:grid-cols-9"
       )
-        div.rounded.bg-white.p-4.shadow-md.col-span-3(
+        div.rounded-md.bg-white.p-4.shadow-md.col-span-3(
           v-for="(item, index) in array"
         )
           div.rounded.bg-dark-blue.text-white.px-2.py-1.w-max
