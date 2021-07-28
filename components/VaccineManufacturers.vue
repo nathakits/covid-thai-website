@@ -22,8 +22,8 @@ div.vaccination-manufacturers
           div
             div.text-sm.font-bold {{ vac.name }}
             div
-              span.text-sm.text-gray-400.vac-type {{ vac.type }}
-              span.text-sm.text-gray-400.vac-status {{ vac.status }}
+              span.text-sm.text-gray-500.vac-type {{ vac.type }}
+              span.text-sm.text-gray-500.vac-status {{ vac.status }}
           span.text-base.flex.justify-end.items-center(:class="`${vac.status === 'Approved' ? 'text-black' : ''}`") {{ vac.doses_administered.toLocaleString() }}
 </template>
 
