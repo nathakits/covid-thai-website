@@ -36,7 +36,7 @@ main
         class="lg:pb-0"
       )
         h2.pb-2 Vaccination Progress
-        p 
+        p
           | This data shows how many people have received at least one dose of a vaccine.
           | People who are fully vaccinated may have received more than one dose.
       div.progress-bar
@@ -73,7 +73,7 @@ main
             target="_blank"
             rel="noreferrer noopenner"
           )
-            span.text-sm Thailand's 2020 population: {{ population.toString().slice(0,2) }} Million
+            span.text-sm.text-blue-900 Thailand's 2020 population: {{ population.toString().slice(0,2) }} Million
       div.progress-bar
         //- total bar
         div.total-bar.pb-8
@@ -112,7 +112,7 @@ main
             
           div.vac-progress-bar
             div.vac-progress.vac-2dose.rounded-full(
-              :style="`width:${vacProgress}px;`"
+              :style="`width:${vac2DoseProgress}px;`"
             )
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
@@ -150,9 +150,6 @@ export default {
       vac1DosePercentage: 0,
       vac2DoseProgress: 0,
       vac2DosePercentage: 0,
-      vacProgress: 20,
-      vacTarget: 0,
-      menu: false,
       progressBarWidth: 0,
     }
   },
@@ -256,18 +253,9 @@ export default {
 .responsive {
   padding-bottom: 50%;
 }
-.select-menu {
-  @apply border border-gray-400 rounded py-1 px-5 focus:outline-none text-sm w-min cursor-pointer;
-}
 .controls {
   @apply pb-4;
 }
-.dropdown-menu {
-  @apply absolute rounded bg-white p-2 shadow w-full;
-  top: 30px;
-  left: 0;
-}
-
 // legend
 .dot {
   display: inline-block;
