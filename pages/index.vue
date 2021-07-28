@@ -30,7 +30,7 @@ main
             span.text-sm.text-gray-500 % of 100M doses
             span.text-base {{ `${vacGoalPercentage}%` }}
     //- vaccine target and estimate
-    vaccine-target(:dataFull="fullJSON" :dataDaily="dailyJSON")
+    vaccine-target
     div.border-b.container-margin
     //- vaccination progress
     div.vaccination-block.container-padding

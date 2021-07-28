@@ -41,7 +41,6 @@ export default {
       const sinovac = this.dailyJSON.sinovac.replaceAll(",", "")
       const astra = this.dailyJSON.astrazeneca.replaceAll(",", "")
       const total = Number(sinovac) + Number(astra)
-      console.log(total)
       this.totalVacAllotment = Number(total).toLocaleString()
     },
   },

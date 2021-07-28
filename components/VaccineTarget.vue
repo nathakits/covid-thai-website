@@ -38,15 +38,15 @@ div
             vaccine-icon
             div.pl-4.text-sm Time till goal reached
           div
-            p.text-sm.text-right ~{{ `${calcGoalDays} Days` }}
+            p.text-sm.text-right ~{{ `${calcGoalDays } Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             vaccine-icon
             div.pl-4.text-sm Time till everyone is vaccinated
           div
-            p.text-sm.text-right ~{{ `${calcCountryVacDays} Days` }}
-            p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate})` }}
+            p.text-sm.text-right ~{{ `${calcCountryVacDays } Days` }}
+            p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate })` }}
 </template>
 
 <script>
@@ -67,18 +67,24 @@ export default {
       vacTarget: 0,
       vacTargetMonths: 0,
       vacTargetDate: "",
+      fullJSON: [],
     }
+  },
+  async fetch() {
+    this.fullJSON = await this.$axios.$get(
+      "https://nathakits.github.io/covid-tracker-twitter-bot/data/Thailand.json"
+    )
   },
   computed: {
     calcTargetNeeded() {
-      const avg = Number(this.calcAverage.replaceAll(",", ""))
-      const target = Number(this.calcTarget.replaceAll(",", ""))
+      const avg = Number(this.calcAverage.replace(/,/g, ""))
+      const target = Number(this.calcTarget.replace(/,/g, ""))
       const targetNeeded = (target - avg).toLocaleString()
       return targetNeeded
     },
     calcAverage() {
       const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const totalDosePlusArr = this.slicedData(this.dataFull).map((el) =>
+      const totalDosePlusArr = this.slicedData(this.fullJSON).map((el) =>
         Number(el.total_dose_plus)
       )
       const calcAverage = totalDosePlusArr.reduce(reducer) / 14
@@ -86,24 +92,22 @@ export default {
       return formatAvg
     },
     calcTarget() {
+      const latest = this.fullJSON[this.fullJSON.length - 1]
       const today = new Date()
       const newYear = new Date(today.getFullYear(), 11, 31)
       const oneDay = 1000 * 60 * 60 * 24
       const daysLeft = Math.ceil((newYear.getTime() - today.getTime()) / oneDay)
-      const totalVac = Number(
-        this.dataDaily.total_vaccinations.replaceAll(",", "")
-      )
+      const totalVac = Number(latest.total_vaccinations.replace(/,/g, ""))
       const targetDoses = 100 * 1000000 - totalVac
       const targetAvgDose = Math.ceil(targetDoses / daysLeft)
       return targetAvgDose.toLocaleString()
     },
     calcGoalDays() {
-      const totalVacLeft = Number(
-        this.dataDaily.total_vaccinations.replaceAll(",", "")
-      )
+      const latest = this.fullJSON[this.fullJSON.length - 1]
+      const totalVacLeft = Number(latest.total_vaccinations.replace(/,/g, ""))
       const dosesLeftTillTarget = 100 * 1000000 - totalVacLeft
       const daysTillTarget =
-        dosesLeftTillTarget / Number(this.calcAverage.replaceAll(",", ""))
+        dosesLeftTillTarget / Number(this.calcAverage.replace(/,/g, ""))
       return Math.ceil(daysTillTarget)
     },
     calcGoalDate() {
@@ -113,22 +117,19 @@ export default {
       const month = date.getMonth() + 1
       const year = date.getFullYear()
       const goalDate = `${year}-${month}-${day}`
-      console.log(date)
       const formatGoalDate = new Date(goalDate).toLocaleDateString("en-us", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
-      console.log(formatGoalDate)
       return formatGoalDate
     },
     calcCountryVacDays() {
-      const totalVacLeft = Number(
-        this.dataDaily.total_vaccinations.replaceAll(",", "")
-      )
+      const latest = this.fullJSON[this.fullJSON.length - 1]
+      const totalVacLeft = Number(latest.total_vaccinations.replace(/,/g, ""))
       const dosesLeftTillTarget = 139599956 - totalVacLeft
       const daysTillTarget =
-        dosesLeftTillTarget / Number(this.calcAverage.replaceAll(",", ""))
+        dosesLeftTillTarget / Number(this.calcAverage.replace(/,/g, ""))
       return Math.ceil(daysTillTarget)
     },
     calcCountryVacDate() {
@@ -138,13 +139,11 @@ export default {
       const month = date.getMonth() + 1
       const year = date.getFullYear()
       const goalDate = `${year}-${month}-${day}`
-      console.log(date)
       const formatGoalDate = new Date(goalDate).toLocaleDateString("en-us", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
-      console.log(formatGoalDate)
       return formatGoalDate
     },
   },
