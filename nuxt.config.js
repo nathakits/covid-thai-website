@@ -101,6 +101,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    // analyze: true,
     filenames: {
       font: ({ isDev }) =>
         isDev ? "[path][name].[ext]" : "fonts/[name].[hash:7].[ext]",

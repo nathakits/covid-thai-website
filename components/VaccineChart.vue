@@ -7,7 +7,7 @@ div.chart
 </template>
 
 <script>
-import moment from "moment"
+import dayjs from "dayjs"
 import Chart from "chart.js/auto"
 import { LineController } from "chart.js"
 
@@ -248,7 +248,7 @@ export default {
       const day = dateArr.shift()
       const month = dateArr.pop()
       const newDate = new Date(`${year}-${month}-${day}`)
-      const format = moment(newDate).format("DD MMM")
+      const format = dayjs(newDate).format("DD MMM")
       return format
     },
     formatFullDate(date) {
@@ -257,7 +257,7 @@ export default {
       const day = dateArr.shift()
       const month = dateArr.pop()
       const newDate = new Date(`${year}-${month}-${day}`)
-      const format = moment(newDate).format("DD MMM YYYY")
+      const format = dayjs(newDate).format("DD MMM YYYY")
       return format
     },
     updateConfigAsNewObject(chart, data, options, type) {

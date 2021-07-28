@@ -16,7 +16,7 @@
     "@nuxtjs/sitemap": "^2.4.0",
     "chart.js": "^3.4.1",
     "core-js": "^3.15.2",
-    "nuxt": "^2.15.3",
+    "nuxt": "^2.15.7",
     "vue-gtag": "^1.16.1"
   },
   "devDependencies": {
@@ -24,6 +24,7 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/tailwindcss": "^4.2.1",
     "babel-eslint": "^10.1.0",
+    "dayjs": "^1.10.6",
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
