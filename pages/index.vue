@@ -18,15 +18,17 @@ main
           p 
             | Government's vaccination goal of inoculating 50 million people (70% of the population) with 100 million doses of vaccines by the end of 2021
         div.progress-bar
-          h3(style="height:43px;") 100 Million Doses
+          div.flex.justify-between.items-center.pb-2
+            h3 100 Million Doses
+            span.text-lg.font-bold {{ dailyJSON.total_vaccinations }} / 100,000,000
           div.vac-goal-bar
             div.vac-progress.vac-goal.rounded-full(
               :style="`width:${vacGoalProgress}px;`"
             )
             div.vac-bar(id="vac-goal")
           div.flex.justify-between.pt-3.font-medium
-            span.text-base {{ dailyJSON.total_vaccinations }} / 100,000,000
-            span.text-base.font-bold {{ `${vacGoalPercentage}%` }}
+            span.text-sm.text-gray-500 % of 100M doses
+            span.text-base {{ `${vacGoalPercentage}%` }}
     //- vaccine target and estimate
     vaccine-target(:dataFull="fullJSON" :dataDaily="dailyJSON")
     div.border-b.container-margin
@@ -77,10 +79,9 @@ main
       div.progress-bar
         //- total bar
         div.total-bar.pb-8
-          div.flex.justify-between.items-center
-            h3(style="height:43px;") Total
-            span.text-lg.font-bold {{ `${vacTotalPercentage}%` }}
-            
+          div.flex.justify-between.items-center.pb-2
+            h3 Total
+            span.text-lg.font-bold {{ dailyJSON.total_vaccinations }} doses
           div.vac-progress-bar
             div.vac-progress.vac-total.rounded-full(
               :style="`width:${vacTotalProgress}px;`"
@@ -88,13 +89,12 @@ main
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
             span.text-sm.text-gray-500 % of population
-            div
-              span.text-base.pr-2 {{ dailyJSON.total_vaccinations }} doses
+            span.text-base {{ `${vacTotalPercentage}%` }}
         //- 1st dose
         div.total-bar.pb-8
-          div.flex.justify-between.items-center
-            h3(style="height:43px;") 1st Dose
-            span.text-lg.font-bold {{ `${vac1DosePercentage}%` }}
+          div.flex.justify-between.items-center.pb-2
+            h3 1st Dose
+            span.text-lg.font-bold {{ dailyJSON.people_vaccinated }} doses
           div.vac-progress-bar
             div.vac-progress.vac-1dose.rounded-full(s
               :style="`width:${vac1DoseProgress}px;`"
@@ -102,14 +102,12 @@ main
             div.vac-bar
           div.flex.justify-between.pt-3.font-medium
             span.text-sm.text-gray-500 % of population
-            div
-              span.text-base.pr-2 {{ dailyJSON.people_vaccinated }} doses
+            span.text-base {{ `${vac1DosePercentage}%` }}
         //- 2nd dose
         div.total-bar
-          div.flex.justify-between.items-center
-            h3(style="height:43px;") 2nd Dose
-            span.text-lg.font-bold {{ `${vac2DosePercentage}%` }}
-            
+          div.flex.justify-between.items-center.pb-2
+            h3 2nd Dose
+            span.text-lg.font-bold {{ dailyJSON.people_fully_vaccinated }} doses
           div.vac-progress-bar
             div.vac-progress.vac-2dose.rounded-full(
               :style="`width:${vac2DoseProgress}px;`"
@@ -118,7 +116,7 @@ main
           div.flex.justify-between.pt-3.font-medium
             span.text-sm.text-gray-500 % of population
             div
-              span.text-base.pr-2 {{ dailyJSON.people_fully_vaccinated }} doses
+              span.text-base {{ `${vac2DosePercentage}%` }}
     div.border-b.container-margin
     VaccineManufacturers
 </template>
