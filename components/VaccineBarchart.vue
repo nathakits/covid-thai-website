@@ -3,7 +3,7 @@
 //- update tooltip to html
 //- ref - nyt
 div.chart
-  canvas(id="vaccine-chart")
+  canvas(id="vaccine-chart" style="width:100%;height:100%;")
 </template>
 
 <script>
