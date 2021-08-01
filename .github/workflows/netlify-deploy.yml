@@ -6,7 +6,7 @@ name: Build and Deploy to Netlify
 
 on:
   schedule:
-    - cron: "12 10 * * *" # 8:10pm
+    - cron: "10 13 * * *" # 8:10pm
   workflow_dispatch:
 
 jobs:
