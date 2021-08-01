@@ -135,7 +135,7 @@ export default {
 }
 
 .title {
-  @apply text-2xl font-bold;
+  @apply text-base sm:text-lg lg:text-2xl font-bold;
 }
 
 .country {
