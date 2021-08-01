@@ -80,53 +80,113 @@ export default {
       }
     },
     latestAllocation() {
+      // todo
+      // recursively loop entire array (reverse loop)
+      // to check for latest object that is not empty
       if (!this.$fetchState.pending) {
         const data = this.data
         const latest = data[data.length - 1]
-        const allocationArr = this.vacc_allocation.map((d) => {
-          let obj = {}
-          if (d.name === "Sinovac") {
-            obj = {
-              name: d.name,
-              doses_allocated: latest.allocated_sinovac,
+        if (
+          latest.allocated_sinovac === 0 ||
+          latest.allocated_astrazeneca === 0
+        ) {
+          console.log(`No data - using previous date`)
+          const latest = data[data.length - 2]
+          const allocationArr = this.vacc_allocation.map((d) => {
+            let obj = {}
+            if (d.name === "Sinovac") {
+              obj = {
+                name: d.name,
+                doses_allocated: latest.allocated_sinovac,
+              }
+            } else if (d.name === "AstraZeneca") {
+              obj = {
+                name: d.name,
+                doses_allocated: latest.allocated_astrazeneca,
+              }
+            } else {
+              obj = {
+                name: d.name,
+                doses_allocated: 0,
+              }
             }
-          } else if (d.name === "AstraZeneca") {
-            obj = {
-              name: d.name,
-              doses_allocated: latest.allocated_astrazeneca,
+            return obj
+          })
+          return allocationArr
+        } else {
+          const allocationArr = this.vacc_allocation.map((d) => {
+            let obj = {}
+            if (d.name === "Sinovac") {
+              obj = {
+                name: d.name,
+                doses_allocated: latest.allocated_sinovac,
+              }
+            } else if (d.name === "AstraZeneca") {
+              obj = {
+                name: d.name,
+                doses_allocated: latest.allocated_astrazeneca,
+              }
+            } else {
+              obj = {
+                name: d.name,
+                doses_allocated: 0,
+              }
             }
-          } else {
-            obj = {
-              name: d.name,
-              doses_allocated: 0,
-            }
-          }
-          return obj
-        })
-        return allocationArr
+            return obj
+          })
+          return allocationArr
+        }
       } else {
         return ``
       }
     },
     totalLatestAllocation() {
+      // todo
+      // recursively loop entire array (reverse loop)
+      // to check for latest object that is not empty
       if (!this.$fetchState.pending) {
         const data = this.data
         const latest = data[data.length - 1]
-        return latest.allocated_total.toLocaleString()
+        if (
+          latest.allocated_sinovac === 0 ||
+          latest.allocated_astrazeneca === 0
+        ) {
+          const latest = data[data.length - 2]
+          return latest.allocated_total.toLocaleString()
+        } else {
+          return latest.allocated_total.toLocaleString()
+        }
       } else {
         return ``
       }
     },
     getLastUpdated() {
+      // todo
+      // recursively loop entire array (reverse loop)
+      // to check for latest object that is not empty
+      // https://www.techiedelight.com/loop-through-array-backwards-javascript/
       if (!this.$fetchState.pending) {
         const data = this.data
         const latest = data[data.length - 1]
-        const date = latest.date.split("-")
-        const year = date[0]
-        const month = date[1]
-        const day = date[2]
-        const formattedDate = `${day}/${month}/${year}`
-        return formattedDate
+        if (
+          latest.allocated_sinovac === 0 ||
+          latest.allocated_astrazeneca === 0
+        ) {
+          const latest = data[data.length - 2]
+          const date = latest.date.split("-")
+          const year = date[0]
+          const month = date[1]
+          const day = date[2]
+          const formattedDate = `${day}/${month}/${year}`
+          return formattedDate
+        } else {
+          const date = latest.date.split("-")
+          const year = date[0]
+          const month = date[1]
+          const day = date[2]
+          const formattedDate = `${day}/${month}/${year}`
+          return formattedDate
+        }
       } else {
         return ``
       }
