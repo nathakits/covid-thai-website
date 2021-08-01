@@ -3,11 +3,11 @@
 //- update tooltip to html
 //- ref - nyt
 div.chart
-  canvas(id="vaccine-chart")
+  canvas(id="vaccine-chart" style="width:100%;height:100%;")
 </template>
 
 <script>
-import { isoParse, timeFormat } from "d3"
+import dayjs from "dayjs"
 import Chart from "chart.js/auto"
 import { LineController } from "chart.js"
 
@@ -243,25 +243,21 @@ export default {
       return chart
     },
     formatDate(date) {
-      const parseDate = isoParse
-      const formatTime = timeFormat("%d %b")
       const dateArr = date.split("-")
       const year = dateArr.pop()
       const day = dateArr.shift()
       const month = dateArr.pop()
-      const newDate = parseDate(`${year}-${month}-${day}`)
-      const format = formatTime(newDate)
+      const newDate = new Date(`${year}-${month}-${day}`)
+      const format = dayjs(newDate).format("DD MMM")
       return format
     },
     formatFullDate(date) {
-      const parseDate = isoParse
-      const formatTime = timeFormat("%d %b %Y")
       const dateArr = date.split("-")
       const year = dateArr.pop()
       const day = dateArr.shift()
       const month = dateArr.pop()
-      const newDate = parseDate(`${year}-${month}-${day}`)
-      const format = formatTime(newDate)
+      const newDate = new Date(`${year}-${month}-${day}`)
+      const format = dayjs(newDate).format("DD MMM YYYY")
       return format
     },
     updateConfigAsNewObject(chart, data, options, type) {
@@ -351,14 +347,12 @@ export default {
         tooltipContainer.appendChild(bodyEl)
       }
 
-      const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas
+      const { offsetLeft: positionX } = chart.canvas
 
       // Display, position, and set styles for font
       tooltipEl.style.opacity = 1
       tooltipEl.style.left = positionX + tooltip.caretX + "px"
       tooltipEl.style.top = "0px"
-      console.log(positionY)
-      console.log(tooltip.caretY)
       // tooltipEl.style.top = positionY + tooltip.caretY + "px"
       tooltipEl.style.font = tooltip.options.bodyFont.string
       tooltipEl.style.padding =

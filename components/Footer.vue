@@ -1,5 +1,5 @@
 <template lang="pug">
-
+div.bg-footer
   div.container.mx-auto.h-full
     div.container-padding
       div.pt-6(
