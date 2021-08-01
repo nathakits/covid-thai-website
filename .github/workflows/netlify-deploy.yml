@@ -19,8 +19,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      # ( Build to ./dist or other directory... )
-      - name: Deploy to Netlify
+        # run npm install
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci
+        # build site to dist
+      - name: Build site 🚧
+        run: npm run generate
+        # Run Lint
+      - name: Run linter 👀
+        run: npm run lint
+        # deploy to Netlify
+      - name: Deploy to Netlify 🚀
         uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: "./dist"
