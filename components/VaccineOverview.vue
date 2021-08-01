@@ -10,10 +10,10 @@ div(style="background-color:rgba(6,1,70,0.2);")
         )
           div.rounded.bg-dark-blue.text-white.px-2.py-1.w-max
             span {{ item.name }}
-          div.grid.grid-cols-4.justify-between.items-center.pt-2(
+          div.grid.grid-cols-6.justify-between.items-center.pt-2(
             class="sm:flex sm:flex-col lg:flex-row sm:items-start lg:items-end"
           )
-            h2.col-span-3 {{ item.total }}
+            h2.col-span-4 {{ item.total }}
             div.my-0.hidden.w-full(class="sm:block sm:border-b sm:my-2 lg:hidden lg:my-0")
             div.text-sm.flex.items-end
               div.pr-2.pl-2.pb-1.order-1(class="sm:order-2 lg:order-1")
