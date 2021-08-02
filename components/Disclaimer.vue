@@ -37,7 +37,7 @@ div.bg-disclaimer.text-white
                   <svg width="100%" height="100%" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 17.2754H14V15.2754H0V17.2754ZM14 6.27539H10V0.275391H4V6.27539H0L7 13.2754L14 6.27539Z" fill="white"/>
                   </svg>
-              span.text-sm All Data
+              span.text-sm Data
     div.container-padding
       div
         p Attempts are made to retrieve data from aforementioned sources everyday but is not guaranteed to be up to date.
