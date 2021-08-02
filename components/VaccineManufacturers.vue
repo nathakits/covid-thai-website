@@ -20,7 +20,7 @@ div.vaccination-manufacturers
       div
         div.card.grid.divide-y.divide-gray-300
           div.card-item-padding.flex.justify-between
-            div.text-base.font-bold Vaccines
+            div.text-base.font-bold Vaccine
             span.text-base.font-bold Doses Administered
           div.card-item-padding.grid.grid-cols-2.gap-8(
             v-for="vac in manufacturers"
@@ -89,17 +89,16 @@ export default {
   },
   async fetch() {
     this.data = await this.$axios.$get(
-      "https://raw.githubusercontent.com/porames/the-researcher-covid-bot/master/components/gis/data/vaccine-manufacturer-timeseries.json"
+      "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
     )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
-        const array = this.data
-        const latestArray = array[array.length - 1]
-        const astrazenecaDoses = latestArray.AstraZeneca
-        const sinovacDoses = latestArray.Sinovac
-        const sinopharmDoses = latestArray.Sinopharm
+        const data = this.latestObj(this.data)
+        const astrazenecaDoses = data.astrazeneca_1_cum + data.astrazeneca_2_cum
+        const sinovacDoses = data.sinovac_1_cum + data.sinovac_2_cum
+        const sinopharmDoses = data.sinopharm_1_cum + data.sinopharm_2_cum
 
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
@@ -146,16 +145,9 @@ export default {
     },
     totalVaccinesAdministered() {
       if (!this.$fetchState.pending) {
-        const array = this.data
-        const latestArray = array[array.length - 1]
-        const astrazenecaDoses = latestArray.AstraZeneca
-        const sinovacDoses = latestArray.Sinovac
-        const sinopharmDoses = latestArray.Sinopharm
-        return (
-          astrazenecaDoses +
-          sinovacDoses +
-          sinopharmDoses
-        ).toLocaleString()
+        const data = this.latestObj(this.data)
+        const total = data.total_cum
+        return total.toLocaleString()
       } else {
         return 0
       }
@@ -178,6 +170,19 @@ export default {
   methods: {
     filterVaccines(array, name) {
       return array.filter((d) => d.manufacturer === name)
+    },
+    latestObj(array) {
+      const reversedArray = [...array].reverse()
+      const nonEmptyArray = reversedArray.filter((obj) => {
+        const astrazenecaDoses = obj.AstraZeneca
+        const sinovacDoses = obj.Sinovac
+        const sinopharmDoses = obj.Sinopharm
+        return (
+          astrazenecaDoses !== 0 || sinovacDoses !== 0 || sinopharmDoses !== 0
+        )
+      })
+      const latestObj = nonEmptyArray.shift()
+      return latestObj
     },
   },
 }
