@@ -33,14 +33,14 @@ div
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             calendar-icon
-            div.text-sm.pl-2(class="md:pl-4") Time Till Goal Reached
+            span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Goal Reached
           div
             p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays } Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             calendar-icon
-            div.text-sm.pl-2(class="md:pl-4") Time Till Everyone Is Vaccinated
+            span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Everyone Is Vaccinated
           div
             p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcCountryVacDays } Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate })` }}
