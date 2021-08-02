@@ -14,6 +14,12 @@ Vaccination brands
 Testing?
 Death?
 
+## Data
+3rd dose data is not yet included in the daily reports.
+This is the only link that has this information.
+
+https://dashboard-vaccine.moph.go.th/
+
 ## Build Setup
 
 ```bash
