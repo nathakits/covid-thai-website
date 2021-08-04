@@ -3,12 +3,12 @@ div.bg-disclaimer.text-white
   div.container.mx-auto.h-full
     div.container-padding.flex.justify-between
       div.col-span-5
-        h3.pb-2 About The Data
+        h3.pb-3 About The Data
         p
           | Data are extracted from DDC (Department of Disease Control) daily briefing PDFs.
-          | Otherwise the data is manually input in the JSON with scripts to update the other files.
+          | Otherwise, the data is manually input into the JSON with scripts to update other data.
         p.pb-3
-          | Some data are from Dylan Jay's COVID Thailand Github repository.
+          | Part of the data used are from Dylan Jay's COVID Thailand Github repository.
         p Source: 
           a.underline(
             target="_blank"
@@ -40,6 +40,8 @@ div.bg-disclaimer.text-white
               span.text-sm Data
     div.container-padding
       div
+        h3.pb-3 Disclaimer
+        p Data offered here is offered as is with no guarentees.
         p Attempts are made to retrieve data from aforementioned sources everyday but is not guaranteed to be up to date.
         p
           | If you would like to report any issues or request features please contact me via email.

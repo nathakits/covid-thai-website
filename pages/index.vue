@@ -46,9 +46,9 @@ main
         div.controls.flex.justify-between.items-center
           div.flex.text-gray-500
             div.mr-4.cursor-pointer(
-              :class="selected === `Total` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
-              @click="updateChartType(`Total`)"
-            ) Total
+              :class="selected === `Cumulative` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
+              @click="updateChartType(`Cumulative`)"
+            ) Cumulative
             div.cursor-pointer(
               :class="selected === `Daily` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
               @click="updateChartType(`Daily`)"

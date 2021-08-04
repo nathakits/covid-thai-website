@@ -206,7 +206,7 @@ export default {
     // watch for state of chart type
     // then update the chart type and dataset
     chartType() {
-      if (this.chartType === "Total") {
+      if (this.chartType === "Cumulative") {
         this.updateConfigAsNewObject(
           this.chartjs,
           this.totalVaccineYAxis,
