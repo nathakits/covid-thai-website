@@ -1,5 +1,5 @@
 export const state = () => ({
-  selected: "Total",
+  selected: "Cumulative",
   menuOpened: false,
 })
 
