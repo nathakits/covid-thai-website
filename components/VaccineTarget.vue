@@ -18,11 +18,11 @@ div
             vaccine-icon
             span.text-sm.pl-2(class="md:pl-4") Current 14-Day Average
           p.text-base.font-bold.text-gray-800.text-right {{ calcAverage }} doses/day
-        div.card-item-padding.flex.justify-between.items-center.font-medium
-          div.flex.items-center
-            vaccine-icon
-            span.text-sm.pl-2(class="md:pl-4") To Reach Target
-          p.text-base.font-bold.text-gray-800.text-right {{ calcTargetNeeded }} doses/day
+        //- div.card-item-padding.flex.justify-between.items-center.font-medium
+        //-   div.flex.items-center
+        //-     vaccine-icon
+        //-     span.text-sm.pl-2(class="md:pl-4") To Reach Target
+        //-   p.text-base.font-bold.text-gray-800.text-right {{ calcTargetNeeded }} doses/day
 
   div.vaccination-block.container-padding
     div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
@@ -33,17 +33,24 @@ div
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             calendar-icon
+            span.text-sm.pl-2.font-medium(class="md:pl-4") Days left in 2021
+          div
+            p.text-base.font-bold.text-right.text-gray-800 {{ `${endOfYear} Days` }}
+        div.card-item-padding.flex.justify-between
+          div.flex.items-center
+            calendar-icon
             span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Goal Reached
           div
-            p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays } Days` }}
+            p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays} Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
         div.card-item-padding.flex.justify-between
           div.flex.items-center
             calendar-icon
             span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Everyone Is Vaccinated
           div
-            p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcCountryVacDays } Days` }}
+            p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcCountryVacDays} Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate })` }}
+
 </template>
 
 <script>
@@ -73,6 +80,13 @@ export default {
     )
   },
   computed: {
+    endOfYear() {
+      const today = new Date()
+      const newYear = new Date(today.getFullYear(), 11, 31)
+      const oneDay = 1000 * 60 * 60 * 24
+      const days = Math.ceil((newYear.getTime() - today.getTime()) / oneDay)
+      return days
+    },
     calcTargetNeeded() {
       if (!this.$fetchState.pending) {
         const avg = Number(this.calcAverage.replace(/,/g, ""))
@@ -100,15 +114,9 @@ export default {
     calcTarget() {
       if (!this.$fetchState.pending) {
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const today = new Date()
-        const newYear = new Date(today.getFullYear(), 11, 31)
-        const oneDay = 1000 * 60 * 60 * 24
-        const daysLeft = Math.ceil(
-          (newYear.getTime() - today.getTime()) / oneDay
-        )
         const totalVac = Number(latest.total_vaccinations.replace(/,/g, ""))
         const targetDoses = 100 * 1000000 - totalVac
-        const targetAvgDose = Math.ceil(targetDoses / daysLeft)
+        const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
         return 0
