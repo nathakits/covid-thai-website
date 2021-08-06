@@ -141,7 +141,7 @@ export default {
         const day = date.getDate()
         const month = date.getMonth() + 1
         const year = date.getFullYear()
-        const goalDate = `${year}-${month}-${day}`
+        const goalDate = `${year}-${month < 10 ? "0" + month : month}-${day}`
         const formatGoalDate = new Date(goalDate).toLocaleDateString("en-us", {
           day: "numeric",
           month: "short",
@@ -171,7 +171,7 @@ export default {
         const day = date.getDate()
         const month = date.getMonth() + 1
         const year = date.getFullYear()
-        const goalDate = `${year}-${month}-${day}`
+        const goalDate = `${year}-${month < 10 ? "0" + month : month}-${day}`
         const formatGoalDate = new Date(goalDate).toLocaleDateString("en-us", {
           day: "numeric",
           month: "short",
