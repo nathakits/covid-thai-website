@@ -57,9 +57,12 @@ main
             div.pr-4.flex.items-center
               span.dot.firstDose
               span 1st Dose
-            div.flex.items-center
+            div.pr-4.flex.items-center
               span.dot.secondDose
               span 2nd Dose
+            div.flex.items-center
+              span.dot.thirdDose
+              span 3rd Dose
         div.relative
           div.responsive.bg-gray-100.rounded
           vaccine-barchart(:data="fullJSON")
@@ -107,7 +110,7 @@ main
             span.text-sm.text-gray-500 % of population
             span.text-base.font-bold.text-gray-900 {{ `${vac1DosePercentage}%` }}
         //- 2nd dose
-        div.total-bar
+        div.total-bar.pb-8
           div.flex.justify-between.items-center.pb-2
             h3 2nd Dose
             div.highlight-card
@@ -121,6 +124,21 @@ main
             span.text-sm.text-gray-500 % of population
             div
               span.text-base.font-bold.text-gray-900 {{ `${vac2DosePercentage}%` }}
+        //- 3rd dose
+        div.total-bar
+          div.flex.justify-between.items-center.pb-2
+            h3 3rd Dose
+            div.highlight-card
+              span.font-bold.text-gray-900 {{ dailyJSON.booster_vaccinated }}
+          div.vac-progress-bar
+            div.vac-progress.vac-2dose.rounded-full(
+              :style="`width:${vac3DoseProgress}px;`"
+            )
+            div.vac-bar
+          div.flex.justify-between.pt-3.font-medium
+            span.text-sm.text-gray-500 % of population
+            div
+              span.text-base.font-bold.text-gray-900 {{ `${vac3DosePercentage}%` }}
     div.border-b.container-margin
     vaccine-manufacturers
     div.border-b.container-margin
@@ -151,6 +169,8 @@ export default {
       vac1DosePercentage: 0,
       vac2DoseProgress: 0,
       vac2DosePercentage: 0,
+      vac3DoseProgress: 0,
+      vac3DosePercentage: 0,
       progressBarWidth: 0,
     }
   },
@@ -176,6 +196,7 @@ export default {
       this.calcVacTotal()
       this.calcVac1Dose()
       this.calcVac2Dose()
+      this.calcVac3Dose()
     },
   },
   mounted() {
@@ -184,6 +205,7 @@ export default {
     this.calcVacTotal()
     this.calcVac1Dose()
     this.calcVac2Dose()
+    this.calcVac3Dose()
     window.addEventListener("resize", this.getVacGoalWidth)
   },
   beforeDestroy() {
@@ -237,6 +259,17 @@ export default {
         return 0
       }
     },
+    calcVac3Dose() {
+      if (this.dailyJSON) {
+        const thirdDose = this.dailyJSON.booster_vaccinated.replaceAll(",", "")
+        const percentage = (thirdDose / this.population) * 100
+        const progress = this.progressBarWidth * (percentage / 100)
+        this.vac3DosePercentage = percentage.toFixed(2)
+        this.vac3DoseProgress = progress
+      } else {
+        return 0
+      }
+    },
     getVacGoalWidth() {
       const width = document.getElementById("vac-goal").offsetWidth
       this.progressBarWidth = width
@@ -267,6 +300,9 @@ export default {
   }
   &.secondDose {
     background-color: rgb(91, 185, 116);
+  }
+  &.thirdDose {
+    background-color: rgb(12, 132, 63);
   }
 }
 </style>

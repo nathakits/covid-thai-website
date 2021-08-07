@@ -54,6 +54,8 @@ export default {
       firstDoseColor: "rgb(168,218,181)",
       secondDoseLabel: "2nd Dose",
       secondDoseColor: "rgb(91,185,116)",
+      thirdDoseLabel: "3rd Dose",
+      thirdDoseColor: "rgb(12,132,63)",
       lineOptions: {
         plugins: {
           legend: {
@@ -160,7 +162,15 @@ export default {
     totalVaccineYAxis() {
       const firstDose = this.vacData.map((d) => d.people_vaccinated)
       const secondDose = this.vacData.map((d) => d.people_fully_vaccinated)
+      const thirdDose = this.vacData.map((d) => d.booster_vaccinated)
       const dataset = [
+        {
+          label: this.thirdDoseLabel,
+          data: thirdDose,
+          backgroundColor: this.thirdDoseColor,
+          fill: true,
+          pointStyle: "circle",
+        },
         {
           label: this.secondDoseLabel,
           data: secondDose,
@@ -182,7 +192,15 @@ export default {
     dailyVaccineYAxis() {
       const firstDoseDaily = this.vacData.map((d) => d.first_dose_plus)
       const secondDoseDaily = this.vacData.map((d) => d.second_dose_plus)
+      const thirdDoseDaily = this.vacData.map((d) => d.third_dose_plus)
       const dataset = [
+        {
+          label: this.thirdDoseLabel,
+          data: thirdDoseDaily,
+          backgroundColor: this.thirdDoseColor,
+          fill: true,
+          pointStyle: "circle",
+        },
         {
           label: this.secondDoseLabel,
           data: secondDoseDaily,
