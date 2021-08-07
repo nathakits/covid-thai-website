@@ -16,7 +16,7 @@ div
         div.card-item-padding.flex.justify-between.items-center.font-medium
           div.flex.items-center
             vaccine-icon
-            span.text-sm.pl-2(class="md:pl-4") Current 14-Day Average
+            span.text-sm.pl-2(class="md:pl-4") 14-Day Average
           p.text-base.font-bold.text-gray-800.text-right {{ calcAverage }} doses/day
         //- div.card-item-padding.flex.justify-between.items-center.font-medium
         //-   div.flex.items-center
