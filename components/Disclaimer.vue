@@ -21,6 +21,12 @@ div.bg-disclaimer.text-white
             rel="noopener noreferrer"
             href="https://github.com/djay/covidthailand/"
           ) Dylan Jay Repo
+        p Source: 
+          a.underline(
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/porames/the-researcher-covid-data"
+          ) The Researcher COVID Data Repo
       div.flex.justify-start.col-span-full.pt-4(
         class="sm:col-span-4 md:col-span-5 sm:justify-end sm:pt-0"
       )
