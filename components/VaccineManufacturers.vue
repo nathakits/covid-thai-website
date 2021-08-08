@@ -6,7 +6,7 @@ div.vaccination-manufacturers
     div.explainer.pb-4(
       class="lg:pb-0"
     )
-      h2.pb-2 Vaccination Manufacturers
+      h2.pb-2 Vaccine Manufacturers
       p
         strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
         |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
@@ -89,16 +89,19 @@ export default {
   },
   async fetch() {
     this.data = await this.$axios.$get(
-      "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
+      // "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
+      "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
     )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
         const data = this.latestObj(this.data)
-        const astrazenecaDoses = data.astrazeneca_1_cum + data.astrazeneca_2_cum
-        const sinovacDoses = data.sinovac_1_cum + data.sinovac_2_cum
-        const sinopharmDoses = data.sinopharm_1_cum + data.sinopharm_2_cum
+        const astrazenecaDoses = data.AstraZeneca
+        const sinovacDoses = data.Sinovac
+        const sinopharmDoses = data.Sinopharm
+        const pfizerDoses = data.Pfizer
+        const jnjDoses = data["Johnson & Johnson"]
 
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
@@ -123,6 +126,20 @@ export default {
               type: d.type,
               doses_administered: sinopharmDoses,
             }
+          } else if (d.name === "Pfizer") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: pfizerDoses,
+            }
+          } else if (d.name === "Johnson & Johnson") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: jnjDoses,
+            }
           } else {
             obj = {
               name: d.name,
@@ -145,8 +162,10 @@ export default {
     },
     totalVaccinesAdministered() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
-        const total = data.total_cum
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue
+        const doses = this.manufacturers.map((d) => d.doses_administered)
+        const total = doses.reduce(reducer)
         return total.toLocaleString()
       } else {
         return 0
@@ -154,9 +173,8 @@ export default {
     },
     getLastUpdated() {
       if (!this.$fetchState.pending) {
-        const data = this.data
-        const latest = data[data.length - 1]
-        const date = latest.date.split("-")
+        const data = this.latestObj(this.data)
+        const date = data.date.split("-")
         const year = date[0]
         const month = date[1]
         const day = date[2]
