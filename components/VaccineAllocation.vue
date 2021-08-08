@@ -9,7 +9,7 @@ div.vaccination-manufacturers
       class="lg:pb-0"
     )
       h2.pb-2
-        | Vaccination Allocation
+        | Vaccine Allocation
         br
         | By MOPH
       p Vaccines allocated to different provinces and local agencies.
@@ -93,6 +93,7 @@ export default {
           }
           return obj
         })
+        allocationArr.sort((a, b) => b.doses_allocated - a.doses_allocated)
         return allocationArr
       } else {
         return ``
