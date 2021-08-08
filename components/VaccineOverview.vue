@@ -12,7 +12,7 @@ div(style="background-color:rgba(6,1,70,0.2);")
           div.rounded.bg-dark-blue.text-white.px-2.py-1.w-full
             span.text-sm(class="lg:text-base") {{ item.name }}
           div.flex.flex-col.justify-between.pt-2
-            h3.font-bold(
+            h2.text-xl.font-bold(
               class="lg:text-2xl"
               style="color:#090076;"
             ) {{ item.total }}
