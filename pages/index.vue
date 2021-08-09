@@ -82,19 +82,12 @@ main
             span.text-sm.text-blue-900 Thailand's 2020 population: {{ population.toString().slice(0,2) }} Million
       div.progress-bar
         //- total bar
-        div.total-bar.pb-8
+        div.total-bar
           div.flex.justify-between.items-center.pb-2
             h3 Total Dose
             div.highlight-card
               span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }}
-          div.vac-progress-bar
-            div.vac-progress.vac-total.rounded-full(
-              :style="`width:${vacTotalProgress}px;`"
-            )
-            div.vac-bar
-          div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of population
-            span.text-base.font-bold.text-gray-900 {{ `${vacTotalPercentage}%` }}
+        div.border-b.my-4
         //- 1st dose
         div.total-bar.pb-8
           div.flex.justify-between.items-center.pb-2
@@ -163,8 +156,6 @@ export default {
       population: 69799978,
       vacGoalProgress: 0,
       vacGoalPercentage: 0,
-      vacTotalProgress: 0,
-      vacTotalPercentage: 0,
       vac1DoseProgress: 0,
       vac1DosePercentage: 0,
       vac2DoseProgress: 0,
@@ -219,17 +210,6 @@ export default {
         const progress = this.progressBarWidth * (percentage / 100)
         this.vacGoalPercentage = percentage.toFixed(2)
         this.vacGoalProgress = progress
-      } else {
-        return 0
-      }
-    },
-    calcVacTotal() {
-      if (this.dailyJSON) {
-        const totalVac = this.dailyJSON.total_vaccinations.replaceAll(",", "")
-        const percentage = (totalVac / this.population) * 100
-        const progress = this.progressBarWidth * (percentage / 100)
-        this.vacTotalPercentage = percentage.toFixed(2)
-        this.vacTotalProgress = progress
       } else {
         return 0
       }
