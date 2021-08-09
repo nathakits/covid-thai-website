@@ -184,7 +184,6 @@ export default {
   watch: {
     progressBarWidth() {
       this.calcVacGoal()
-      this.calcVacTotal()
       this.calcVac1Dose()
       this.calcVac2Dose()
       this.calcVac3Dose()
@@ -193,7 +192,6 @@ export default {
   mounted() {
     this.getVacGoalWidth()
     this.calcVacGoal()
-    this.calcVacTotal()
     this.calcVac1Dose()
     this.calcVac2Dose()
     this.calcVac3Dose()
