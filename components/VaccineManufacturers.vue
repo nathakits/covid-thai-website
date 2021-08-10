@@ -7,17 +7,48 @@ div.vaccination-manufacturers
       class="lg:pb-0"
     )
       h2.pb-2 Vaccine Manufacturers
-      p
-        strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
-        |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
-      p
-        strong {{ manufacturers.filter(vac => vac.doses_administered > 0).length }}
-        |  vaccines currently being administered to the public.
+      p This chart shows how many doses was given by each vaccine manufacturers.
+      p 
+        | Part of AstraZeneca vaccines are manufactured here in Thailand by Siam Bioscience company.
+        | The rest of the vaccines are bought or donated by other countries.
     div.progress-bar
-      //- div.relative
-      //-   div.responsive.bg-gray-100.rounded
-      //-   vaccine-linechart(:data="data")
+      div.controls.flex.justify-between.items-center.pb-4
+        div.flex.text-gray-500
+          div(
+            class="dark-blue font-bold border-b-2 border-dark-blue"
+          ) Daily
+        div.legend.flex.text-sm.gap-4
+          div.flex.items-center
+            span.dot.sinovac
+            span Sinovac
+          div.flex.items-center
+            span.dot.astrazeneca
+            span Astrazeneca
+          div.flex.items-center
+            span.dot.sinopharm
+            span Sinopharm
+          div.flex.items-center
+            span.dot.pfizer
+            span Pfizer
       div
+        div.relative
+          div.responsive.bg-gray-100.rounded
+          manufacturer-chart(:data="data")
+        div.pt-4
+          div.border-b.my-2
+          span.text-xs Note: Data missing for some dates
+  div.vaccination-block.container-padding
+      div.explainer.pb-4(class="lg:pb-0")
+        p
+          strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
+          |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
+        p
+          strong {{ vaccinesInUse }}
+          |  vaccines currently being administered to the public.
+        p.pb-4
+          strong Johnson & Johnson
+          |  vaccine was procured and administered by the French Embassy for French citizens only.
+      div.progress-bar
         div.card.grid.divide-y.divide-gray-300
           div.card-item-padding.flex.justify-between
             div.text-base.font-bold Vaccine
@@ -171,6 +202,20 @@ export default {
         return 0
       }
     },
+    vaccinesInUse() {
+      if (!this.$fetchState.pending) {
+        const vaccines = this.manufacturers.filter((vac) => {
+          let vacs = 0
+          if (vac.name !== "Johnson & Johnson") {
+            vacs = vac.doses_administered > 0
+          }
+          return vacs
+        })
+        return vaccines.length
+      } else {
+        return 0
+      }
+    },
     getLastUpdated() {
       if (!this.$fetchState.pending) {
         const data = this.latestObj(this.data)
@@ -213,6 +258,27 @@ export default {
     content: "•";
     margin: 0 5px;
     color: #5f6368;
+  }
+}
+// legend
+.dot {
+  display: inline-block;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  &.sinovac {
+    background-color: #f59e0b;
+  }
+  &.astrazeneca {
+    background-color: #10b981;
+  }
+  &.sinopharm {
+    background-color: #3b82f6;
+  }
+  &.pfizer {
+    background-color: #ef4444;
   }
 }
 </style>
