@@ -16,7 +16,7 @@ main
         )
           h2.pb-2 Vaccination Goal
           p 
-            | Government's vaccination goal of inoculating 50 million people (70% of the population) with 100 million doses of vaccines by the end of 2021
+            | Government's vaccination goal of inoculating ~50 million people (~70% of the population) with 100 million doses of vaccines by the end of 2021
         div.progress-bar
           div.flex.justify-between.items-center.pb-2
             h3.w-min(class="md:w-auto") 100M Doses
@@ -40,8 +40,8 @@ main
       )
         h2.pb-2 Vaccination Progress
         p
-          | This data shows how many people have received at least one dose of a vaccine.
-          | People who are fully vaccinated may have received more than one dose.
+          | This chart shows how many people have received vaccine since the start of vaccination program in Thailand.
+        p People who are fully vaccinated may have received more than one dose.
       div.progress-bar
         div.controls.flex.justify-between.items-center
           div.flex.text-gray-500
@@ -84,7 +84,7 @@ main
         //- total bar
         div.total-bar
           div.flex.justify-between.items-center.pb-2
-            h3 Total Dose
+            h3 Total Vaccines Given
             div.highlight-card
               span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }}
         div.border-b.my-4
