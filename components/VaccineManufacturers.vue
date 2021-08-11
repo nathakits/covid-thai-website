@@ -7,17 +7,51 @@ div.vaccination-manufacturers
       class="lg:pb-0"
     )
       h2.pb-2 Vaccine Manufacturers
-      p
-        strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
-        |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
-      p
-        strong {{ manufacturers.filter(vac => vac.doses_administered > 0).length }}
-        |  vaccines currently being administered to the public.
+      p This chart shows how many doses was administered by each vaccine manufacturers.
+      p Some missing data in the chart are due the DDC (Department of Disease Control) changing the data in the daily reports from time to time.
+      p 
+        | Part of 
+        strong AstraZeneca
+        |  vaccines are manufactured here in Thailand by Siam Bioscience company.
+        | The rest of the vaccines are bought or donated by other countries.
     div.progress-bar
-      //- div.relative
-      //-   div.responsive.bg-gray-100.rounded
-      //-   vaccine-linechart(:data="data")
+      div.controls.flex.justify-between.items-center.pb-4
+        div.flex.text-gray-500
+          div(
+            class="dark-blue font-bold border-b-2 border-dark-blue"
+          ) Cumulative
+        div.legend.flex.text-sm.gap-4
+          div.flex.items-center
+            span.dot.sinovac
+            span Sinovac
+          div.flex.items-center
+            span.dot.astrazeneca
+            span Astrazeneca
+          div.flex.items-center
+            span.dot.sinopharm
+            span Sinopharm
+          div.flex.items-center
+            span.dot.pfizer
+            span Pfizer
       div
+        div.relative
+          div.responsive.bg-gray-100.rounded
+          manufacturer-chart(:data="vac_given")
+        div.pt-4
+          div.border-b.my-2
+          span.text-xs Note: Some data might not be available
+  div.vaccination-block.container-padding
+      div.explainer.pb-4(class="lg:pb-0")
+        p
+          strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
+          |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
+        p
+          strong {{ vaccinesInUse }}
+          |  vaccines currently being administered to the public.
+        p.pb-4
+          strong Johnson & Johnson
+          |  vaccine was procured and administered by the French Embassy for French citizens only.
+      div.progress-bar
         div.card.grid.divide-y.divide-gray-300
           div.card-item-padding.flex.justify-between
             div.text-base.font-bold Vaccine
@@ -41,7 +75,8 @@ div.vaccination-manufacturers
 export default {
   data() {
     return {
-      data: [],
+      vac_given: [],
+      porames: [],
       latestData: {},
       vacApproval: [
         {
@@ -88,20 +123,23 @@ export default {
     }
   },
   async fetch() {
-    this.data = await this.$axios.$get(
-      // "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
-      "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
+    this.vac_given = await this.$axios.$get(
+      "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
     )
+    // this.porames = await this.$axios.$get(
+    //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
+    // )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
+        const data = this.latestObj(this.vac_given)
+        // const porData = this.latestObj(this.porames)
         const astrazenecaDoses = data.AstraZeneca
         const sinovacDoses = data.Sinovac
         const sinopharmDoses = data.Sinopharm
         const pfizerDoses = data.Pfizer
-        const jnjDoses = data["Johnson & Johnson"]
+        // const jnjDoses = porData["Johnson & Johnson"]
 
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
@@ -132,13 +170,6 @@ export default {
               status: d.status,
               type: d.type,
               doses_administered: pfizerDoses,
-            }
-          } else if (d.name === "Johnson & Johnson") {
-            obj = {
-              name: d.name,
-              status: d.status,
-              type: d.type,
-              doses_administered: jnjDoses,
             }
           } else {
             obj = {
@@ -171,9 +202,23 @@ export default {
         return 0
       }
     },
+    vaccinesInUse() {
+      if (!this.$fetchState.pending) {
+        const vaccines = this.manufacturers.filter((vac) => {
+          let vacs = 0
+          if (vac.name !== "Johnson & Johnson") {
+            vacs = vac.doses_administered > 0
+          }
+          return vacs
+        })
+        return vaccines.length
+      } else {
+        return 0
+      }
+    },
     getLastUpdated() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
+        const data = this.latestObj(this.vac_given)
         const date = data.date.split("-")
         const year = date[0]
         const month = date[1]
@@ -213,6 +258,27 @@ export default {
     content: "•";
     margin: 0 5px;
     color: #5f6368;
+  }
+}
+// legend
+.dot {
+  display: inline-block;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  &.sinovac {
+    background-color: #f59e0b;
+  }
+  &.astrazeneca {
+    background-color: #10b981;
+  }
+  &.sinopharm {
+    background-color: #3b82f6;
+  }
+  &.pfizer {
+    background-color: #ef4444;
   }
 }
 </style>

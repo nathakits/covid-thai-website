@@ -16,9 +16,11 @@ div.vaccination-manufacturers
       p
         | Allocation data only includes
         strong  Sinovac
-        |  and
+        |  ,
         strong  AstraZeneca
-        |  since these two vaccines are handled directly by the MOPH (Ministry of Public Health),
+        |  and
+        strong  Pfizer
+        |  since these vaccines are handled directly by the MOPH (Ministry of Public Health),
         |  whereas 
         strong Sinopharm
         |  is handled by Chulabhorn Hospital
@@ -42,6 +44,7 @@ div.vaccination-manufacturers
 export default {
   data() {
     return {
+      // test: {},
       data: [],
       vacc_allocation: [
         {
@@ -52,6 +55,10 @@ export default {
           name: "Sinovac",
           doses_allocated: 0,
         },
+        {
+          name: "Pfizer",
+          doses_allocated: 0,
+        },
       ],
     }
   },
@@ -59,6 +66,9 @@ export default {
     this.data = await this.$axios.$get(
       "https://nathakits.github.io/covid-tracker-twitter-bot/data/vac_allocation.json"
     )
+    // this.test = await this.$axios.$get(
+    //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-delivery.json"
+    // )
   },
   computed: {
     totalSupply() {
@@ -84,6 +94,11 @@ export default {
             obj = {
               name: d.name,
               doses_allocated: data.allocated_astrazeneca,
+            }
+          } else if (d.name === "Pfizer") {
+            obj = {
+              name: d.name,
+              doses_allocated: data.allocated_pfizer,
             }
           } else {
             obj = {
@@ -121,6 +136,14 @@ export default {
       }
     },
   },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     const data = this.test.data
+  //     const pfizer = data.map((d) => d.delivered_pfizer)
+  //     const reducer = (accumulator, currentValue) => accumulator + currentValue
+  //     console.log(pfizer.reduce(reducer))
+  //   })
+  // },
   methods: {
     filterVaccines(array, name) {
       return array.filter((d) => d.manufacturer === name)

@@ -15,6 +15,8 @@ class Custom extends LineController {
     super.draw(arguments)
     if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
       const ctx = this.chart.ctx
+      console.log(this.chart)
+      console.log(ctx)
       const activePoint = this.chart.tooltip._active[0]
       const x = activePoint.element.x
       const topY = this.chart.legend.bottom
@@ -46,9 +48,11 @@ export default {
   data() {
     return {
       vacData: this.data,
-      astrazenecaColor: "rgb(168,218,181)",
-      sinopharmColor: "rgb(91,185,116)",
-      sinovacColor: "rgb(91,200,150)",
+      astrazenecaColor: "#10B981",
+      sinopharmColor: "#3B82F6",
+      sinovacColor: "#F59E0B",
+      pfizerColor: "#EF4444",
+      thickness: 3,
       lineOptions: {
         plugins: {
           legend: {
@@ -89,6 +93,51 @@ export default {
           },
         },
       },
+      barOptions: {
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            usePointStyle: true,
+            callbacks: {
+              footer: this.totalVaccineValue,
+            },
+          },
+        },
+        interaction: {
+          intersect: false,
+          mode: "index",
+        },
+        radius: 0,
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+            stacked: true,
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 6,
+            },
+          },
+          y: {
+            grid: {
+              drawBorder: false,
+            },
+            stacked: true,
+            ticks: {
+              callback(val, index) {
+                // Hide the label of every 4nd dataset
+                const o = Intl.NumberFormat("en", { notation: "compact" })
+                return o.format(val)
+              },
+            },
+          },
+        },
+      },
     }
   },
   computed: {
@@ -100,44 +149,39 @@ export default {
       return dates
     },
     totalVaccineYAxis() {
-      const astrazeneca = this.vacData.map((d, i, arr) => {
-        return d.AstraZeneca_rate
-        // let astra = ""
-        // if (d.AstraZeneca_rate === 0) {
-        //   const prevValue = arr[i - 1].AstraZeneca_rate
-        //   console.log(prevValue)
-        //   astra = prevValue === undefined ? 0 : prevValue
-        // } else {
-        //   astra = d.AstraZeneca_rate
-        // }
-        // return astra
-        // return d.AstraZeneca_rate
-        // return d.AstraZeneca_rate === 0
-        //   ? arr[i - 1].AstraZeneca_rate
-        //   : d.AstraZeneca_rate
-      })
-      // const sinopharm = this.vacData.map((d) => d.Sinopharm_rate)
-      // const sinovac = this.vacData.map((d) => d.Sinovac_rate)
+      const astrazeneca = this.vacData.map((d) => d.AstraZeneca)
+      const sinopharm = this.vacData.map((d) => d.Sinopharm)
+      const sinovac = this.vacData.map((d) => d.Sinovac)
+      const pfizer = this.vacData.map((d) => d.Pfizer)
       const dataset = [
+        {
+          label: "Sinovac",
+          data: sinovac,
+          backgroundColor: this.sinovacColor,
+          fill: true,
+          pointStyle: "circle",
+        },
         {
           label: "AstraZeneca",
           data: astrazeneca,
-          borderColor: this.astrazenecaColor,
+          backgroundColor: this.astrazenecaColor,
+          fill: true,
           pointStyle: "circle",
-          tension: 0.6,
         },
-        // {
-        //   label: "Sinopharm",
-        //   data: sinopharm,
-        //   borderColor: this.sinopharmColor,
-        //   pointStyle: "circle",
-        // },
-        // {
-        //   label: "Sinovac",
-        //   data: sinovac,
-        //   borderColor: this.sinovacColor,
-        //   pointStyle: "circle",
-        // },
+        {
+          label: "Sinopharm",
+          data: sinopharm,
+          backgroundColor: this.sinopharmColor,
+          fill: true,
+          pointStyle: "circle",
+        },
+        {
+          label: "Pfizer",
+          data: pfizer,
+          backgroundColor: this.pfizerColor,
+          fill: true,
+          pointStyle: "circle",
+        },
       ]
       return dataset
     },
@@ -151,14 +195,21 @@ export default {
     genLineChart() {
       const ctx = document.getElementById("vaccine-manufacturer-chart")
       const chart = new Chart(ctx, {
-        type: "lineWithLine",
+        type: "bar",
         data: {
           labels: this.dateXAxis,
           datasets: this.totalVaccineYAxis,
         },
-        options: this.lineOptions,
+        options: this.barOptions,
       })
       return chart
+    },
+    totalVaccineValue(tooltipItems) {
+      let sum = 0
+      tooltipItems.forEach((tooltipItem) => {
+        sum += tooltipItem.parsed.y
+      })
+      return `Total: ${sum.toLocaleString()}`
     },
     formatDate(date) {
       const newDate = new Date(date)
