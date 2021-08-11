@@ -125,20 +125,20 @@ export default {
     this.vac_given = await this.$axios.$get(
       "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/vac_given.json"
     )
-    this.porames = await this.$axios.$get(
-      "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
-    )
+    // this.porames = await this.$axios.$get(
+    //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
+    // )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
         const data = this.latestObj(this.vac_given)
-        const porData = this.latestObj(this.porames)
+        // const porData = this.latestObj(this.porames)
         const astrazenecaDoses = data.AstraZeneca
         const sinovacDoses = data.Sinovac
         const sinopharmDoses = data.Sinopharm
         const pfizerDoses = data.Pfizer
-        const jnjDoses = porData["Johnson & Johnson"]
+        // const jnjDoses = porData["Johnson & Johnson"]
 
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
@@ -169,13 +169,6 @@ export default {
               status: d.status,
               type: d.type,
               doses_administered: pfizerDoses,
-            }
-          } else if (d.name === "Johnson & Johnson") {
-            obj = {
-              name: d.name,
-              status: d.status,
-              type: d.type,
-              doses_administered: jnjDoses,
             }
           } else {
             obj = {
