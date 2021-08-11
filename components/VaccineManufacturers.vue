@@ -8,7 +8,7 @@ div.vaccination-manufacturers
     )
       h2.pb-2 Vaccine Manufacturers
       p This chart shows how many doses was administered by each vaccine manufacturers.
-      p Some data missing in the chart are due the DDC (Department of Disease Control) changing the data in the daily reports from time to time.
+      p Some missing data in the chart are due the DDC (Department of Disease Control) changing the data in the daily reports from time to time.
       p 
         | Part of 
         strong AstraZeneca
