@@ -6,10 +6,10 @@ div.chart
 <script>
 import dayjs from "dayjs"
 import Chart from "chart.js/auto"
-import { BarController } from "chart.js"
+import { LineController } from "chart.js"
 
 // show vertical line on hover
-class Custom extends BarController {
+class Custom extends LineController {
   draw() {
     // Call line controller method to draw all the points
     super.draw(arguments)
@@ -34,8 +34,8 @@ class Custom extends BarController {
     }
   }
 }
-Custom.id = "barWithLine"
-Custom.defaults = BarController.defaults
+Custom.id = "lineWithLine"
+Custom.defaults = LineController.defaults
 Chart.register(Custom)
 
 export default {
@@ -149,10 +149,10 @@ export default {
       return dates
     },
     totalVaccineYAxis() {
-      const astrazeneca = this.vacData.map((d) => d.AstraZeneca_rate)
-      const sinopharm = this.vacData.map((d) => d.Sinopharm_rate)
-      const sinovac = this.vacData.map((d) => d.Sinovac_rate)
-      const pfizer = this.vacData.map((d) => d.Pfizer_rate)
+      const astrazeneca = this.vacData.map((d) => d.AstraZeneca)
+      const sinopharm = this.vacData.map((d) => d.Sinopharm)
+      const sinovac = this.vacData.map((d) => d.Sinovac)
+      const pfizer = this.vacData.map((d) => d.Pfizer)
       const dataset = [
         {
           label: "Sinovac",
@@ -203,6 +203,13 @@ export default {
         options: this.barOptions,
       })
       return chart
+    },
+    totalVaccineValue(tooltipItems) {
+      let sum = 0
+      tooltipItems.forEach((tooltipItem) => {
+        sum += tooltipItem.parsed.y
+      })
+      return `Total: ${sum.toLocaleString()}`
     },
     formatDate(date) {
       const newDate = new Date(date)
