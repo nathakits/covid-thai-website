@@ -7,9 +7,11 @@ div.vaccination-manufacturers
       class="lg:pb-0"
     )
       h2.pb-2 Vaccine Manufacturers
-      p This chart shows how many doses was given by each vaccine manufacturers.
+      p This chart shows how many doses was administered by each vaccine manufacturers.
       p 
-        | Part of AstraZeneca vaccines are manufactured here in Thailand by Siam Bioscience company.
+        | Part of 
+        strong AstraZeneca
+        |  vaccines are manufactured here in Thailand by Siam Bioscience company.
         | The rest of the vaccines are bought or donated by other countries.
     div.progress-bar
       div.controls.flex.justify-between.items-center.pb-4

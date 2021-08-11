@@ -16,7 +16,7 @@ main
         )
           h2.pb-2 Vaccination Goal
           p 
-            | Government's vaccination goal of inoculating ~50 million people (~70% of the population) with 100 million doses of vaccines by the end of 2021
+            | Government's vaccination goal of inoculating ~50 million people (~70% of the population) with 100 million doses of vaccines by the end of 2021.
         div.progress-bar
           div.flex.justify-between.items-center.pb-2
             h3.w-min(class="md:w-auto") 100M Doses

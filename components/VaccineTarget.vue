@@ -3,9 +3,9 @@ div
   div.vaccination-block.container-padding
     div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
       p
-        | At this current rate, we are below the daily target dose and likely will not reach the goal by the end of the year.
+        | At this rate, we are below the daily target dose and will likely not reach the goal by the end of the year.
       P 
-        | This is due to many factors, such as low inoculation during weekends and vaccine procurement.
+        | This is due to many factors, such as low inoculation during weekends and holidays and also issues with vaccine procurement.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
         div.card-item-padding.flex.justify-between.items-center
@@ -27,7 +27,7 @@ div
   div.vaccination-block.container-padding
     div.explainer.pb-4.hidden(class="lg:pb-0 md:block")
       p
-        | With the current average vaccination rate, we will likely not meet the goal set out by the Thai government.
+        | With the current 14-day average vaccination rate, we will likely not meet the goal set out by the Thai government.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
         div.card-item-padding.flex.justify-between
