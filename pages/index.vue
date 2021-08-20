@@ -133,6 +133,9 @@ main
             div
               span.text-base.font-bold.text-gray-900 {{ `${vac3DosePercentage}%` }}
     div.border-b.container-margin
+    //- vaccination province
+    vac-province
+    div.border-b.container-margin
     vaccine-manufacturers
     div.border-b.container-margin
     vaccine-allocation
