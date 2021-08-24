@@ -14,8 +14,8 @@
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
-    "chart.js": "^3.4.1",
-    "core-js": "^3.16.1",
+    "chart.js": "^3.5.1",
+    "core-js": "^3.16.2",
     "nuxt": "^2.15.8",
     "vue-gtag": "^1.16.1"
   },
@@ -28,7 +28,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-vue": "^7.16.0",
     "fibers": "^5.0.0",
     "moment": "^2.29.1",
@@ -36,7 +36,7 @@
     "prettier": "^2.3.2",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
-    "sass": "^1.37.5",
+    "sass": "^1.38.1",
     "sass-loader": "^10.2.0"
   }
 }
