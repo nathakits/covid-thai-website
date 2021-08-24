@@ -40,6 +40,10 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci
 
+      # build site to dist
+      - name: Build site 🚧
+        run: npm run generate
+
       - name: Run linter 👀
         run: npm run lint
 
