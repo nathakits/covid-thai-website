@@ -1,45 +1,68 @@
 <template lang="pug">
 div.vaccine-province
   div.date-padding.dark-blue.pt-6
-    div.last-updated {{ `Last updated: ${data.update_date}` }}
+    div.last-updated {{ `Last updated: ${getLastUpdated}` }}
   div.container-padding.table-container.w-full
-    h2.pb-2 Province
-    p
-      | This table is sorted by provinces with the most vaccination.
-    div.py-4
-      template(v-if="provinces.length === 6")
-        button.button(@click="showMore()") Show all
+    div.grid.grid-cols-8.gap-4(class="sm:gap-10 md:gap-20")
+      div.col-span-full(class="md:col-span-3")
+        h2.pb-2 Province
+        p
+          | This table is sorted by provinces with the most fully vaccinated population.
+        p 
+          | Click on 
+          strong Show all
+          |  to expand the table and show all the other provinces.
+        p
+          | Hover over the 
+          strong info
+          |  icon to view the population figure.
+    div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
+      template(v-if="provinces.length === 10")
+        button.button(
+          title="Show all items in the table"
+          @click="showMore()"
+        ) Show all
       template(v-else)
-        button.button(@click="showLess()") Show less
-    div.border.rounded-lg.shadow-lg
+        button.button(
+          title="Show less items in the table"
+          @click="showLess()"
+        ) Show less
+    div.border.rounded-lg.shadow-lg.overflow-x-auto
       table.w-full
         thead.border-b.border-gray-300
           tr
-            th.text-sm(v-for="head in header")
-              | {{ head }}
+            th.text-xs.text-center(
+              v-for="head in header"
+              class="sm:text-sm"
+            ) {{ head }}
         tbody
           tr(v-for="p in provinces")
-            td.text-xs.font-bold.w-20(class="sm:text-sm md:w-40 lg:w-52 xl:w-72") {{ p.name }}
+            td.text-xs.font-bold.border-r.text-center(class="sm:text-sm")
+              div.flex.gap-3.items-center
+                span.text-left {{ p.name }}
+                div(:title="`${p.name} population - ${p.population}`")
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8.8 12H7.2V7.2H8.8V12ZM8.8 5.6H7.2V4H8.8V5.6Z" fill="#6881D8"/>
+                  </svg>
             //- td.text-xs(class="sm:text-sm px-6")
-            td.text-xs(class="sm:text-sm") {{ p.total_1dose }}
-            td.text-xs(class="sm:text-sm") {{ p.total_2dose }}
-            td.text-xs(class="sm:text-sm") {{ p.total_3dose }}
-            td.text-xs(class="sm:text-sm") 0%
+            td.text-xs.w-auto.font-medium.text-center(class="sm:text-sm md:w-32") {{ p.total_1dose }}
+            td.text-xs.w-auto.font-medium.text-center(class="sm:text-sm md:w-32") {{ p.total_2dose }}
+            td.text-xs.w-auto.font-medium.border-r.text-center(class="sm:text-sm md:w-32") {{ p.total_3dose }}
+            td.text-xs.w-auto.font-bold.text-center(
+              class="sm:text-sm md:w-44"
+              :title="`${p.name} population - ${p.population}`"
+            ) {{ `${p.fully_vaccinated}%` }}
 </template>
 
 <script>
+import dayjs from "dayjs"
+
 export default {
   data() {
     return {
       data: {},
-      numProvinces: 6,
-      header: [
-        "",
-        "1st Dose",
-        "2nd Dose",
-        "3rd Dose",
-        "% of Population (2 Doses)",
-      ],
+      numProvinces: 10,
+      header: ["", "1st Dose", "2nd Dose", "3rd Dose", "Fully Vaccinated"],
       province_th_map: {
         Bangkok: "กรุงเทพมหานคร",
         Amnat_Charoen: "อำนาจเจริญ",
@@ -119,9 +142,89 @@ export default {
         Yala: "ยะลา",
         Yasothon: "ยโสธร",
       },
+      province_population: {
+        Bangkok: "7699175",
+        Amnat_Charoen: "379995",
+        Ang_Thong: "292159",
+        Bueng_Kan: "425427",
+        Buriram: "1587359",
+        Chachoengsao: "750784",
+        Chai_Nat: "335049",
+        Chaiyaphum: "ชัยภูมิ",
+        Chanthaburi: "1134867",
+        Chiang_Mai: "1729353",
+        Chiang_Rai: "1172648",
+        Chonburi: "2047622",
+        Chumphon: "543683",
+        Kalasin: "978299",
+        Kamphaeng_Phet: "725873",
+        Kanchanaburi: "848454",
+        Khon_Kaen: "1837005",
+        Krabi: "503538",
+        Lampang: "731573",
+        Lamphun: "417225",
+        Loei: "640283",
+        Lopburi: "760478",
+        Mae_Hong_Son: "245764",
+        Maha_Sarakham: "957365",
+        Mukdahan: "351257",
+        Nakhon_Nayok: "271739",
+        Nakhon_Pathom: "1125350",
+        Nakhon_Phanom: "724861",
+        Nakhon_Ratchasima: "2692890",
+        Nakhon_Sawan: "1059708",
+        Nakhon_Si_Thammarat: "1575117",
+        Nan: "477862",
+        Narathiwat: "805356",
+        Nong_Bua_Lamphu: "523861",
+        Nong_Khai: "519027",
+        Nonthaburi: "1609192",
+        Pathum_Thani: "1533781",
+        Pattani: "743054",
+        Phang_Nga: "286339",
+        Phatthalung: "528207",
+        Phayao: "468292",
+        Phetchabun: "992791",
+        Phetchaburi: "502827",
+        Phichit: "536012",
+        Phitsanulok: "1050000",
+        Phra_Nakhon_Si_Ayutthaya: "921047",
+        Phrae: "441310",
+        Phuket: "547584",
+        Prachinburi: "579651",
+        Prachuap_Khiri_Khan: "578094",
+        Ranong: "228507",
+        Ratchaburi: "918674",
+        Rayong: "966932",
+        Roi_Et: "1307158",
+        Sa_Kaeo: "586286",
+        Sakon_Nakhon: "1145848",
+        Samut_Prakan: "1931727",
+        Samut_Sakhon: "953167",
+        Samut_Songkhram: "204018",
+        Saraburi: "720145",
+        Satun: "331057",
+        Sing_Buri: "214665",
+        Sisaket: "1460182",
+        Songkhla: "1487320",
+        Sukhothai: "596902",
+        Suphan_Buri: "850709",
+        Surat_Thani: "1144090",
+        Surin: "1392583",
+        Tak: "589901",
+        Trang: "659636",
+        Trat: "249458",
+        Ubon_Ratchathani: "1880468",
+        Udon_Thani: "1565740",
+        Uthai_Thani: "334270",
+        Uttaradit: "455259",
+        Yala: "547993",
+        Yasothon: "535512",
+      },
     }
   },
   async fetch() {
+    // https://raw.githubusercontent.com/wiki/djay/covidthailand/vaccinations.csv
     this.data = await this.$axios.$get(
       "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/provincial-vaccination.json"
     )
@@ -131,31 +234,51 @@ export default {
       if (!this.$fetchState.pending) {
         const prov = this.data.data
         const provArray = prov.map((d) => {
-          // match thai and english province names
           let provinceName = ""
+          let provincePopulation = ""
+          // match thai and english province names
           for (const [key, value] of Object.entries(this.province_th_map)) {
             if (value === d.province) {
               provinceName = key
             }
           }
+          // match province name to population
+          for (const [key, value] of Object.entries(this.province_population)) {
+            if (key === provinceName) {
+              provincePopulation = value
+            }
+          }
+          // calculate fully vaccinated percentage
+          const populationPercentage =
+            (d.total_2nd_dose / provincePopulation) * 100
           // map to new object
           const obj = {
             name: provinceName.replace(/_/g, " "),
-            population: 0,
+            population: Number(provincePopulation).toLocaleString(),
             total_1dose: d.total_1st_dose.toLocaleString(),
             total_2dose: d.total_2nd_dose.toLocaleString(),
             total_3dose: d.total_3rd_dose.toLocaleString(),
             totalDose: d.total_1st_dose + d.total_2nd_dose + d.total_3rd_dose,
+            fully_vaccinated: populationPercentage.toFixed(1),
           }
           return obj
         })
         // sort by total dose
-        provArray.sort((a, b) => b.totalDose - a.totalDose)
-        // show only 15 provinces
+        provArray.sort((a, b) => b.fully_vaccinated - a.fully_vaccinated)
+        // show only 10 provinces
         const slicedArr = provArray.slice(0, this.numProvinces)
         return slicedArr
       } else {
         return []
+      }
+    },
+    getLastUpdated() {
+      if (!this.$fetchState.pending) {
+        const date = new Date(this.data.update_date)
+        const format = dayjs(date).format("DD/MM/YYYY")
+        return format
+      } else {
+        return ``
       }
     },
   },
@@ -167,7 +290,7 @@ export default {
       this.numProvinces = 77
     },
     showLess() {
-      this.numProvinces = 6
+      this.numProvinces = 10
     },
   },
 }
@@ -202,10 +325,7 @@ export default {
   }
   td,
   th {
-    padding: 16px 24px;
-  }
-  th {
-    text-align: start;
+    @apply py-3 px-2 md:py-4 md:px-6;
   }
 }
 </style>
