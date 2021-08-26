@@ -15,12 +15,12 @@ div.vaccination-manufacturers
         |  vaccines are manufactured here in Thailand by Siam Bioscience company.
         | The rest of the vaccines are bought or donated by other countries.
     div.progress-bar
-      div.controls.flex.justify-between.items-center.pb-4
+      div.controls.flex.justify-between.items-center.pb-4.flex-wrap.gap-4
         div.flex.text-gray-500
           div(
             class="dark-blue font-bold border-b-2 border-dark-blue"
           ) Cumulative
-        div.legend.flex.text-sm.gap-4
+        div.legend.flex.flex-wrap.text-sm.gap-4
           div.flex.items-center
             span.dot.sinovac
             span Sinovac
