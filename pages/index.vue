@@ -15,20 +15,24 @@ main
           class="lg:pb-0"
         )
           h2.pb-2 Vaccination Goal
-          p 
-            | Government's vaccination goal of inoculating ~50 million people (~70% of the population) with 100 million doses of vaccines by the end of 2021.
+          p
+            | Government's vaccination goal of inoculating 50 million people with 1st dose of vaccines by the end of 2021.
+          p.pb-4
+            | This goal has been revised down from 100 million doses to 50 million doses.
         div.progress-bar
           div.flex.justify-between.items-center.pb-2
-            h3.w-min(class="md:w-auto") 100M Doses
+            h3.w-min(class="md:w-auto") 50M Doses
             div.highlight-card
-              span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }} / 100,000,000
+              span.font-bold.text-gray-900
+                | {{ dailyJSON.people_vaccinated }}
+                |  / {{ populationGoal.toLocaleString() }}
           div.vac-goal-bar
             div.vac-progress.vac-goal.rounded-full(
               :style="`width:${vacGoalProgress}px;`"
             )
             div.vac-bar(id="vac-goal")
           div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of 100M doses
+            span.text-sm.text-gray-500 % of 50 Million Doses
             span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
     //- vaccine target and estimate
     vaccine-target
@@ -43,7 +47,7 @@ main
           | This chart shows how many people have received vaccine since the start of vaccination program in Thailand.
         p People who are fully vaccinated may have received more than one dose.
       div.progress-bar
-        div.controls.flex.justify-between.items-center
+        div.controls.flex.justify-between.items-center.flex-wrap.gap-4
           div.flex.text-gray-500
             div.mr-4.cursor-pointer(
               :class="selected === `Cumulative` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
@@ -53,11 +57,11 @@ main
               :class="selected === `Daily` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
               @click="updateChartType(`Daily`)"
             ) Daily
-          div.legend.flex.text-sm
-            div.pr-4.flex.items-center
+          div.legend.flex.text-sm.flex-wrap.gap-4
+            div.flex.items-center
               span.dot.firstDose
               span 1st Dose
-            div.pr-4.flex.items-center
+            div.flex.items-center
               span.dot.secondDose
               span 2nd Dose
             div.flex.items-center
@@ -66,6 +70,9 @@ main
         div.relative
           div.responsive.bg-gray-100.rounded
           vaccine-barchart(:data="fullJSON")
+        div.pt-4
+          div.border-b.my-2
+          p.text-xs Note: There are days with a reporting anomaly
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
@@ -73,13 +80,10 @@ main
         p.pb-4
           | Percentage of people who have received COVID-19 vaccine,
           | broken down into 3 progress bars.
+        p.pb-4
+          | Thailand's 2021 population figure is from MOPH daily report.
         tooltip
-          a.link(
-            href="https://github.com/owid/covid-19-data/blob/master/scripts/input/un/population_2020.csv"
-            target="_blank"
-            rel="noreferrer noopenner"
-          )
-            span.text-sm.text-blue-900 Thailand's 2020 population: {{ population.toString().slice(0,2) }} Million
+          span.text-sm.text-blue-900 2021 population: {{ population.toLocaleString() }} people
       div.progress-bar
         //- total bar
         div.total-bar
@@ -133,13 +137,16 @@ main
             div
               span.text-base.font-bold.text-gray-900 {{ `${vac3DosePercentage}%` }}
     div.border-b.container-margin
+    //- vaccination province
+    vac-province
+    div.border-b.container-margin
     vaccine-manufacturers
     div.border-b.container-margin
     vaccine-allocation
 </template>
 
 <script>
-import { mapState } from "vuex"
+import { mapGetters } from "vuex"
 
 export default {
   async asyncData({ $axios }) {
@@ -153,7 +160,6 @@ export default {
   },
   data() {
     return {
-      population: 69799978,
       vacGoalProgress: 0,
       vacGoalPercentage: 0,
       vac1DoseProgress: 0,
@@ -163,10 +169,15 @@ export default {
       vac3DoseProgress: 0,
       vac3DosePercentage: 0,
       progressBarWidth: 0,
+      doses_administered: 0,
     }
   },
-  computed: mapState({
-    selected: "selected",
+  computed: {
+    ...mapGetters({
+      selected: "selected",
+      population: "thPopulation",
+      populationGoal: "populationGoal",
+    }),
     getLastUpdated() {
       if (this.dailyJSON) {
         const data = this.dailyJSON
@@ -180,7 +191,7 @@ export default {
         return ``
       }
     },
-  }),
+  },
   watch: {
     progressBarWidth() {
       this.calcVacGoal()
@@ -190,6 +201,7 @@ export default {
     },
   },
   mounted() {
+    // this.dosesAdministered()
     this.getVacGoalWidth()
     this.calcVacGoal()
     this.calcVac1Dose()
@@ -201,10 +213,23 @@ export default {
     window.removeEventListener("resize", this.getVacGoalWidth)
   },
   methods: {
+    dosesAdministered() {
+      if (this.dailyJSON) {
+        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
+        const secondDose = this.dailyJSON.people_fully_vaccinated.replaceAll(
+          ",",
+          ""
+        )
+        const totalDoses = Number(firstDose) + Number(secondDose)
+        this.doses_administered = totalDoses
+      } else {
+        return 0
+      }
+    },
     calcVacGoal() {
       if (this.dailyJSON) {
-        const totalVac = this.dailyJSON.total_vaccinations.replaceAll(",", "")
-        const percentage = (totalVac / 100000000) * 100
+        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
+        const percentage = (firstDose / this.populationGoal) * 100
         const progress = this.progressBarWidth * (percentage / 100)
         this.vacGoalPercentage = percentage.toFixed(2)
         this.vacGoalProgress = progress
