@@ -5,16 +5,16 @@ div.vaccine-province
   div.container-padding.table-container.w-full
     div.grid.grid-cols-8.gap-4(class="sm:gap-10 md:gap-20")
       div.col-span-full(class="md:col-span-3")
-        h2.pb-2 Province
+        h2.pb-2 Vaccination by Province
         p
-          | This table is sorted by provinces with the most fully vaccinated population.
+          | This table s sorted by provinces with the most fully vaccinated population.
         p 
           | Click on 
-          strong Show all
+          strong Show All
           |  to expand the table and show all the other provinces.
         p
           | Hover over the 
-          strong info
+          strong Info
           |  icon to view the population figure.
     div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
       template(v-if="provinces.length === 10")
@@ -26,7 +26,7 @@ div.vaccine-province
         button.button(
           title="Show less items in the table"
           @click="showLess()"
-        ) Show less
+        ) Show Less
     div.border.rounded-lg.shadow-lg.overflow-x-auto
       table.w-full
         thead.border-b.border-gray-300
