@@ -21,7 +21,7 @@ div.vaccine-province
         button.button(
           title="Show all items in the table"
           @click="showMore()"
-        ) Show all
+        ) Show All
       template(v-else)
         button.button(
           title="Show less items in the table"
