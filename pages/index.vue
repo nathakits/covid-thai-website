@@ -15,24 +15,24 @@ main
           class="lg:pb-0"
         )
           h2.pb-2 Vaccination Goal
+          p
+            | Government's vaccination goal of inoculating 50 million people with 1st dose of vaccines by the end of 2021.
           p.pb-4
-            | Government's vaccination goal of inoculating ~50 million people (~70% of the population) with 100 million doses of vaccines by the end of 2021.
-          tooltip
-            span.text-sm.text-blue-900 This goal only includes 1st and 2nd dose
+            | This goal has been revised down from 100 million doses to 50 million doses.
         div.progress-bar
           div.flex.justify-between.items-center.pb-2
-            h3.w-min(class="md:w-auto") 100M Doses
+            h3.w-min(class="md:w-auto") 50M Doses
             div.highlight-card
               span.font-bold.text-gray-900
-                | {{ doses_administered.toLocaleString() }}
-                |  / 100,000,000
+                | {{ dailyJSON.people_vaccinated }}
+                |  / {{ populationGoal.toLocaleString() }}
           div.vac-goal-bar
             div.vac-progress.vac-goal.rounded-full(
               :style="`width:${vacGoalProgress}px;`"
             )
             div.vac-bar(id="vac-goal")
           div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of 100M doses
+            span.text-sm.text-gray-500 % of 50 Million Doses
             span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
     //- vaccine target and estimate
     vaccine-target
@@ -176,6 +176,7 @@ export default {
     ...mapGetters({
       selected: "selected",
       population: "thPopulation",
+      populationGoal: "populationGoal",
     }),
     getLastUpdated() {
       if (this.dailyJSON) {
@@ -200,7 +201,7 @@ export default {
     },
   },
   mounted() {
-    this.dosesAdministered()
+    // this.dosesAdministered()
     this.getVacGoalWidth()
     this.calcVacGoal()
     this.calcVac1Dose()
@@ -227,8 +228,8 @@ export default {
     },
     calcVacGoal() {
       if (this.dailyJSON) {
-        const totalVac = this.doses_administered
-        const percentage = (totalVac / 100000000) * 100
+        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
+        const percentage = (firstDose / this.populationGoal) * 100
         const progress = this.progressBarWidth * (percentage / 100)
         this.vacGoalPercentage = percentage.toFixed(2)
         this.vacGoalProgress = progress
