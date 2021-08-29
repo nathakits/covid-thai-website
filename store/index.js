@@ -5,6 +5,7 @@ export const state = () => ({
   selected: "Cumulative",
   menuOpened: false,
   thPopulation: 72034815,
+  populationGoal: 50000000,
 })
 
 export const mutations = {
@@ -25,5 +26,8 @@ export const getters = {
   },
   thPopulation: (state) => {
     return state.thPopulation
+  },
+  populationGoal: (state) => {
+    return state.populationGoal
   },
 }
