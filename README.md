@@ -5,11 +5,12 @@
 ## Features
 - Vaccination goal
 - Vaccination progress
+- Vaccination by province
 - Vaccine manufacturers
 - Vaccine allocation
 
-### Coming soon
-- Vaccine by province
+<!-- ### Coming soon -->
+<!-- - Vaccine by province -->
 
 ## Data
 Vaccine data are extracted from DDC (Department of Disease Control) daily briefing PDFs.
