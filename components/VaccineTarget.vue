@@ -3,9 +3,7 @@ div
   div.vaccination-block.container-padding
     div.explainer.pb-4(class="lg:pb-0")
       p
-        | At this rate, we are below the daily target dose and will likely not reach the goal by the end of the year.
-      P 
-        | This is due to many factors, such as low inoculation during weekends and holidays and also issues with vaccine procurement.
+        | With the newly revised goal set out by the Thai government, the 1st dose 14-day average rate has exceeded the target dose needed to reach the 50 million doses.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
         div.card-item-padding.flex.justify-between.items-center
@@ -16,18 +14,13 @@ div
         div.card-item-padding.flex.justify-between.items-center.font-medium
           div.flex.items-center
             vaccine-icon
-            span.text-sm.font-medium.pl-2(class="md:pl-4") 1+2 Dose 14-Day Avg
+            span.text-sm.font-medium.pl-2(class="md:pl-4") 1st Dose 14-Day Avg
           p.text-base.font-bold.text-gray-800.text-right {{ calcAverage.toLocaleString() }} Doses/Day
-        //- div.card-item-padding.flex.justify-between.items-center.font-medium
-        //-   div.flex.items-center
-        //-     vaccine-icon
-        //-     span.text-sm.pl-2(class="md:pl-4") To Reach Target
-        //-   p.text-base.font-bold.text-gray-800.text-right {{ calcTargetNeeded }} doses/day
 
   div.vaccination-block.container-padding
     div.explainer.pb-4(class="lg:pb-0")
       p
-        | With the current 14-day average vaccination rate, we will likely not meet the goal set out by the Thai government.
+        | At this current rate, we should reach the goal before the end of the year.
     div.progress-bar
       div.card.grid.divide-y.divide-gray-300
         div.card-item-padding.flex.justify-between
@@ -51,9 +44,21 @@ div
         //-     p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcCountryVacDays} Days` }}
         //-     p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate })` }}
 
+  //- div.vaccination-block.container-padding
+  //-   div.explainer.pb-4(class="lg:pb-0")
+  //-   div.progress-bar
+  //-     div.card.grid.divide-y.divide-gray-300
+  //-       div.card-item-padding.flex.justify-between.items-center.font-medium
+  //-         div.flex.items-center
+  //-           vaccine-icon
+  //-           span.text-sm.pl-2(class="md:pl-4") End Of Year Vaccination
+  //-         p.text-base.font-bold.text-gray-800.text-right ~{{ calcVaccinationEndOfYear }} Doses
+
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   props: {
     dataFull: {
@@ -80,6 +85,22 @@ export default {
     )
   },
   computed: {
+    ...mapGetters({
+      populationGoal: "populationGoal",
+    }),
+    calcAverage() {
+      if (!this.$fetchState.pending) {
+        const reducer = (accum, current) => accum + current
+        const firstDoseArr = this.slicedData(this.fullJSON).map((el) =>
+          Number(el.first_dose_plus)
+        )
+        const avg = firstDoseArr.reduce(reducer) / 14
+        const formatAvg = Math.round(avg)
+        return formatAvg
+      } else {
+        return 0
+      }
+    },
     endOfYear() {
       const today = new Date()
       const newYear = new Date(today.getFullYear(), 11, 31)
@@ -87,58 +108,39 @@ export default {
       const days = Math.ceil((newYear.getTime() - today.getTime()) / oneDay)
       return days
     },
-    calcTargetNeeded() {
-      if (!this.$fetchState.pending) {
-        const avg = this.calcAverage
-        const target = Number(this.calcTarget.replace(/,/g, ""))
-        const targetNeeded = (target - avg).toLocaleString()
-        return targetNeeded
-      } else {
-        return 0
-      }
-    },
-    calcAverage() {
-      if (!this.$fetchState.pending) {
-        const reducer = (accumulator, currentValue) =>
-          accumulator + currentValue
-        const firstDoseArr = this.slicedData(this.fullJSON).map((el) =>
-          Number(el.first_dose_plus)
-        )
-        const secondDoseArr = this.slicedData(this.fullJSON).map((el) =>
-          Number(el.second_dose_plus)
-        )
-        const totalDosePlusArr = firstDoseArr.map(
-          (el, i) => el + secondDoseArr[i]
-        )
-        const calcAverage = totalDosePlusArr.reduce(reducer) / 14
-        const formatAvg = Math.round(calcAverage)
-        return formatAvg
-      } else {
-        return 0
-      }
-    },
-    calcFullyVaccinated() {
-      if (!this.$fetchState.pending) {
-        const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.people_vaccinated.replace(/,/g, ""))
-        const dose2nd = Number(latest.people_fully_vaccinated.replace(/,/g, ""))
-        return dose1st + dose2nd
-      } else {
-        return 0
-      }
-    },
     calcTarget() {
       if (!this.$fetchState.pending) {
-        const targetDoses = 100 * 1000000 - this.calcFullyVaccinated
+        const targetDoses = this.populationGoal - this.calcFirstDose
         const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
         return 0
       }
     },
+    calcVaccinationEndOfYear() {
+      if (!this.$fetchState.pending) {
+        const avg = this.calcAverage
+        const vaccinated = avg * this.endOfYear
+        const latest = this.fullJSON[this.fullJSON.length - 1]
+        const dose1st = Number(latest.people_vaccinated.replace(/,/g, ""))
+        const total = dose1st + vaccinated
+        return total.toLocaleString()
+      } else {
+        return 0
+      }
+    },
+    calcFirstDose() {
+      if (!this.$fetchState.pending) {
+        const latest = this.fullJSON[this.fullJSON.length - 1]
+        const dose1st = Number(latest.people_vaccinated.replace(/,/g, ""))
+        return dose1st
+      } else {
+        return 0
+      }
+    },
     calcGoalDays() {
       if (!this.$fetchState.pending) {
-        const dosesLeftTillTarget = 100 * 1000000 - this.calcFullyVaccinated
+        const dosesLeftTillTarget = this.populationGoal - this.calcFirstDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -166,7 +168,7 @@ export default {
     calcCountryVacDays() {
       if (!this.$fetchState.pending) {
         const dosesLeftTillTarget =
-          this.$store.getters.thPopulation - this.calcFullyVaccinated
+          this.$store.getters.thPopulation - this.calcFirstDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
