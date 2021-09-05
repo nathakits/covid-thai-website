@@ -27,7 +27,7 @@ div.vaccine-province
           title="Show less items in the table"
           @click="showLess()"
         ) Show Less
-    div.border.rounded-lg.shadow-lg.overflow-x-auto
+    div.border.rounded-lg.shadow.overflow-x-auto
       table.w-full
         thead.border-b.border-gray-300
           tr
@@ -318,7 +318,8 @@ export default {
   }
   thead,
   tbody {
-    background-color: #f7f7f7;
+    @apply bg-gray-100;
+    // background-color: #f7f7f7;
   }
   tbody tr:not(:last-child) td {
     border-bottom: 1px solid #d1d5db;

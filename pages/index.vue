@@ -83,59 +83,68 @@ main
         p.pb-4
           | Thailand's 2021 population figure is from MOPH daily report.
         tooltip
-          span.text-sm.text-blue-900 2021 population: {{ population.toLocaleString() }} people
+          span.text-sm.text-blue-900 2021 population: {{ population.toLocaleString() }}
       div.progress-bar
         //- total bar
-        div.total-bar
-          div.flex.justify-between.items-center.pb-2
-            h3 Total Vaccines Given
-            div.highlight-card
-              span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }}
-        div.border-b.my-4
-        //- 1st dose
-        div.total-bar.pb-8
-          div.flex.justify-between.items-center.pb-2
-            h3 1st Dose
-            div.highlight-card
-              span.font-bold.text-gray-900 {{ dailyJSON.people_vaccinated }}
-          div.vac-progress-bar
-            div.vac-progress.vac-1dose.rounded-full(s
-              :style="`width:${vac1DoseProgress}px;`"
-            )
-            div.vac-bar
-          div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of population
-            span.text-base.font-bold.text-gray-900 {{ `${vac1DosePercentage}%` }}
-        //- 2nd dose
-        div.total-bar.pb-8
-          div.flex.justify-between.items-center.pb-2
-            h3 2nd Dose
-            div.highlight-card
-              span.font-bold.text-gray-900 {{ dailyJSON.people_fully_vaccinated }}
-          div.vac-progress-bar
-            div.vac-progress.vac-2dose.rounded-full(
-              :style="`width:${vac2DoseProgress}px;`"
-            )
-            div.vac-bar
-          div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of population
-            div
-              span.text-base.font-bold.text-gray-900 {{ `${vac2DosePercentage}%` }}
-        //- 3rd dose
-        div.total-bar
-          div.flex.justify-between.items-center.pb-2
-            h3 3rd Dose
-            div.highlight-card
-              span.font-bold.text-gray-900 {{ dailyJSON.booster_vaccinated }}
-          div.vac-progress-bar
-            div.vac-progress.vac-2dose.rounded-full(
-              :style="`width:${vac3DoseProgress}px;`"
-            )
-            div.vac-bar
-          div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of population
-            div
-              span.text-base.font-bold.text-gray-900 {{ `${vac3DosePercentage}%` }}
+        div.shadow.border.w-full.rounded-lg.p-6
+          div.total-bar
+            div.flex.justify-between.items-center.pb-2
+              h3.font-bold Total Vaccines Given
+              div.highlight-card
+                span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }}
+          div.border-b.my-4
+          //- 1st dose
+          div.total-bar.pb-8
+            div.flex.justify-between.items-center.pb-2
+              h3 1st Dose
+              div.highlight-card
+                span.font-bold.text-gray-900 {{ dailyJSON.people_vaccinated }}
+            div.vac-progress-bar
+              div.vac-progress.vac-1dose.rounded-full(s
+                :style="`width:${vac1DoseProgress}px;`"
+              )
+              div.vac-bar
+            div.flex.justify-between.pt-3.font-medium
+              span.text-sm.text-gray-500 % of population
+              span.text-base.font-bold.text-gray-900(
+                class="md:text-lg"
+              ) {{ `${vac1DosePercentage}%` }}
+          //- 2nd dose
+          div.total-bar.pb-8
+            div.flex.justify-between.items-center.pb-2
+              h3 2nd Dose
+              div.highlight-card
+                span.font-bold.text-gray-900 {{ dailyJSON.people_fully_vaccinated }}
+            div.vac-progress-bar
+              div.vac-progress.vac-2dose.rounded-full(
+                :style="`width:${vac2DoseProgress}px;`"
+              )
+              div.vac-bar
+            div.flex.justify-between.pt-3.font-medium
+              span.text-sm.text-gray-500 % of population
+              div
+                span.text-base.font-bold.text-gray-900(
+                  class="md:text-lg"
+                ) {{ `${vac2DosePercentage}%` }}
+          //- 3rd dose
+          div.total-bar
+            div.flex.justify-between.items-center.pb-2
+              h3 3rd Dose
+              div.highlight-card
+                span.font-bold.text-gray-900 {{ dailyJSON.booster_vaccinated }}
+            div.vac-progress-bar
+              div.vac-progress.vac-2dose.rounded-full(
+                :style="`width:${vac3DoseProgress}px;`"
+              )
+              div.vac-bar
+            div.flex.justify-between.pt-3.font-medium
+              span.text-sm.text-gray-500 % of population
+              div
+                span.text-base.font-bold.text-gray-900(
+                  class="md:text-lg"
+                ) {{ `${vac3DosePercentage}%` }}
+        //- trends
+        vaccine-trends
     div.border-b.container-margin
     //- vaccination province
     vac-province
