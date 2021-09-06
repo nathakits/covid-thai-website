@@ -83,10 +83,12 @@ main
         p.pb-4
           | Thailand's 2021 population figure is from MOPH daily report.
         tooltip
-          span.text-sm.text-blue-900 2021 population: {{ population.toLocaleString() }}
+          span.text-sm.text-blue-900 2021 Population: {{ population.toLocaleString() }}
       div.progress-bar
         //- total bar
-        div.shadow.border.w-full.rounded-lg.p-6
+        div.shadow.border.w-full.rounded-lg.p-6(
+          style="background-color:#fafafa;"
+        )
           div.total-bar
             div.flex.justify-between.items-center.pb-2
               h3.font-bold Total Vaccines Given
@@ -105,7 +107,7 @@ main
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
-              span.text-sm.text-gray-500 % of population
+              span.text-sm.text-gray-500 % of Population
               span.text-base.font-bold.text-gray-900(
                 class="md:text-lg"
               ) {{ `${vac1DosePercentage}%` }}
@@ -121,7 +123,7 @@ main
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
-              span.text-sm.text-gray-500 % of population
+              span.text-sm.text-gray-500 % of Population
               div
                 span.text-base.font-bold.text-gray-900(
                   class="md:text-lg"
@@ -138,15 +140,13 @@ main
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
-              span.text-sm.text-gray-500 % of population
+              span.text-sm.text-gray-500 % of Population
               div
                 span.text-base.font-bold.text-gray-900(
                   class="md:text-lg"
                 ) {{ `${vac3DosePercentage}%` }}
-        //- trends
         vaccine-trends
     div.border-b.container-margin
-    //- vaccination province
     vac-province
     div.border-b.container-margin
     vaccine-manufacturers
