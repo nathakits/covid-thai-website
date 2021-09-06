@@ -19,9 +19,9 @@ div(style="background-color:rgba(6,1,70,0.2);")
             div.w-full.border-b.my-2
             div.flex.justify-between.items-end(style="min-height:48px;")
               div
-                div.text-sm.font-medium.text-gray-500 Daily
+                div.text-sm.font-medium.text-gray-500 Doses
                 div.flex.items-center.gap-2
-                  plus-icon(style="opacity:0.6;")
+                  plus-icon(style="opacity:0.8;")
                   span.text-base.font-bold.text-gray-900 {{ item.daily }}
               div
                 span.text-sm.font-medium.text-gray-500(
@@ -31,7 +31,7 @@ div(style="background-color:rgba(6,1,70,0.2);")
                   :class="item.percent ? 'gap-2' : ''"
                 )
                   template(v-if="item.percent")
-                    arrow-up(style="opacity:0.6;")
+                    arrow-up(style="opacity:0.8;")
                   div.font-bold {{ item.percent }}
 </template>
 
