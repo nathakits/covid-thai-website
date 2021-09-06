@@ -1,7 +1,9 @@
 <template lang="pug">
 div
   //- trends
-  div.shadow.border.w-full.rounded-lg.p-6.mt-6
+  div.shadow.border.w-full.rounded-lg.p-6.mt-6(
+    style="background-color:#fafafa;"
+  )
     h3.font-bold All Time High
     div.border-b.my-4
     div.grid.grid-cols-3
@@ -24,7 +26,9 @@ div
             class="md:text-xl"
           ) {{ doseHigh("third_dose_plus") }}
   //- average
-  div.shadow.border.w-full.rounded-lg.p-6.mt-6
+  div.shadow.border.w-full.rounded-lg.p-6.mt-6(
+    style="background-color:#fafafa;"
+  )
     div.flex.items-center.justify-between.gap-4
       h3.font-bold Average
       div.grid.grid-cols-4.gap-4
