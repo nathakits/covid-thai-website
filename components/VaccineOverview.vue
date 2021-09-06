@@ -17,18 +17,18 @@ div(style="background-color:rgba(6,1,70,0.2);")
               style="color:#090076;"
             ) {{ item.total }}
             div.w-full.border-b.my-2
-            div.flex.justify-between.items-end(style="min-height:48px;")
-              div
+            div.flex.flex-wrap.justify-between.gap-2
+              div.flex.flex-col.justify-between(style="min-height:48px;")
                 div.text-sm.font-medium.text-gray-500 Doses
-                div.flex.items-center.gap-2
+                div.flex.items-center.gap-1
                   plus-icon(style="opacity:0.8;")
                   span.text-base.font-bold.text-gray-900 {{ item.daily }}
-              div
+              div.flex.flex-col.justify-between(style="min-height:48px;")
                 span.text-sm.font-medium.text-gray-500(
                   v-if="item.percent"
                 ) Population
                 div.flex.items-center(
-                  :class="item.percent ? 'gap-2' : ''"
+                  :class="item.percent ? 'gap-1' : ''"
                 )
                   template(v-if="item.percent")
                     arrow-up(style="opacity:0.8;")
