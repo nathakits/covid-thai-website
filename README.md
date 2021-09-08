@@ -3,11 +3,12 @@
 </h4>
 
 ## Features
-- Vaccination goal
-- Vaccination progress
-- Vaccination by province
-- Vaccine manufacturers
-- Vaccine allocation
+- Vaccination Overview
+- Vaccination Goal
+- Vaccination Progress
+- Vaccination By Province
+- Vaccine Manufacturers
+- Vaccine Allocation
 
 <!-- ### Coming soon -->
 <!-- - Vaccine by province -->
