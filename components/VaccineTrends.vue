@@ -29,16 +29,17 @@ div
   div.shadow.border.w-full.rounded-lg.p-6.mt-6(
     style="background-color:#fafafa;"
   )
-    div.flex.items-center.justify-between.gap-4
+    div.flex.flex-wrap.items-center.justify-between.gap-4
       h3.font-bold Average
-      div.grid.grid-cols-4.gap-4
-        button.py-1.px-3.rounded-full(
+      div.grid.grid-cols-4.gap-4.w-full
+        button.py-1.px-2.rounded-full.w-full(
           v-for="days in daysSelector"
-          :class="selectedAvgDays === days ? 'bg-green text-white font-bold' : 'bg-gray-100 font-medium text-gray-500 hover:bg-gray-300'"
-          style="min-width:82px;"
+          class="md:px-3"
+          :class="selectedAvgDays === days ? 'bg-green text-white font-bold' : 'bg-gray-200 font-medium text-gray-500 hover:bg-gray-300'"
           :title="`${days} Days`"
           @click="changeAvgDays(days)"
         )
+          //- style="min-width:68px;"
           span.text-sm {{ days }} D
     div.border-b.my-4
     div.grid.grid-cols-3
