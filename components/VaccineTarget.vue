@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      populationGoal: "populationGoal",
+      popGoal1: "popGoal1",
     }),
     calcAverage() {
       if (!this.$fetchState.pending) {
@@ -110,7 +110,7 @@ export default {
     },
     calcTarget() {
       if (!this.$fetchState.pending) {
-        const targetDoses = this.populationGoal - this.calcFirstDose
+        const targetDoses = this.popGoal1 - this.calcFirstDose
         const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
@@ -140,7 +140,7 @@ export default {
     },
     calcGoalDays() {
       if (!this.$fetchState.pending) {
-        const dosesLeftTillTarget = this.populationGoal - this.calcFirstDose
+        const dosesLeftTillTarget = this.popGoal1 - this.calcFirstDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {

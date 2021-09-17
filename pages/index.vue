@@ -1,6 +1,6 @@
 <template lang="pug">
 main
-  vaccine-overview(:data="dailyJSON")
+  vaccine-overview(:daily="dailyJSON" :all="fullJSON")
   div.container.mx-auto.h-full
     //- vaccination goal
     div.vaccination-goal
@@ -25,7 +25,7 @@ main
             div.highlight-card
               span.font-bold.text-gray-900
                 | {{ dailyJSON.people_vaccinated }}
-                |  / {{ populationGoal.toLocaleString() }}
+                |  / {{ popGoal1.toLocaleString() }}
           div.vac-goal-bar
             div.vac-progress.vac-goal.rounded-full(
               :style="`width:${vacGoalProgress}px;`"
@@ -185,7 +185,7 @@ export default {
     ...mapGetters({
       selected: "selected",
       population: "thPopulation",
-      populationGoal: "populationGoal",
+      popGoal1: "popGoal1",
     }),
     getLastUpdated() {
       if (this.dailyJSON) {
@@ -238,7 +238,7 @@ export default {
     calcVacGoal() {
       if (this.dailyJSON) {
         const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
-        const percentage = (firstDose / this.populationGoal) * 100
+        const percentage = (firstDose / this.popGoal1) * 100
         const progress = this.progressBarWidth * (percentage / 100)
         this.vacGoalPercentage = percentage.toFixed(2)
         this.vacGoalProgress = progress
