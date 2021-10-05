@@ -81,7 +81,7 @@ export default {
   },
   async fetch() {
     this.fullJSON = await this.$axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/Thailand.json"
+      "https://nathakits.github.io/covid-tracker-twitter-bot/data/dashboard/national-vacmod-timeseries.json"
     )
   },
   computed: {
@@ -92,7 +92,7 @@ export default {
       if (!this.$fetchState.pending) {
         const reducer = (accum, current) => accum + current
         const firstDoseArr = this.slicedData(this.fullJSON).map((el) =>
-          Number(el.first_dose_plus)
+          Number(el.first_dose_daily)
         )
         const avg = firstDoseArr.reduce(reducer) / 14
         const formatAvg = Math.round(avg)
@@ -122,7 +122,7 @@ export default {
         const avg = this.calcAverage
         const vaccinated = avg * this.endOfYear
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.people_vaccinated.replace(/,/g, ""))
+        const dose1st = Number(latest.first_dose_cum)
         const total = dose1st + vaccinated
         return total.toLocaleString()
       } else {
@@ -132,7 +132,7 @@ export default {
     calcFirstDose() {
       if (!this.$fetchState.pending) {
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.people_vaccinated.replace(/,/g, ""))
+        const dose1st = Number(latest.first_dose_cum)
         return dose1st
       } else {
         return 0

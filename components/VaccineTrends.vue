@@ -12,19 +12,19 @@ div
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseHigh("first_dose_plus") }}
+          ) {{ doseHigh("first_dose_daily") }}
       div
         span.text-sm.font-medium 2nd Dose
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseHigh("second_dose_plus") }}
+          ) {{ doseHigh("second_dose_daily") }}
       div
         span.text-sm.font-medium 3rd Dose
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseHigh("third_dose_plus") }}
+          ) {{ doseHigh("third_dose_daily") }}
   //- average
   div.shadow.border.w-full.rounded-lg.p-6.mt-6(
     style="background-color:#fafafa;"
@@ -48,19 +48,19 @@ div
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseAverage("first_dose_plus") }}
+          ) {{ doseAverage("first_dose_daily") }}
       div
         span.text-sm 2nd Dose
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseAverage("second_dose_plus") }}
+          ) {{ doseAverage("second_dose_daily") }}
       div
         span.text-sm 3rd Dose
         div
           span.text-base.font-bold.text-gray-900(
             class="md:text-xl"
-          ) {{ doseAverage("third_dose_plus") }}
+          ) {{ doseAverage("third_dose_daily") }}
 </template>
 
 <script>
@@ -74,7 +74,7 @@ export default {
   },
   async fetch() {
     this.fullJSON = await this.$axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/Thailand.json"
+      "https://nathakits.github.io/covid-tracker-twitter-bot/data/dashboard/national-vacmod-timeseries.json"
     )
   },
   methods: {
