@@ -66,34 +66,32 @@ div(style="background-color:rgba(6,1,70,0.15);")
           div.rounded-md.bg-white.p-4.shadow-md.col-span-8(
             class="md:col-span-4"
           )
+            //- div
+            //-   div.flex.justify-between.items-center.flex-wrap.gap-2
+            //-     div.flex.items-center.gap-2
+            //-       span.font-bold.text-sm.text-gray-900(class="lg:text-base")
+            //-         | 50M Goal
+            //-       div(title="1st Dose only")
+            //-         info-icon(
+            //-           :size="16"
+            //-           color="#6881d8"
+            //-         ) 
+            //-     span.text-sm.font-bold {{ `${popGoal50}%` }}
+            //-   div.progress.py-2
+            //-     span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
+            //-       span.bg-green-800(:style="`width:${popGoal50}%`")
             div
               div.flex.justify-between.items-center.flex-wrap.gap-2
                 div.flex.items-center.gap-2
                   span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-                    | 50M Goal
-                  div(title="1st Dose only")
-                    info-icon(
-                      :size="16"
-                      color="#6881d8"
-                    ) 
-                span.text-sm.font-bold {{ `${popGoal50}%` }}
-              div.progress.py-2
-                span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
-                  span.bg-green-800(:style="`width:${popGoal50}%`")
-            div
-              div.flex.justify-between.items-center.flex-wrap.gap-2
-                div.flex.items-center.gap-2
-                  span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-                    | 100M Goal
-                  div(title="Fully vaccinated")
-                    info-icon(
-                      :size="16"
-                      color="#6881d8"
-                    )
-                span.text-sm.font-bold {{ `${popGoal100}%` }}
+                    | 100M Doses Goal
+                span.text-sm.font-medium.pt-1.text-gray-500 Fully Vaccinated
               div.progress.py-2
                 span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
                   span.bg-green-800(:style="`width:${popGoal100}%`")
+              div.flex.justify-between.items-center.flex-wrap.gap-2
+                span.text-sm.font-medium.pt-1 % of 100M Doses
+                span.text-sm.font-bold {{ `${popGoal100}%` }}
 </template>
 
 <script>
@@ -115,23 +113,23 @@ export default {
       array: [
         {
           name: "1st Dose Total",
-          total: this.daily.people_vaccinated,
-          daily: this.daily.first_dose_plus,
+          total: "",
+          daily: "",
         },
         {
           name: "2nd Dose Total",
-          total: this.daily.people_fully_vaccinated,
-          daily: this.daily.second_dose_plus,
+          total: "",
+          daily: "",
         },
         {
           name: "3rd Dose Total",
-          total: this.daily.booster_vaccinated,
-          daily: this.daily.third_dose_plus,
+          total: "",
+          daily: "",
         },
         {
           name: "Total Dose",
-          total: this.daily.total_vaccinations,
-          daily: this.daily.total_dose_plus,
+          total: "",
+          daily: "",
         },
       ],
     }
@@ -142,12 +140,17 @@ export default {
       popGoal1: "popGoal1",
       popGoal2: "popGoal2",
     }),
+    latestData() {
+      if (this.all) {
+        return this.all[this.all.length - 1]
+      } else {
+        return {}
+      }
+    },
     popGoal50() {
       if (this.all) {
-        const latest = this.all[this.all.length - 1]
-        const goal = ((latest.people_vaccinated / this.popGoal1) * 100).toFixed(
-          2
-        )
+        const latest = this.latestData
+        const goal = ((latest.first_dose_cum / this.popGoal1) * 100).toFixed(2)
         return goal
       } else {
         return 0
@@ -155,11 +158,8 @@ export default {
     },
     popGoal100() {
       if (this.all) {
-        const latest = this.all[this.all.length - 1]
-        const goal = (
-          (latest.people_fully_vaccinated / this.popGoal2) *
-          100
-        ).toFixed(2)
+        const latest = this.latestData
+        const goal = ((latest.second_dose_cum / this.popGoal2) * 100).toFixed(2)
         return goal
       } else {
         return 0
@@ -167,16 +167,16 @@ export default {
     },
     firstDosePercentage() {
       if (this.all) {
-        const latest = this.all[this.all.length - 1]
-        return ((latest.people_vaccinated / this.population) * 100).toFixed(2)
+        const latest = this.latestData
+        return ((latest.first_dose_cum / this.population) * 100).toFixed(2)
       } else {
         return 0
       }
     },
     secondDosePercentage() {
       if (this.all) {
-        const latest = this.all[this.all.length - 1]
-        const vaccinated = latest.people_fully_vaccinated
+        const latest = this.latestData
+        const vaccinated = latest.second_dose_cum
         return ((vaccinated / this.population) * 100).toFixed(2)
       } else {
         return 0
@@ -184,18 +184,19 @@ export default {
     },
     thirdDosePercentage() {
       if (this.all) {
-        const latest = this.all[this.all.length - 1]
-        const vaccinated = latest.booster_vaccinated
+        const latest = this.latestData
+        const vaccinated = latest.third_dose_cum
         return ((vaccinated / this.population) * 100).toFixed(2)
       } else {
         return 0
       }
     },
     mapArray() {
-      if (this.daily) {
-        const dailyfirst = this.daily.first_dose_plus.replace(/,/g, "")
-        const dailysecond = this.daily.second_dose_plus.replace(/,/g, "")
-        const dailythird = this.daily.third_dose_plus.replace(/,/g, "")
+      if (this.all) {
+        const latest = this.latestData
+        const dailyfirst = latest.first_dose_daily
+        const dailysecond = latest.second_dose_daily
+        const dailythird = latest.third_dose_daily
         const firstPercentage = (dailyfirst / this.population) * 100
         const secondPercentage = (dailysecond / this.population) * 100
         const thirdPercentage = (dailythird / this.population) * 100
@@ -205,29 +206,29 @@ export default {
           if (d.name === "1st Dose Total") {
             obj = {
               name: d.name,
-              total: d.total,
-              daily: d.daily,
+              total: latest.first_dose_cum.toLocaleString(),
+              daily: dailyfirst.toLocaleString(),
               percent: this.formatDecimal(firstPercentage),
             }
           } else if (d.name === "2nd Dose Total") {
             obj = {
               name: d.name,
-              total: d.total,
-              daily: d.daily,
+              total: latest.second_dose_cum.toLocaleString(),
+              daily: dailysecond.toLocaleString(),
               percent: this.formatDecimal(secondPercentage),
             }
           } else if (d.name === "3rd Dose Total") {
             obj = {
               name: d.name,
-              total: d.total,
-              daily: d.daily,
+              total: latest.third_dose_cum.toLocaleString(),
+              daily: dailythird.toLocaleString(),
               percent: this.formatDecimal(thirdPercentage),
             }
           } else {
             obj = {
               name: d.name,
-              total: d.total,
-              daily: d.daily,
+              total: latest.total_vaccinations_cum.toLocaleString(),
+              daily: latest.total_vaccinations_daily.toLocaleString(),
               percent: "",
             }
           }

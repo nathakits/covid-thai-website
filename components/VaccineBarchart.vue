@@ -160,9 +160,9 @@ export default {
       return dates
     },
     totalVaccineYAxis() {
-      const firstDose = this.vacData.map((d) => d.people_vaccinated)
-      const secondDose = this.vacData.map((d) => d.people_fully_vaccinated)
-      const thirdDose = this.vacData.map((d) => d.booster_vaccinated)
+      const firstDose = this.vacData.map((d) => d.first_dose_cum)
+      const secondDose = this.vacData.map((d) => d.second_dose_cum)
+      const thirdDose = this.vacData.map((d) => d.third_dose_cum)
       const dataset = [
         {
           label: this.thirdDoseLabel,
