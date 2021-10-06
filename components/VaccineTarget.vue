@@ -1,5 +1,36 @@
 <template lang="pug">
 div
+  div.vaccination-goal
+    div.date-padding.pt-10.flex.justify-between.flex-wrap.gap-4
+      div.last-updated.dark-blue
+        span {{ `Last updated: ${getLastUpdated}` }}
+      div.flex
+        facebook-share.pr-2
+        twitter-share
+    div.vaccination-block.container-padding
+      div.explainer.pb-4(
+        class="lg:pb-0"
+      )
+        h2.pb-2 Vaccination Goal
+        p
+          | Government's vaccination goal of inoculating 50 million people with 1st dose of vaccines by the end of 2021.
+        p.pb-4
+          | This goal has been revised down from 100 million doses to 50 million doses.
+      div.progress-bar
+        div.flex.justify-between.items-center.pb-2
+          h3.w-min(class="md:w-auto") 50M Doses
+          div.highlight-card
+            span.font-bold.text-gray-900
+              | {{ latestData.first_dose_cum.toLocaleString() }}
+              |  / {{ popGoal1.toLocaleString() }}
+        div.vac-goal-bar
+          div.vac-progress.vac-goal.rounded-full(
+            :style="`width:${vacGoalPercentage}%;`"
+          )
+          div.vac-bar(id="vac-goal")
+        div.flex.justify-between.pt-3.font-medium
+          span.text-sm.text-gray-500 % of 50 Million Doses
+          span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
   div.vaccination-block.container-padding
     div.explainer.pb-4(class="lg:pb-0")
       p
@@ -36,46 +67,21 @@ div
           div
             p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays} Days` }}
             p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
-        //- div.card-item-padding.flex.justify-between
-        //-   div.flex.items-center
-        //-     calendar-icon
-        //-     span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Everyone Is Vaccinated
-        //-   div
-        //-     p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcCountryVacDays} Days` }}
-        //-     p.text-xs.text-right.text-gray-500 {{ `(${calcCountryVacDate })` }}
-
-  //- div.vaccination-block.container-padding
-  //-   div.explainer.pb-4(class="lg:pb-0")
-  //-   div.progress-bar
-  //-     div.card.grid.divide-y.divide-gray-300
-  //-       div.card-item-padding.flex.justify-between.items-center.font-medium
-  //-         div.flex.items-center
-  //-           vaccine-icon
-  //-           span.text-sm.pl-2(class="md:pl-4") End Of Year Vaccination
-  //-         p.text-base.font-bold.text-gray-800.text-right ~{{ calcVaccinationEndOfYear }} Doses
-
 </template>
 
 <script>
 import { mapGetters } from "vuex"
 
 export default {
-  props: {
-    dataFull: {
-      type: Array,
-      default: () => [],
-    },
-    dataDaily: {
-      type: Object,
-      default: () => {},
-    },
-  },
   data() {
     return {
       vacAverage: 0,
       vacTarget: 0,
       vacTargetMonths: 0,
       vacTargetDate: "",
+      vacGoalProgress: 0,
+      vacGoalPercentage: 0,
+      progressBarWidth: 0,
       fullJSON: [],
     }
   },
@@ -88,6 +94,26 @@ export default {
     ...mapGetters({
       popGoal1: "popGoal1",
     }),
+    latestData() {
+      if (!this.$fetchState.pending) {
+        return this.fullJSON[this.fullJSON.length - 1]
+      } else {
+        return {}
+      }
+    },
+    getLastUpdated() {
+      if (!this.$fetchState.pending) {
+        const data = this.fullJSON[this.fullJSON.length - 1]
+        const date = data.date.split("-")
+        const day = date[0]
+        const month = date[1]
+        const year = date[2]
+        const formattedDate = `${day}/${month}/${year}`
+        return formattedDate
+      } else {
+        return ``
+      }
+    },
     calcAverage() {
       if (!this.$fetchState.pending) {
         const reducer = (accum, current) => accum + current
@@ -194,10 +220,22 @@ export default {
       }
     },
   },
+  mounted() {
+    this.calcVacGoal()
+  },
   methods: {
     slicedData(data) {
       const sliced = data.slice(Math.max(data.length - 14, 0))
       return sliced
+    },
+    calcVacGoal() {
+      if (!this.$fetchState.pending) {
+        const firstDose = this.latestData.first_dose_cum
+        const percentage = (firstDose / this.popGoal1) * 100
+        this.vacGoalPercentage = percentage.toFixed(2)
+      } else {
+        return 0
+      }
     },
   },
 }

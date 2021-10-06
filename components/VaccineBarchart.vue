@@ -56,6 +56,7 @@ export default {
       secondDoseColor: "rgb(91,185,116)",
       thirdDoseLabel: "3rd Dose",
       thirdDoseColor: "rgb(12,132,63)",
+      tooltipColor: "rgba(9,0,118,0.7)",
       lineOptions: {
         plugins: {
           legend: {
@@ -67,6 +68,7 @@ export default {
               title: this.tooltipTitle,
               footer: this.totalVaccineValue,
             },
+            backgroundColor: this.tooltipColor,
             // enabled: false,
             // external: this.externalTooltipHandler,
             // position: "nearest",
@@ -114,6 +116,7 @@ export default {
             callbacks: {
               footer: this.totalVaccineValue,
             },
+            backgroundColor: this.tooltipColor,
           },
         },
         interaction: {
@@ -190,9 +193,9 @@ export default {
       return dataset
     },
     dailyVaccineYAxis() {
-      const firstDoseDaily = this.vacData.map((d) => d.first_dose_plus)
-      const secondDoseDaily = this.vacData.map((d) => d.second_dose_plus)
-      const thirdDoseDaily = this.vacData.map((d) => d.third_dose_plus)
+      const firstDoseDaily = this.vacData.map((d) => d.first_dose_daily)
+      const secondDoseDaily = this.vacData.map((d) => d.second_dose_daily)
+      const thirdDoseDaily = this.vacData.map((d) => d.third_dose_daily)
       const dataset = [
         {
           label: this.thirdDoseLabel,
@@ -261,21 +264,11 @@ export default {
       return chart
     },
     formatDate(date) {
-      const dateArr = date.split("-")
-      const year = dateArr.pop()
-      const day = dateArr.shift()
-      const month = dateArr.pop()
-      const newDate = new Date(`${year}-${month}-${day}`)
-      const format = dayjs(newDate).format("DD MMM")
+      const format = dayjs(date).format("DD MMM")
       return format
     },
     formatFullDate(date) {
-      const dateArr = date.split("-")
-      const year = dateArr.pop()
-      const day = dateArr.shift()
-      const month = dateArr.pop()
-      const newDate = new Date(`${year}-${month}-${day}`)
-      const format = dayjs(newDate).format("DD MMM YYYY")
+      const format = dayjs(date).format("DD MMM YYYY")
       return format
     },
     updateConfigAsNewObject(chart, data, options, type) {
