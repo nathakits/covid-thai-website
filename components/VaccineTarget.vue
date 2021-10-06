@@ -105,9 +105,9 @@ export default {
       if (!this.$fetchState.pending) {
         const data = this.fullJSON[this.fullJSON.length - 1]
         const date = data.date.split("-")
-        const day = date[0]
+        const day = date[2]
         const month = date[1]
-        const year = date[2]
+        const year = date[0]
         const formattedDate = `${day}/${month}/${year}`
         return formattedDate
       } else {
