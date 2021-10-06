@@ -66,20 +66,6 @@ div(style="background-color:rgba(6,1,70,0.15);")
           div.rounded-md.bg-white.p-4.shadow-md.col-span-8(
             class="md:col-span-4"
           )
-            //- div
-            //-   div.flex.justify-between.items-center.flex-wrap.gap-2
-            //-     div.flex.items-center.gap-2
-            //-       span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-            //-         | 50M Goal
-            //-       div(title="1st Dose only")
-            //-         info-icon(
-            //-           :size="16"
-            //-           color="#6881d8"
-            //-         ) 
-            //-     span.text-sm.font-bold {{ `${popGoal50}%` }}
-            //-   div.progress.py-2
-            //-     span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
-            //-       span.bg-green-800(:style="`width:${popGoal50}%`")
             div
               div.flex.justify-between.items-center.flex-wrap.gap-2
                 div.flex.items-center.gap-2
@@ -145,15 +131,6 @@ export default {
         return this.all[this.all.length - 1]
       } else {
         return {}
-      }
-    },
-    popGoal50() {
-      if (this.all) {
-        const latest = this.latestData
-        const goal = ((latest.first_dose_cum / this.popGoal1) * 100).toFixed(2)
-        return goal
-      } else {
-        return 0
       }
     },
     popGoal100() {
