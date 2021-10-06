@@ -43,9 +43,9 @@ div(style="background-color:rgba(6,1,70,0.15);")
             span.font-bold.text-sm.text-gray-900(class="lg:text-base") Vaccination Progress
             div.progress.py-2
               span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200.relative
-                span.bg-green-800.absolute.h-full(:style="`width:${firstDosePercentage}%`")
-                span.bg-green-600.absolute.h-full(:style="`width:${secondDosePercentage}%`")
-                span.bg-green-400.absolute.h-full(:style="`width:${thirdDosePercentage}%`")
+                span.firstDose.absolute.h-full(:style="`width:${firstDosePercentage}%`")
+                span.secondDose.absolute.h-full(:style="`width:${secondDosePercentage}%`")
+                span.thirdDose.absolute.h-full(:style="`width:${thirdDosePercentage}%`")
                 //- span.bg-gray-200(class="w-4/12")
             div.legend.flex.flex-wrap.gap-x-4.gap-y-1.pt-1
               div.flex.items-center
@@ -84,13 +84,13 @@ div(style="background-color:rgba(6,1,70,0.15);")
               div.flex.justify-between.items-center.flex-wrap.gap-2
                 div.flex.items-center.gap-2
                   span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-                    | 100M Doses Goal
+                    | 100 Doses Goal
                 span.text-sm.font-medium.pt-1.text-gray-500 Fully Vaccinated
               div.progress.py-2
                 span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
-                  span.bg-green-800(:style="`width:${popGoal100}%`")
+                  span.goalBar(:style="`width:${popGoal100}%`")
               div.flex.justify-between.items-center.flex-wrap.gap-2
-                span.text-sm.font-medium.pt-1 % of 100M Doses
+                span.text-sm.font-medium.text-gray-800.pt-1 % of 100 Million Doses
                 span.text-sm.font-bold {{ `${popGoal100}%` }}
 </template>
 
@@ -262,18 +262,20 @@ export default {
   width: 12px;
   height: 12px;
   margin-right: 8px;
-
-  &.firstDose {
-    background-color: rgb(168, 218, 181);
-  }
-  &.secondDose {
-    background-color: rgb(91, 185, 116);
-  }
-  &.thirdDose {
-    background-color: rgb(12, 132, 63);
-  }
-  &.unvaccinated {
-    background-color: rgb(12, 132, 63);
-  }
+}
+.firstDose {
+  background-color: rgb(168, 218, 181);
+}
+.secondDose {
+  background-color: rgb(91, 185, 116);
+}
+.thirdDose {
+  background-color: rgb(12, 132, 63);
+}
+.unvaccinated {
+  background-color: rgb(12, 132, 63);
+}
+.goalBar {
+  background-color: rgb(98, 188, 122);
 }
 </style>
