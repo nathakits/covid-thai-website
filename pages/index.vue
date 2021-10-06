@@ -1,40 +1,8 @@
 <template lang="pug">
 main
-  vaccine-overview(:data="dailyJSON")
+  vaccine-overview(:all="fullJSON")
   div.container.mx-auto.h-full
-    //- vaccination goal
-    div.vaccination-goal
-      div.date-padding.pt-10.flex.justify-between.flex-wrap.gap-4
-        div.last-updated.dark-blue
-          span {{ `Last updated: ${getLastUpdated}` }}
-        div.flex
-          facebook-share.pr-2
-          twitter-share
-      div.vaccination-block.container-padding
-        div.explainer.pb-4(
-          class="lg:pb-0"
-        )
-          h2.pb-2 Vaccination Goal
-          p
-            | Government's vaccination goal of inoculating 50 million people with 1st dose of vaccines by the end of 2021.
-          p.pb-4
-            | This goal has been revised down from 100 million doses to 50 million doses.
-        div.progress-bar
-          div.flex.justify-between.items-center.pb-2
-            h3.w-min(class="md:w-auto") 50M Doses
-            div.highlight-card
-              span.font-bold.text-gray-900
-                | {{ dailyJSON.people_vaccinated }}
-                |  / {{ populationGoal.toLocaleString() }}
-          div.vac-goal-bar
-            div.vac-progress.vac-goal.rounded-full(
-              :style="`width:${vacGoalProgress}px;`"
-            )
-            div.vac-bar(id="vac-goal")
-          div.flex.justify-between.pt-3.font-medium
-            span.text-sm.text-gray-500 % of 50 Million Doses
-            span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
-    //- vaccine target and estimate
+    //- vaccine goal and estimate
     vaccine-target
     div.border-b.container-margin
     //- vaccination progress
@@ -93,17 +61,17 @@ main
             div.flex.justify-between.items-center.pb-2
               h3.font-bold Total Vaccines Given
               div.highlight-card
-                span.font-bold.text-gray-900 {{ dailyJSON.total_vaccinations }}
+                span.font-bold.text-gray-900 {{ latestData.total_vaccinations_cum.toLocaleString() }}
           div.border-b.my-4
           //- 1st dose
           div.total-bar.pb-8
             div.flex.justify-between.items-center.pb-2
               h3 1st Dose
               div.highlight-card
-                span.font-bold.text-gray-900 {{ dailyJSON.people_vaccinated }}
+                span.font-bold.text-gray-900 {{ latestData.first_dose_cum.toLocaleString() }}
             div.vac-progress-bar
               div.vac-progress.vac-1dose.rounded-full(s
-                :style="`width:${vac1DoseProgress}px;`"
+                :style="`width:${vac1DosePercentage}%;`"
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
@@ -116,10 +84,10 @@ main
             div.flex.justify-between.items-center.pb-2
               h3 2nd Dose
               div.highlight-card
-                span.font-bold.text-gray-900 {{ dailyJSON.people_fully_vaccinated }}
+                span.font-bold.text-gray-900 {{ latestData.second_dose_cum.toLocaleString() }}
             div.vac-progress-bar
               div.vac-progress.vac-2dose.rounded-full(
-                :style="`width:${vac2DoseProgress}px;`"
+                :style="`width:${vac2DosePercentage}%;`"
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
@@ -133,10 +101,10 @@ main
             div.flex.justify-between.items-center.pb-2
               h3 3rd Dose
               div.highlight-card
-                span.font-bold.text-gray-900 {{ dailyJSON.booster_vaccinated }}
+                span.font-bold.text-gray-900 {{ latestData.third_dose_cum.toLocaleString() }}
             div.vac-progress-bar
               div.vac-progress.vac-2dose.rounded-full(
-                :style="`width:${vac3DoseProgress}px;`"
+                :style="`width:${vac3DosePercentage}%;`"
               )
               div.vac-bar
             div.flex.justify-between.pt-3.font-medium
@@ -159,25 +127,16 @@ import { mapGetters } from "vuex"
 
 export default {
   async asyncData({ $axios }) {
-    const dailyJSON = await $axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/vaccinations.json"
-    )
     const fullJSON = await $axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/Thailand.json"
+      "https://nathakits.github.io/covid-tracker-twitter-bot/data/dashboard/national-vacmod-timeseries.json"
     )
-    return { dailyJSON, fullJSON }
+    return { fullJSON }
   },
   data() {
     return {
-      vacGoalProgress: 0,
-      vacGoalPercentage: 0,
-      vac1DoseProgress: 0,
       vac1DosePercentage: 0,
-      vac2DoseProgress: 0,
       vac2DosePercentage: 0,
-      vac3DoseProgress: 0,
       vac3DosePercentage: 0,
-      progressBarWidth: 0,
       doses_administered: 0,
     }
   },
@@ -185,107 +144,58 @@ export default {
     ...mapGetters({
       selected: "selected",
       population: "thPopulation",
-      populationGoal: "populationGoal",
+      popGoal1: "popGoal1",
     }),
-    getLastUpdated() {
-      if (this.dailyJSON) {
-        const data = this.dailyJSON
-        const date = data.date.split("-")
-        const day = date[0]
-        const month = date[1]
-        const year = date[2]
-        const formattedDate = `${day}/${month}/${year}`
-        return formattedDate
+    latestData() {
+      if (this.fullJSON) {
+        return this.fullJSON[this.fullJSON.length - 1]
       } else {
-        return ``
+        return {}
       }
     },
   },
-  watch: {
-    progressBarWidth() {
-      this.calcVacGoal()
-      this.calcVac1Dose()
-      this.calcVac2Dose()
-      this.calcVac3Dose()
-    },
-  },
   mounted() {
-    // this.dosesAdministered()
-    this.getVacGoalWidth()
-    this.calcVacGoal()
     this.calcVac1Dose()
     this.calcVac2Dose()
     this.calcVac3Dose()
-    window.addEventListener("resize", this.getVacGoalWidth)
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.getVacGoalWidth)
   },
   methods: {
     dosesAdministered() {
-      if (this.dailyJSON) {
-        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
-        const secondDose = this.dailyJSON.people_fully_vaccinated.replaceAll(
-          ",",
-          ""
-        )
+      if (this.fullJSON) {
+        const firstDose = this.latestData.first_dose_cum
+        const secondDose = this.latestData.second_dose_cum
         const totalDoses = Number(firstDose) + Number(secondDose)
         this.doses_administered = totalDoses
       } else {
         return 0
       }
     },
-    calcVacGoal() {
-      if (this.dailyJSON) {
-        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
-        const percentage = (firstDose / this.populationGoal) * 100
-        const progress = this.progressBarWidth * (percentage / 100)
-        this.vacGoalPercentage = percentage.toFixed(2)
-        this.vacGoalProgress = progress
-      } else {
-        return 0
-      }
-    },
     calcVac1Dose() {
-      if (this.dailyJSON) {
-        const firstDose = this.dailyJSON.people_vaccinated.replaceAll(",", "")
+      if (this.fullJSON) {
+        const firstDose = this.latestData.first_dose_cum
         const percentage = (firstDose / this.population) * 100
-        const progress = this.progressBarWidth * (percentage / 100)
         this.vac1DosePercentage = percentage.toFixed(2)
-        this.vac1DoseProgress = progress
       } else {
         return 0
       }
     },
     calcVac2Dose() {
-      if (this.dailyJSON) {
-        const secondDose = this.dailyJSON.people_fully_vaccinated.replaceAll(
-          ",",
-          ""
-        )
+      if (this.fullJSON) {
+        const secondDose = this.latestData.second_dose_cum
         const percentage = (secondDose / this.population) * 100
-        const progress = this.progressBarWidth * (percentage / 100)
         this.vac2DosePercentage = percentage.toFixed(2)
-        this.vac2DoseProgress = progress
       } else {
         return 0
       }
     },
     calcVac3Dose() {
-      if (this.dailyJSON) {
-        const thirdDose = this.dailyJSON.booster_vaccinated.replaceAll(",", "")
+      if (this.fullJSON) {
+        const thirdDose = this.latestData.third_dose_cum
         const percentage = (thirdDose / this.population) * 100
-        const progress = this.progressBarWidth * (percentage / 100)
         this.vac3DosePercentage = percentage.toFixed(2)
-        this.vac3DoseProgress = progress
       } else {
         return 0
       }
-    },
-    getVacGoalWidth() {
-      const width = document.getElementById("vac-goal").offsetWidth
-      this.progressBarWidth = width
-      // return width
     },
     updateChartType(type) {
       this.$store.commit("updateSelection", type)

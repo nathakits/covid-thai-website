@@ -64,7 +64,7 @@ export default {
   },
   async fetch() {
     this.data = await this.$axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/vac_allocation.json"
+      "https://nathakits.github.io/covid-tracker-twitter-bot/data/dylan/vac_allocation.json"
     )
     // this.test = await this.$axios.$get(
     //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-delivery.json"
