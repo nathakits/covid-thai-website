@@ -1,12 +1,6 @@
 <template lang="pug">
 div
   div.vaccination-goal
-    div.date-padding.pt-10.flex.justify-between.flex-wrap.gap-4
-      div.last-updated.dark-blue
-        span {{ `Last updated: ${getLastUpdated}` }}
-      div.flex
-        facebook-share.pr-2
-        twitter-share
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
@@ -99,19 +93,6 @@ export default {
         return this.fullJSON[this.fullJSON.length - 1]
       } else {
         return {}
-      }
-    },
-    getLastUpdated() {
-      if (!this.$fetchState.pending) {
-        const data = this.fullJSON[this.fullJSON.length - 1]
-        const date = data.date.split("-")
-        const day = date[2]
-        const month = date[1]
-        const year = date[0]
-        const formattedDate = `${day}/${month}/${year}`
-        return formattedDate
-      } else {
-        return ``
       }
     },
     calcAverage() {
