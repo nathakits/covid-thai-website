@@ -1,5 +1,5 @@
 <template lang="pug">
-div(style="background-color:#f3f4f6;")
+div(style="background-color:#ebeef3;")
   div.container.mx-auto.h-full
     div.vaccination-goal
       div.container-padding.grid.gap-4
