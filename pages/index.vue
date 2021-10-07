@@ -1,46 +1,10 @@
 <template lang="pug">
-main
+main(style="background-color:#f9fafb;")
   vaccine-overview(:all="fullJSON")
   div.container.mx-auto.h-full
-    //- vaccine goal and estimate
+    vaccine-barchart(:data="fullJSON")
     vaccine-target
     div.border-b.container-margin
-    //- vaccination progress
-    div.vaccination-block.container-padding
-      div.explainer.pb-4(
-        class="lg:pb-0"
-      )
-        h2.pb-2 Vaccination Progress
-        p
-          | This chart shows how many people have received vaccine since the start of vaccination program in Thailand.
-        p People who are fully vaccinated may have received more than one dose.
-      div.progress-bar
-        div.controls.flex.justify-between.items-center.flex-wrap.gap-4
-          div.flex.text-gray-500
-            div.mr-4.cursor-pointer(
-              :class="selected === `Cumulative` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
-              @click="updateChartType(`Cumulative`)"
-            ) Cumulative
-            div.cursor-pointer(
-              :class="selected === `Daily` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
-              @click="updateChartType(`Daily`)"
-            ) Daily
-          div.legend.flex.text-sm.flex-wrap.gap-4
-            div.flex.items-center
-              span.dot.firstDose
-              span 1st Dose
-            div.flex.items-center
-              span.dot.secondDose
-              span 2nd Dose
-            div.flex.items-center
-              span.dot.thirdDose
-              span 3rd Dose
-        div.relative
-          div.responsive.bg-gray-100.rounded
-          vaccine-barchart(:data="fullJSON")
-        div.pt-4
-          div.border-b.my-2
-          p.text-xs Note: There are days with a reporting anomaly
     div.vaccination-block.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
@@ -142,7 +106,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selected: "selected",
       population: "thPopulation",
       popGoal1: "popGoal1",
     }),
@@ -197,34 +160,6 @@ export default {
         return 0
       }
     },
-    updateChartType(type) {
-      this.$store.commit("updateSelection", type)
-    },
   },
 }
 </script>
-
-<style scoped lang="scss">
-// chart
-.controls {
-  @apply pb-4;
-}
-// legend
-.dot {
-  display: inline-block;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-
-  &.firstDose {
-    background-color: rgb(168, 218, 181);
-  }
-  &.secondDose {
-    background-color: rgb(91, 185, 116);
-  }
-  &.thirdDose {
-    background-color: rgb(12, 132, 63);
-  }
-}
-</style>
