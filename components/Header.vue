@@ -41,11 +41,8 @@
           div.flex.justify-center.items-center(
             class="sm:justify-start"
           )
-            nuxt-link(
-              to="/"
-              class="hover:no-underline hover:text-black"
-            )
-              h1.title.flex.items-center
+            nuxt-link.title(to="/")
+              h1.flex.items-center(style="font-size:24px")
                 span.border-r-2.border-white.pr-3 {{ title }}
                 span.country Thailand
           div.justify-center.text-right.items-center.hidden(
@@ -58,7 +55,7 @@
               target="_blank"
               rel="noopener noreferrer"
             )
-              span {{ link.name }}
+              span.font-medium {{ link.name }}
             a.button.ko-fi.flex.items-center(
               href="https://ko-fi.com/nathakits"
               target="_blank"
@@ -122,14 +119,14 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  color: #fafafa;
-  background-color: #040133;
+  color: #0c1b39;
+  background-color: #d4d3df;
   a {
     &:hover:not(.button) {
-      @apply hover:no-underline hover:text-blue-400;
+      @apply no-underline text-indigo-500;
     }
-    h1 {
-      @apply hover:no-underline hover:text-white;
+    &:hover.title {
+      @apply no-underline text-current;
     }
   }
 }
