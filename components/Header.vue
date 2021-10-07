@@ -120,7 +120,7 @@ export default {
 <style lang="scss" scoped>
 .header {
   color: #0c1b39;
-  background-color: #d4d3df;
+  background-color: #c6c5d1;
   a {
     &:hover:not(.button) {
       @apply no-underline text-indigo-500;
