@@ -10,12 +10,11 @@ h1 {
 }
 
 h2 {
-  @apply text-2xl font-bold;
-  color: #090076;
+  @apply text-2xl font-bold text-gray-900;
 }
 
 h3 {
-  @apply text-xl font-medium;
+  @apply text-xl font-medium text-gray-900;
 }
 
 a {
