@@ -12,18 +12,18 @@ div
           | This goal has been revised down from 100 million doses to 50 million doses.
       div.progress-bar
         div.flex.justify-between.items-center.pb-2
-          h3.w-min(class="md:w-auto") 50M Doses
+          h3.w-min(class="md:w-auto") 100M Doses
           div.highlight-card
             span.font-bold.text-gray-900
-              | {{ latestData.first_dose_cum.toLocaleString() }}
-              |  / {{ popGoal1.toLocaleString() }}
+              | {{ latestData.second_dose_cum.toLocaleString() }}
+              |  / {{ popGoal100.toLocaleString() }}
         div.vac-goal-bar
           div.vac-progress.vac-goal.rounded-full(
             :style="`width:${vacGoalPercentage}%;`"
           )
           div.vac-bar(id="vac-goal")
         div.flex.justify-between.pt-3.font-medium
-          span.text-sm.text-gray-500 % of 50 Million Doses
+          span.text-sm.text-gray-500 % of 100 Million Doses
           span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
   div.vaccination-block.container-padding
     div.explainer.pb-4(class="lg:pb-0")
@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      popGoal1: "popGoal1",
+      popGoal100: "popGoal100",
     }),
     latestData() {
       if (!this.$fetchState.pending) {
@@ -98,10 +98,10 @@ export default {
     calcAverage() {
       if (!this.$fetchState.pending) {
         const reducer = (accum, current) => accum + current
-        const firstDoseArr = this.slicedData(this.fullJSON).map((el) =>
-          Number(el.first_dose_daily)
+        const secondDoseArr = this.slicedData(this.fullJSON).map((el) =>
+          Number(el.second_dose_daily)
         )
-        const avg = firstDoseArr.reduce(reducer) / 14
+        const avg = secondDoseArr.reduce(reducer) / 14
         const formatAvg = Math.round(avg)
         return formatAvg
       } else {
@@ -117,7 +117,7 @@ export default {
     },
     calcTarget() {
       if (!this.$fetchState.pending) {
-        const targetDoses = this.popGoal1 - this.calcFirstDose
+        const targetDoses = this.popGoal100 - this.calcSecondDose
         const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
@@ -129,17 +129,17 @@ export default {
         const avg = this.calcAverage
         const vaccinated = avg * this.endOfYear
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.first_dose_cum)
+        const dose1st = Number(latest.second_dose_cum)
         const total = dose1st + vaccinated
         return total.toLocaleString()
       } else {
         return 0
       }
     },
-    calcFirstDose() {
+    calcSecondDose() {
       if (!this.$fetchState.pending) {
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.first_dose_cum)
+        const dose1st = Number(latest.second_dose_cum)
         return dose1st
       } else {
         return 0
@@ -147,7 +147,7 @@ export default {
     },
     calcGoalDays() {
       if (!this.$fetchState.pending) {
-        const dosesLeftTillTarget = this.popGoal1 - this.calcFirstDose
+        const dosesLeftTillTarget = this.popGoal100 - this.calcSecondDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -175,7 +175,7 @@ export default {
     calcCountryVacDays() {
       if (!this.$fetchState.pending) {
         const dosesLeftTillTarget =
-          this.$store.getters.thPopulation - this.calcFirstDose
+          this.$store.getters.thPopulation - this.calcSecondDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -211,8 +211,8 @@ export default {
     },
     calcVacGoal() {
       if (!this.$fetchState.pending) {
-        const firstDose = this.latestData.first_dose_cum
-        const percentage = (firstDose / this.popGoal1) * 100
+        const secondDose = this.latestData.second_dose_cum
+        const percentage = (secondDose / this.popGoal100) * 100
         this.vacGoalPercentage = percentage.toFixed(2)
       } else {
         return 0

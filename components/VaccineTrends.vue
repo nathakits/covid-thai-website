@@ -142,7 +142,6 @@ export default {
   computed: {
     ...mapGetters({
       population: "thPopulation",
-      popGoal1: "popGoal1",
     }),
     latestData() {
       if (!this.$fetchState.pending) {
