@@ -4,10 +4,8 @@ main(style="background-color:#f9fafb;")
   div.container.mx-auto.h-full
     vaccine-barchart(:data="fullJSON")
     vaccine-trends
-    div.border-b.container-margin
-    vaccine-target
-    div.border-b.container-margin
     vac-province
+    vaccine-target
     div.border-b.container-margin
     vaccine-manufacturers
     div.border-b.container-margin
