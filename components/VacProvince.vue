@@ -1,57 +1,59 @@
 <template lang="pug">
-div.vaccine-province
-  div.date-padding.dark-blue.pt-6
-    div.last-updated {{ `Last updated: ${getLastUpdated}` }}
-  div.container-padding.table-container.w-full
-    div.grid.grid-cols-8.gap-4(class="sm:gap-10 md:gap-20")
-      div.col-span-full(class="md:col-span-3")
-        h2.pb-2 Vaccination by Province
-        p
-          | This table s sorted by provinces with the most fully vaccinated population.
-        p 
-          | Click on 
-          strong Show All
-          |  to expand the table and show all the other provinces.
-        p
-          | Hover over the 
-          strong Info
-          |  icon to view the population figure.
-    div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
-      template(v-if="provinces.length === 10")
-        button.button(
-          title="Show all items in the table"
-          @click="showMore()"
-        ) Show All
-      template(v-else)
-        button.button(
-          title="Show less items in the table"
-          @click="showLess()"
-        ) Show Less
-    div.border.rounded-lg.shadow.overflow-x-auto
-      table.w-full
-        thead.border-b.border-gray-300
-          tr
-            th.text-xs.text-center(
-              v-for="head in header"
-              class="sm:text-sm"
-            ) {{ head }}
-        tbody
-          tr(v-for="p in provinces")
-            td.text-xs.font-bold.border-r.text-center(class="sm:text-sm")
-              div.flex.gap-3.items-center
-                span.text-left {{ p.name }}
-                div(:title="`${p.name} population - ${p.population}`")
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8.8 12H7.2V7.2H8.8V12ZM8.8 5.6H7.2V4H8.8V5.6Z" fill="#6881D8"/>
-                  </svg>
-            //- td.text-xs(class="sm:text-sm px-6")
-            td.text-xs.w-auto.font-medium.text-center(class="sm:text-sm md:w-32") {{ p.total_1dose }}
-            td.text-xs.w-auto.font-medium.text-center(class="sm:text-sm md:w-32") {{ p.total_2dose }}
-            td.text-xs.w-auto.font-medium.border-r.text-center(class="sm:text-sm md:w-32") {{ p.total_3dose }}
-            td.text-xs.w-auto.font-bold.text-center(
-              class="sm:text-sm md:w-44"
-              :title="`${p.name} population - ${p.population}`"
-            ) {{ `${p.fully_vaccinated}%` }}
+div.container-padding.vaccine-province
+  div.rounded-md.bg-white.p-6.shadow
+    div.table-container.w-full
+      div.grid.grid-cols-2.gap-4
+        div
+          h2.pb-2 Vaccination By Province
+          p.text-gray-500
+            | This table is sorted by provinces with the most fully vaccinated population.
+          //- p.text-gray-500
+          //-   | Click on Show All
+          //-   | to expand the table and show all the other provinces.
+          p.text-gray-500
+            | Hover over the Info
+            | icon to view the population figure.
+        div
+          div.flex.justify-end
+            div.last-updated.dark-blue.w-max(
+              style="height:fit-content"
+            )
+              span {{ `Last updated: ${getLastUpdated}` }}
+      div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
+        template(v-if="provinces.length === 10")
+          button.button(
+            title="Show all items in the table"
+            @click="showMore()"
+          ) Show All
+        template(v-else)
+          button.button(
+            title="Show less items in the table"
+            @click="showLess()"
+          ) Show Less
+      div.border.rounded-lg.overflow-x-auto
+        table.w-full
+          thead.border-b.border-gray-300
+            tr
+              th.text-xs.text-left.font-medium.text-coolGray-500(
+                v-for="head in header"
+              ) {{ head }}
+          tbody
+            tr(v-for="p in provinces")
+              td.text-xs.font-bold.border-r(class="sm:text-sm")
+                div.flex.gap-3.items-center.justify-between
+                  span.text-left {{ p.name }}
+                  div(:title="`${p.name} population - ${p.population}`")
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8.8 12H7.2V7.2H8.8V12ZM8.8 5.6H7.2V4H8.8V5.6Z" fill="#6881D8"/>
+                    </svg>
+              //- td.text-xs(class="sm:text-sm px-6")
+              td.text-xs.w-auto.font-medium(class="sm:text-sm md:w-32") {{ p.total_1dose }}
+              td.text-xs.w-auto.font-medium(class="sm:text-sm md:w-32") {{ p.total_2dose }}
+              td.text-xs.w-auto.font-medium.border-r(class="sm:text-sm md:w-32") {{ p.total_3dose }}
+              td.text-xs.w-auto.font-bold.text-indigo-600(
+                class="sm:text-sm md:w-44"
+                :title="`${p.name} population - ${p.population}`"
+              ) {{ `${p.fully_vaccinated}%` }}
 </template>
 
 <script>
@@ -62,7 +64,13 @@ export default {
     return {
       data: {},
       numProvinces: 10,
-      header: ["", "1st Dose", "2nd Dose", "3rd Dose", "Fully Vaccinated"],
+      header: [
+        "PROVINCE",
+        "1ST DOSE",
+        "2ND DOSE",
+        "3RD DOSE",
+        "FULLY VACCINATED",
+      ],
       province_th_map: {
         Bangkok: "กรุงเทพมหานคร",
         Amnat_Charoen: "อำนาจเจริญ",
@@ -318,11 +326,13 @@ export default {
   }
   thead,
   tbody {
-    @apply bg-gray-100;
-    // background-color: #f7f7f7;
+    @apply bg-gray-50;
   }
-  tbody tr:not(:last-child) td {
-    border-bottom: 1px solid #d1d5db;
+  // tbody tr:not(:last-child) td {
+  //   border-bottom: 1px solid #d1d5db;
+  // }
+  tbody tr:nth-child(odd) {
+    @apply bg-white;
   }
   td,
   th {
