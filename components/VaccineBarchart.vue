@@ -274,7 +274,7 @@ export default {
           fill: false,
           borderColor: "#303f9f",
           borderWidth: 2,
-          tension: 0,
+          tension: 0.2,
         },
         {
           type: "bar",
