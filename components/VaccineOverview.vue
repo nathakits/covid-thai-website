@@ -70,7 +70,7 @@ div(style="background-color:#ebeef3;")
               div.flex.justify-between.items-center.flex-wrap.gap-2
                 div.flex.items-center.gap-2
                   span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-                    | 100 Doses Goal
+                    | 100M Doses Goal
                 span.text-sm.font-medium.pt-1.text-gray-500 Fully Vaccinated
               div.progress.py-2
                 span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
