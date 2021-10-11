@@ -36,7 +36,7 @@ div.vaccination-manufacturers
       div
         div.relative
           div.responsive.bg-gray-100.rounded
-          manufacturer-chart(:data="vac_given")
+          manufacturer-chart(:data="porames")
         div.pt-4
           div.border-b.my-2
           span.text-xs Note: Some data might not be available
@@ -109,37 +109,27 @@ export default {
           status: "Approved",
           type: "Inactivated",
         },
-        // {
-        //   name: "Novavax",
-        //   status: "",
-        //   type: "Subunit",
-        // },
-        // {
-        //   name: "Sputnik V",
-        //   status: "",
-        //   type: "Adenoviral",
-        // },
       ],
     }
   },
   async fetch() {
-    this.vac_given = await this.$axios.$get(
-      "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/dylan/vac_given.json"
-    )
-    // this.porames = await this.$axios.$get(
-    //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
+    // this.vac_given = await this.$axios.$get(
+    //   "https://raw.githubusercontent.com/nathakits/covid-tracker-twitter-bot/main/data/dylan/vac_given.json"
     // )
+    this.porames = await this.$axios.$get(
+      "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-manufacturer-timeseries.json"
+    )
   },
   computed: {
     manufacturers() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.vac_given)
-        // const porData = this.latestObj(this.porames)
-        const astrazenecaDoses = data.AstraZeneca
-        const sinovacDoses = data.Sinovac
-        const sinopharmDoses = data.Sinopharm
-        const pfizerDoses = data.Pfizer
-        // const jnjDoses = porData["Johnson & Johnson"]
+        // const data = this.latestObj(this.vac_given)
+        const porData = this.latestObj(this.porames)
+        const astrazenecaDoses = porData.AstraZeneca
+        const sinovacDoses = porData.Sinovac
+        const sinopharmDoses = porData.Sinopharm
+        const pfizerDoses = porData.Pfizer
+        const jnjDoses = porData["Johnson & Johnson"]
 
         const vaccineArr = this.vacApproval.map((d) => {
           let obj = {}
@@ -170,6 +160,13 @@ export default {
               status: d.status,
               type: d.type,
               doses_administered: pfizerDoses,
+            }
+          } else if (d.name === "Johnson & Johnson") {
+            obj = {
+              name: d.name,
+              status: d.status,
+              type: d.type,
+              doses_administered: jnjDoses,
             }
           } else {
             obj = {
@@ -218,7 +215,7 @@ export default {
     },
     getLastUpdated() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.vac_given)
+        const data = this.latestObj(this.porames)
         const date = data.date.split("-")
         const year = date[0]
         const month = date[1]
