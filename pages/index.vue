@@ -6,9 +6,7 @@ main(style="background-color:#f9fafb;")
     vaccine-trends
     vac-province
     vaccine-target
-    div.border-b.container-margin
     vaccine-manufacturers
-    div.border-b.container-margin
     vaccine-allocation
 </template>
 
