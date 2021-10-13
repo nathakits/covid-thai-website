@@ -1,54 +1,56 @@
 <template lang="pug">
-div.vaccination-manufacturers
-  div.date-padding.dark-blue.pt-6
-    div.last-updated {{ `Last updated: ${getLastUpdated}` }}
-  div.vaccination-block.container-padding
-    div.explainer.pb-4(
-      class="lg:pb-0"
-    )
-      h2.pb-2 Vaccine Manufacturers
-      p This chart shows how many doses was administered by each vaccine manufacturers.
-      p Some missing data in the chart are due the DDC (Department of Disease Control) changing the data in the daily reports from time to time.
-      p 
-        | Part of 
-        strong AstraZeneca
-        |  vaccines are manufactured here in Thailand by Siam Bioscience company.
-        | The rest of the vaccines are bought or donated by other countries.
-    div.progress-bar
+div.container-padding
+  div.rounded-md.bg-white.p-6.shadow
+    div.pb-6.grid.grid-cols-2
+      div
+        h2.pb-2 Vaccine Manufacturers
+        p.text-gray-500 This chart shows how many doses was administered by each vaccine manufacturers.
+      div
+        div.flex.justify-end
+          div.last-updated.dark-blue
+            span {{ `Last updated: ${getLastUpdated}` }}
+    div
       div.controls.flex.justify-between.items-center.pb-4.flex-wrap.gap-4
         div.flex.text-gray-500
           div(
             class="dark-blue font-bold border-b-2 border-dark-blue"
           ) Cumulative
-        div.legend.flex.flex-wrap.text-sm.gap-4
-          div.flex.items-center
-            span.dot.sinovac
-            span Sinovac
-          div.flex.items-center
-            span.dot.astrazeneca
-            span Astrazeneca
-          div.flex.items-center
-            span.dot.sinopharm
-            span Sinopharm
-          div.flex.items-center
-            span.dot.pfizer
-            span Pfizer
       div
         div.relative
           div.responsive.bg-gray-100.rounded
           manufacturer-chart(:data="porames")
         div.pt-4
-          div.border-b.my-2
-          span.text-xs Note: Some data might not be available
-  div.vaccination-block.container-padding
-      div.explainer.pb-4(class="lg:pb-0")
+          div.flex.flex-wrap.gap-4.items-center.justify-between
+            div
+              span.text-xs Note: Some data might not be available
+            div.legend.flex.flex-wrap.text-sm.gap-4
+              div.flex.items-center
+                span.dot.sinovac
+                span Sinovac
+              div.flex.items-center
+                span.dot.astrazeneca
+                span Astrazeneca
+              div.flex.items-center
+                span.dot.sinopharm
+                span Sinopharm
+              div.flex.items-center
+                span.dot.pfizer
+                span Pfizer
+    div.border-b.my-6
+    div.vaccination-block
+      div.explainer.text-gray-500
+        p
+          | Part of 
+          strong AstraZeneca
+          |  vaccines are manufactured here in Thailand by Siam Bioscience company.
+          | The rest of the vaccines are bought or donated by other countries.
         p
           strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
           |  vaccines approved by the FDA (Food and Drug Administration) for use in Thailand.
         p
           strong {{ vaccinesInUse }}
           |  vaccines currently being administered to the public.
-        p.pb-4
+        p
           strong Johnson & Johnson
           |  vaccine was procured and administered by the French Embassy for French citizens only.
       div.progress-bar
@@ -61,13 +63,13 @@ div.vaccination-manufacturers
             :class="`${vac.name.split(' ').join('-').toLowerCase()} ${vac.status !== 'Approved' ? 'text-gray-400' : ''}`"
           )
             div
-              div.text-base.font-medium {{ vac.name }}
+              div.text-sm.font-medium {{ vac.name }}
               div
                 span.text-sm.text-gray-500.vac-type {{ vac.type }}
                 span.text-sm.text-gray-500.vac-status {{ vac.status }}
-            span.text-base.flex.justify-end.items-center.font-medium(:class="`${vac.status === 'Approved' ? 'text-gray-800' :''}`") {{ vac.doses_administered.toLocaleString() }}
+            span.text-sm.flex.justify-end.items-center.font-bold(:class="`${vac.status === 'Approved' ? 'text-gray-800' :''}`") {{ vac.doses_administered.toLocaleString() }}
           div.card-item-padding.grid.grid-cols-2.gap-8
-            div.text-base.font-bold Total
+            div.text-sm.font-bold Total
             span.text-base.flex.justify-end.items-center.font-bold.text-gray-800 {{ totalVaccinesAdministered }}
 </template>
 
