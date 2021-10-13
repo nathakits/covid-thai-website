@@ -1,10 +1,8 @@
 <template lang="pug">
 div.container-padding
   div.div.rounded-md.bg-white.p-6.shadow
-    div.grid.gap-8(
-      class="md:grid-rows-none md:grid-cols-2"
-    )
-      div
+    div.vaccination-block
+      div.explainer
         h2.pb-2 Vaccination Goal
         p.text-gray-500
           | Government's vaccination goal of fully inoculating 50 million people with 2 doses of vaccines by the end of 2021.
@@ -12,7 +10,7 @@ div.container-padding
           | the 2nd dose 14-day average rate is way below the target dose needed to reach the 100 million doses.
         p.text-gray-500
           | At this current rate, we should reach the goal in 2022.
-      div.rounded-md.border.p-4
+      div.rounded-md.border.p-4.progress-bar
         div.grid.gap-6
           div
             div.flex.justify-between.items-center.pb-2
