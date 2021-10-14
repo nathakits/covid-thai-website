@@ -4,18 +4,19 @@ div.container-padding
   //-   facebook-share.pr-2
   //-   twitter-share
   div.rounded-md.bg-white.p-6.shadow
-    div.pb-6.grid.grid-cols-2
-      div
+    div.flex.flex-col.justify-between.flex-wrap.gap-4(
+      class="sm:flex-row"
+    )
+      div.order-2(class="sm:order-1")
         h2.pb-2 Vaccination Progress
+      div.order-1(class="sm:order-2")
+        div.flex.justify-start.dark-blue(class="sm:justify-end")
+          div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
+    div.grid-block
+      div.block.pb-4
         p.text-gray-500
           | This chart shows how many people have received vaccine since the start of vaccination program in Thailand.
         p.text-gray-500 People who are fully vaccinated may have received more than one dose.
-      div
-        div.flex.justify-end
-          div.last-updated.dark-blue.w-max(
-            style="height:fit-content"
-          )
-            span {{ `Last updated: ${getLastUpdated}` }}
     div
       div.flex.justify-between.items-center.flex-wrap.gap-4.pb-6
         div.flex.text-gray-500

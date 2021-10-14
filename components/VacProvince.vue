@@ -2,23 +2,21 @@
 div.container-padding.vaccine-province
   div.rounded-md.bg-white.p-6.shadow
     div.table-container.w-full
-      div.grid.grid-cols-2.gap-4
-        div
+      div.flex.flex-col.justify-between.flex-wrap.gap-4(
+        class="sm:flex-row"
+      )
+        div.order-2(class="sm:order-1")
           h2.pb-2 Vaccination By Province
+        div.order-1(class="sm:order-2")
+          div.flex.justify-start.dark-blue(class="sm:justify-end")
+            div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
+      div.grid-block
+        div.block.pb-4
           p.text-gray-500
             | This table is sorted by provinces with the most fully vaccinated population.
-          //- p.text-gray-500
-          //-   | Click on Show All
-          //-   | to expand the table and show all the other provinces.
           p.text-gray-500
             | Hover over the Info
             | icon to view the population figure.
-        div
-          div.flex.justify-end
-            div.last-updated.dark-blue.w-max(
-              style="height:fit-content"
-            )
-              span {{ `Last updated: ${getLastUpdated}` }}
       div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
         template(v-if="provinces.length === 10")
           button.button(

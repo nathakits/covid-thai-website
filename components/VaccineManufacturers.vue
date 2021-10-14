@@ -1,14 +1,17 @@
 <template lang="pug">
 div.container-padding
   div.rounded-md.bg-white.p-6.shadow
-    div.pb-6.grid.grid-cols-2
-      div
+    div.flex.flex-col.justify-between.flex-wrap.gap-4(
+      class="sm:flex-row"
+    )
+      div.order-2(class="sm:order-1")
         h2.pb-2 Vaccine Manufacturers
+      div.order-1(class="sm:order-2")
+        div.flex.justify-start.dark-blue(class="sm:justify-end")
+          div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
+    div.grid-block
+      div.block.pb-4
         p.text-gray-500 This chart shows how many doses was administered by each vaccine manufacturers.
-      div
-        div.flex.justify-end
-          div.last-updated.dark-blue
-            span {{ `Last updated: ${getLastUpdated}` }}
     div
       div.controls.flex.justify-between.items-center.pb-4.flex-wrap.gap-4
         div.flex.text-gray-500
