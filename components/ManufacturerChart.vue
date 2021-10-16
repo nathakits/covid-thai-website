@@ -60,6 +60,7 @@ export default {
           },
           tooltip: {
             usePointStyle: true,
+            backgroundColor: "rgba(9,0,118,0.7)",
           },
         },
         interaction: {
@@ -103,6 +104,7 @@ export default {
             callbacks: {
               footer: this.totalVaccineValue,
             },
+            backgroundColor: "rgba(9,0,118,0.7)",
           },
         },
         interaction: {
