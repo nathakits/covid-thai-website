@@ -3,7 +3,7 @@ div.bg-disclaimer.text-white
   div.container.mx-auto.h-full
     div.container-padding.flex.justify-between
       div.col-span-5
-        h3.pb-3 About The Data
+        h3.pb-3.text-white About The Data
         p
           | Data are extracted from DDC (Department of Disease Control) daily briefing PDFs.
           | Otherwise, the data is manually input into the JSON with scripts to update other data.
