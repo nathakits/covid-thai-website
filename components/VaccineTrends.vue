@@ -52,7 +52,7 @@ div.container-padding
             div.highlight-card
               span.font-bold.text-gray-900 {{ thirdDoseCum }}
           div.vac-progress-bar
-            div.vac-progress.vac-2dose.rounded-full(
+            div.vac-progress.vac-3dose.rounded-full(
               :style="`width:${calcVac3Dose}%;`"
             )
             div.vac-bar
