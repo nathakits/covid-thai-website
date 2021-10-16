@@ -2,13 +2,13 @@
 div.container-padding
   div.div.rounded-md.bg-white.p-6.shadow
     div.vaccination-block
-      div.explainer
+      div.explainer.text-gray-600
         h2.pb-2 Vaccination Goal
-        p.text-gray-500
+        p
           | Government's vaccination goal of fully inoculating 50 million people with 2 doses of vaccines by the end of 2021.
-        p.text-gray-500
-          | the 2nd dose 14-day average rate is way below the target dose needed to reach the 100 million doses.
-        p.text-gray-500
+        p
+          |The 2nd dose 14-day average rate is way below the target dose needed to reach the 100 million doses in time.
+        p
           | At this current rate, we should reach the goal in 2022.
       div.rounded-md.border.p-4.progress-bar
         div.grid.gap-6
@@ -26,29 +26,29 @@ div.container-padding
               span.text-sm.text-gray-500 % of 100 Million Doses
               span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
           div.grid.gap-4
-            div.flex.justify-between.items-center
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
               div.flex.items-center
                 vaccine-icon
                 span.text-sm.font-medium.pl-2(class="md:pl-4") Target Dose Needed
-              span.text-base.font-bold.text-gray-800.text-right {{ calcTarget }} Doses/Day
-            div.flex.justify-between.items-center.font-medium
+              span.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ calcTarget }} Doses/Day
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
               div.flex.items-center
                 vaccine-icon
                 span.text-sm.font-medium.pl-2(class="md:pl-4") 2nd Dose 14-Day Avg
-              p.text-base.font-bold.text-gray-800.text-right {{ calcAverage.toLocaleString() }} Doses/Day
-            div.flex.justify-between
+              p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ calcAverage.toLocaleString() }} Doses/Day
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
               div.flex.items-center
                 calendar-icon
                 span.text-sm.pl-2.font-medium(class="md:pl-4") Days Left In 2021
               div
-                p.text-base.font-bold.text-right.text-gray-800 {{ `${endOfYear} Days` }}
-            div.flex.justify-between
+                p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ `${endOfYear} Days` }}
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
               div.flex.items-center
                 calendar-icon
                 span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Goal Reached
               div
-                p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays} Days` }}
-                p.text-xs.text-right.text-gray-500.pt-0 {{ `(${calcGoalDate})` }}
+                p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") ~{{ `${calcGoalDays} Days` }}
+                p.text-xs.text-gray-500.pt-0 {{ `(${calcGoalDate})` }}
 </template>
 
 <script>
