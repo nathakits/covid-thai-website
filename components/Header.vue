@@ -38,13 +38,13 @@
     div.container.mx-auto.h-full
       div.header-padding
         div.flex.flex-wrap.justify-between.gap-4.h-full
-          div.flex.justify-center.items-center(
+          div.flex.items-center(
             class="sm:justify-start"
           )
-            nuxt-link.title(to="/")
-              h1.flex.items-center(style="font-size:24px")
-                span.border-r-2.border-gray-500.pr-3 {{ title }}
-                span.country Thailand
+            div.border-r-2.border-gray-500.pr-3
+              nuxt-link.title(to="/")
+                h1.flex.items-center(class="text-base sm:text-lg lg:text-xl font-bold") {{ title }}
+            span.country.text-sm Thailand
           div.justify-center.text-right.items-center.hidden(
             class="sm:pt-2 md:pt-0 sm:justify-end lg:flex"
           )
@@ -131,14 +131,9 @@ export default {
   }
 }
 
-.title {
-  @apply text-base sm:text-lg lg:text-2xl font-bold;
-}
-
 .country {
   @apply pl-3;
   @apply font-normal;
-  font-size: 16px;
 }
 
 .nav-drawer {
