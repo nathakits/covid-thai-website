@@ -11,10 +11,10 @@ div.container-padding.vaccine-province
           div.flex.justify-start.dark-blue(class="sm:justify-end")
             div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
       div.grid-block
-        div.block.pb-4
-          p.text-gray-500
+        div.block.pb-4.text-gray-600
+          p
             | This table is sorted by provinces with the most fully vaccinated population.
-          p.text-gray-500
+          p
             | Hover over the Info
             | icon to view the population figure.
       div.pb-4.pt-6.flex.justify-start(class="md:justify-end")
