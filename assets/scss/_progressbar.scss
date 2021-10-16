@@ -7,7 +7,7 @@
   @apply absolute z-10;
   height: 16px;
   &.vac-goal {
-    background-color: #064e3b;
+    background-color: rgb(12, 132, 63);
   }
   &.vac-total {
     background-color: #059669;
@@ -17,6 +17,9 @@
   }
   &.vac-2dose {
     background-color: rgb(91, 185, 116);
+  }
+  &.vac-3dose {
+    background-color: rgb(12, 132, 63);
   }
   &.vac-target {
     background-color: rgb(223, 26, 26);
