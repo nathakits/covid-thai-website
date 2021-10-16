@@ -16,18 +16,11 @@ div.container-padding
       div.explainer.pb-4(
         class="lg:pb-0"
       )
-        p.text-gray-500 Vaccines allocated to different provinces and local agencies.
-        p.text-gray-500
-          | Allocation data only includes
-          strong  Sinovac
-          | ,
-          strong  AstraZeneca
-          |  and
-          strong  Pfizer
-          |  since these vaccines are handled directly by the MOPH (Ministry of Public Health),
-          |  whereas 
-          strong Sinopharm
-          |  is handled by Chulabhorn Hospital
+        p.text-gray-600 Vaccines allocated to different provinces and local agencies.
+        p.text-gray-600
+          | Allocation data only includes Sinovac, AstraZeneca and Pfizer
+          | since these vaccines are handled directly by the MOPH (Ministry of Public Health),
+          | whereas Sinopharm is handled by Chulabhorn Hospital.
       div.progress-bar
         div.card.grid.divide-y.divide-gray-300
           div.card-item-padding.flex.justify-between
