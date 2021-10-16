@@ -11,7 +11,7 @@ div.container-padding
           div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
     div.grid-block
       div.block.pb-4
-        p.text-gray-500 This chart shows how many doses was administered by each vaccine manufacturers.
+        p.text-gray-600 This chart shows how many doses was administered by each vaccine manufacturers.
     div
       div.controls.flex.justify-between.items-center.pb-4.flex-wrap.gap-4
         div.flex.text-gray-500
@@ -41,11 +41,10 @@ div.container-padding
                 span Pfizer
     div.border-b.my-6
     div.vaccination-block
-      div.explainer.text-gray-500
+      div.explainer.text-gray-600
         p
-          | Part of 
-          strong AstraZeneca
-          |  vaccines are manufactured here in Thailand by Siam Bioscience company.
+          | Part of AstraZeneca
+          | vaccines are manufactured here in Thailand by Siam Bioscience company.
           | The rest of the vaccines are bought or donated by other countries.
         p
           strong {{ manufacturers.filter(vac => vac.status === 'Approved').length }}
@@ -54,8 +53,8 @@ div.container-padding
           strong {{ vaccinesInUse }}
           |  vaccines currently being administered to the public.
         p
-          strong Johnson & Johnson
-          |  vaccine was procured and administered by the French Embassy for French citizens only.
+          | Johnson & Johnson
+          | vaccine was procured and administered by the French Embassy for French citizens only.
       div.progress-bar
         div.card.grid.divide-y.divide-gray-300
           div.card-item-padding.flex.justify-between
@@ -68,8 +67,8 @@ div.container-padding
             div
               div.text-sm.font-medium {{ vac.name }}
               div
-                span.text-sm.text-gray-500.vac-type {{ vac.type }}
-                span.text-sm.text-gray-500.vac-status {{ vac.status }}
+                span.text-xs.text-gray-500.vac-type(class="sm:text-sm") {{ vac.type }}
+                span.text-xs.text-gray-500.vac-status(class="sm:text-sm") {{ vac.status }}
             span.text-sm.flex.justify-end.items-center.font-bold(:class="`${vac.status === 'Approved' ? 'text-gray-800' :''}`") {{ vac.doses_administered.toLocaleString() }}
           div.card-item-padding.grid.grid-cols-2.gap-8
             div.text-sm.font-bold Total
@@ -207,11 +206,7 @@ export default {
     vaccinesInUse() {
       if (!this.$fetchState.pending) {
         const vaccines = this.manufacturers.filter((vac) => {
-          let vacs = 0
-          if (vac.name !== "Johnson & Johnson") {
-            vacs = vac.doses_administered > 0
-          }
-          return vacs
+          return vac.doses_administered > 0
         })
         return vaccines.length
       } else {
