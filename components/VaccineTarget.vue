@@ -1,72 +1,54 @@
 <template lang="pug">
-div
-  div.vaccination-goal
-    div.date-padding.pt-10.flex.justify-between.flex-wrap.gap-4
-      div.last-updated.dark-blue
-        span {{ `Last updated: ${getLastUpdated}` }}
-      div.flex
-        facebook-share.pr-2
-        twitter-share
-    div.vaccination-block.container-padding
-      div.explainer.pb-4(
-        class="lg:pb-0"
-      )
+div.container-padding
+  div.div.rounded-md.bg-white.p-6.shadow
+    div.vaccination-block
+      div.explainer.text-gray-600
         h2.pb-2 Vaccination Goal
         p
-          | Government's vaccination goal of inoculating 50 million people with 1st dose of vaccines by the end of 2021.
-        p.pb-4
-          | This goal has been revised down from 100 million doses to 50 million doses.
-      div.progress-bar
-        div.flex.justify-between.items-center.pb-2
-          h3.w-min(class="md:w-auto") 50M Doses
-          div.highlight-card
-            span.font-bold.text-gray-900
-              | {{ latestData.first_dose_cum.toLocaleString() }}
-              |  / {{ popGoal1.toLocaleString() }}
-        div.vac-goal-bar
-          div.vac-progress.vac-goal.rounded-full(
-            :style="`width:${vacGoalPercentage}%;`"
-          )
-          div.vac-bar(id="vac-goal")
-        div.flex.justify-between.pt-3.font-medium
-          span.text-sm.text-gray-500 % of 50 Million Doses
-          span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
-  div.vaccination-block.container-padding
-    div.explainer.pb-4(class="lg:pb-0")
-      p
-        | With the newly revised goal set out by the Thai government, the 1st dose 14-day average rate has exceeded the target dose needed to reach the 50 million doses.
-    div.progress-bar
-      div.card.grid.divide-y.divide-gray-300
-        div.card-item-padding.flex.justify-between.items-center
-          div.flex.items-center
-            vaccine-icon
-            span.text-sm.font-medium.pl-2(class="md:pl-4") Target Dose Needed
-          span.text-base.font-bold.text-gray-800.text-right {{ calcTarget }} Doses/Day
-        div.card-item-padding.flex.justify-between.items-center.font-medium
-          div.flex.items-center
-            vaccine-icon
-            span.text-sm.font-medium.pl-2(class="md:pl-4") 1st Dose 14-Day Avg
-          p.text-base.font-bold.text-gray-800.text-right {{ calcAverage.toLocaleString() }} Doses/Day
-
-  div.vaccination-block.container-padding
-    div.explainer.pb-4(class="lg:pb-0")
-      p
-        | At this current rate, we should reach the goal before the end of the year.
-    div.progress-bar
-      div.card.grid.divide-y.divide-gray-300
-        div.card-item-padding.flex.justify-between
-          div.flex.items-center
-            calendar-icon
-            span.text-sm.pl-2.font-medium(class="md:pl-4") Days Left In 2021
+          | Government's vaccination goal of fully inoculating 50 million people with 2 doses of vaccines by the end of 2021.
+        p
+          |The 2nd dose 14-day average rate is way below the target dose needed to reach the 100 million doses in time.
+        p
+          | At this current rate, we should reach the goal in 2022.
+      div.rounded-md.border.p-4.progress-bar
+        div.grid.gap-6
           div
-            p.text-base.font-bold.text-right.text-gray-800 {{ `${endOfYear} Days` }}
-        div.card-item-padding.flex.justify-between
-          div.flex.items-center
-            calendar-icon
-            span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Goal Reached
-          div
-            p.text-base.font-bold.text-right.text-gray-800 ~{{ `${calcGoalDays} Days` }}
-            p.text-xs.text-right.text-gray-500 {{ `(${calcGoalDate})` }}
+            div.flex.justify-between.items-center.pb-2
+              span.text-lg.font-medium.w-min(class="md:w-auto") 100M Doses
+              span.text-2xl.font-bold.text-gray-900
+                | {{ latestData.second_dose_cum.toLocaleString() }}
+            div.vac-goal-bar
+              div.vac-progress.vac-goal.rounded-full(
+                :style="`width:${vacGoalPercentage}%;`"
+              )
+              div.vac-bar(id="vac-goal")
+            div.flex.justify-between.pt-3.font-medium
+              span.text-sm.text-gray-500 % of 100 Million Doses
+              span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
+          div.grid.gap-4
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
+              div.flex.items-center
+                vaccine-icon
+                span.text-sm.font-medium.pl-2(class="md:pl-4") Target Dose Needed
+              span.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ calcTarget }} Doses/Day
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
+              div.flex.items-center
+                vaccine-icon
+                span.text-sm.font-medium.pl-2(class="md:pl-4") 2nd Dose 14-Day Avg
+              p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ calcAverage.toLocaleString() }} Doses/Day
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
+              div.flex.items-center
+                calendar-icon
+                span.text-sm.pl-2.font-medium(class="md:pl-4") Days Left In 2021
+              div
+                p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") {{ `${endOfYear} Days` }}
+            div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
+              div.flex.items-center
+                calendar-icon
+                span.text-sm.pl-2.font-medium(class="md:pl-4") Time Till Goal Reached
+              div
+                p.text-sm.font-bold.text-gray-800.text-left(class="sm:text-right") ~{{ `${calcGoalDays} Days` }}
+                p.text-xs.text-gray-500.pt-0 {{ `(${calcGoalDate})` }}
 </template>
 
 <script>
@@ -92,7 +74,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      popGoal1: "popGoal1",
+      popGoal100: "popGoal100",
     }),
     latestData() {
       if (!this.$fetchState.pending) {
@@ -101,26 +83,13 @@ export default {
         return {}
       }
     },
-    getLastUpdated() {
-      if (!this.$fetchState.pending) {
-        const data = this.fullJSON[this.fullJSON.length - 1]
-        const date = data.date.split("-")
-        const day = date[2]
-        const month = date[1]
-        const year = date[0]
-        const formattedDate = `${day}/${month}/${year}`
-        return formattedDate
-      } else {
-        return ``
-      }
-    },
     calcAverage() {
       if (!this.$fetchState.pending) {
         const reducer = (accum, current) => accum + current
-        const firstDoseArr = this.slicedData(this.fullJSON).map((el) =>
-          Number(el.first_dose_daily)
+        const secondDoseArr = this.slicedData(this.fullJSON).map((el) =>
+          Number(el.second_dose_daily)
         )
-        const avg = firstDoseArr.reduce(reducer) / 14
+        const avg = secondDoseArr.reduce(reducer) / 14
         const formatAvg = Math.round(avg)
         return formatAvg
       } else {
@@ -136,7 +105,7 @@ export default {
     },
     calcTarget() {
       if (!this.$fetchState.pending) {
-        const targetDoses = this.popGoal1 - this.calcFirstDose
+        const targetDoses = this.popGoal100 - this.calcSecondDose
         const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
@@ -148,25 +117,25 @@ export default {
         const avg = this.calcAverage
         const vaccinated = avg * this.endOfYear
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.first_dose_cum)
-        const total = dose1st + vaccinated
+        const dose2 = Number(latest.second_dose_cum)
+        const total = dose2 + vaccinated
         return total.toLocaleString()
       } else {
         return 0
       }
     },
-    calcFirstDose() {
+    calcSecondDose() {
       if (!this.$fetchState.pending) {
         const latest = this.fullJSON[this.fullJSON.length - 1]
-        const dose1st = Number(latest.first_dose_cum)
-        return dose1st
+        const dose2 = Number(latest.second_dose_cum)
+        return dose2
       } else {
         return 0
       }
     },
     calcGoalDays() {
       if (!this.$fetchState.pending) {
-        const dosesLeftTillTarget = this.popGoal1 - this.calcFirstDose
+        const dosesLeftTillTarget = this.popGoal100 - this.calcSecondDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -194,7 +163,7 @@ export default {
     calcCountryVacDays() {
       if (!this.$fetchState.pending) {
         const dosesLeftTillTarget =
-          this.$store.getters.thPopulation - this.calcFirstDose
+          this.$store.getters.thPopulation - this.calcSecondDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -230,8 +199,8 @@ export default {
     },
     calcVacGoal() {
       if (!this.$fetchState.pending) {
-        const firstDose = this.latestData.first_dose_cum
-        const percentage = (firstDose / this.popGoal1) * 100
+        const secondDose = this.latestData.second_dose_cum
+        const percentage = (secondDose / this.popGoal100) * 100
         this.vacGoalPercentage = percentage.toFixed(2)
       } else {
         return 0

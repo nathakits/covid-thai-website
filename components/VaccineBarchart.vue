@@ -1,15 +1,62 @@
 <template lang="pug">
-//- todo
-//- update tooltip to html
-//- ref - nyt
-div.chart
-  canvas(id="vaccine-chart" style="width:100%;height:100%;")
+div.container-padding
+  //- div.flex.justify-end.pb-4
+  //-   facebook-share.pr-2
+  //-   twitter-share
+  div.rounded-md.bg-white.p-6.shadow
+    div.flex.flex-col.justify-between.flex-wrap.gap-4(
+      class="sm:flex-row"
+    )
+      div.order-2(class="sm:order-1")
+        h2.pb-2 Vaccination Progress
+      div.order-1(class="sm:order-2")
+        div.flex.justify-start.dark-blue(class="sm:justify-end")
+          div.last-updated.dark-blue {{ `Last updated: ${getLastUpdated}` }}
+    div.grid-block
+      div.block.pb-4
+        p.text-gray-500
+          | This chart shows how many people have received vaccine since the start of vaccination program in Thailand.
+        p.text-gray-500 People who are fully vaccinated may have received more than one dose.
+    div
+      div.flex.justify-between.items-center.flex-wrap.gap-4.pb-6
+        div.flex.text-gray-500
+          div.mr-4.cursor-pointer(
+            :class="selected === `Cumulative` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
+            @click="updateChartType(`Cumulative`)"
+          ) Cumulative
+          div.cursor-pointer(
+            :class="selected === `Daily` ? `dark-blue font-bold border-b-2 border-dark-blue` : ``"
+            @click="updateChartType(`Daily`)"
+          ) Daily
+      div.relative
+        div.responsive.bg-gray-100.rounded
+        div.chart
+          canvas(id="vaccine-chart" style="width:100%;height:100%;")
+      div.pt-4
+        //- div.border-b.my-2
+        div.flex.justify-between.items-center.flex-wrap.gap-4
+          p.text-xs Note: There are days with a reporting anomaly
+          div.legend.flex.text-sm.flex-wrap.gap-4
+            div.flex.items-center
+              span.dot.firstDose
+              span 1st Dose
+            div.flex.items-center
+              span.dot.secondDose
+              span 2nd Dose
+            div.flex.items-center
+              span.dot.thirdDose
+              span 3rd Dose
+            div.flex.items-center
+              span.line.avgDose
+              span 7-Day Moving Average
 </template>
 
 <script>
 import dayjs from "dayjs"
 import Chart from "chart.js/auto"
 import { LineController } from "chart.js"
+import { mapGetters } from "vuex"
+import { ma } from "moving-averages"
 
 // show vertical line on hover
 class Custom extends LineController {
@@ -56,7 +103,6 @@ export default {
       secondDoseColor: "rgb(91,185,116)",
       thirdDoseLabel: "3rd Dose",
       thirdDoseColor: "rgb(12,132,63)",
-      tooltipColor: "rgba(9,0,118,0.7)",
       lineOptions: {
         plugins: {
           legend: {
@@ -68,10 +114,7 @@ export default {
               title: this.tooltipTitle,
               footer: this.totalVaccineValue,
             },
-            backgroundColor: this.tooltipColor,
-            // enabled: false,
-            // external: this.externalTooltipHandler,
-            // position: "nearest",
+            backgroundColor: "rgba(9,0,118,0.7)",
           },
         },
         interaction: {
@@ -116,7 +159,7 @@ export default {
             callbacks: {
               footer: this.totalVaccineValue,
             },
-            backgroundColor: this.tooltipColor,
+            backgroundColor: "rgba(9,0,118,0.7)",
           },
         },
         interaction: {
@@ -155,6 +198,22 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      selected: "selected",
+    }),
+    getLastUpdated() {
+      if (this.data) {
+        const data = this.data[this.data.length - 1]
+        const date = data.date.split("-")
+        const day = date[2]
+        const month = date[1]
+        const year = date[0]
+        const formattedDate = `${day}/${month}/${year}`
+        return formattedDate
+      } else {
+        return ``
+      }
+    },
     chartType() {
       return this.$store.state.selected
     },
@@ -186,18 +245,40 @@ export default {
           data: firstDose,
           backgroundColor: this.firstDoseColor,
           fill: true,
-          borderColor: this.secondDoseColor,
+          borderColor: this.firstDoseColor,
           pointStyle: "circle",
         },
       ]
       return dataset
     },
     dailyVaccineYAxis() {
-      const firstDoseDaily = this.vacData.map((d) => d.first_dose_daily)
+      const firstDoseDaily = this.vacData.map((d) => {
+        if (d.first_dose_daily < 0) {
+          console.log(d.first_dose_daily)
+        }
+        return Math.abs(d.first_dose_daily)
+      })
       const secondDoseDaily = this.vacData.map((d) => d.second_dose_daily)
       const thirdDoseDaily = this.vacData.map((d) => d.third_dose_daily)
+      // average
+      const totalDosePlusArr = this.vacData.map(
+        (d) => d.total_vaccinations_daily
+      )
+      // const avgArr = this.caculateMovingAverage(totalDosePlusArr, 7)
+      const avgArr = ma(totalDosePlusArr, 7)
+      // const formatAvg = Math.round(avgArr).toLocaleString()
       const dataset = [
         {
+          type: "line",
+          label: `7-day MA`,
+          data: avgArr,
+          fill: false,
+          borderColor: "#303f9f",
+          borderWidth: 2,
+          tension: 0.2,
+        },
+        {
+          type: "bar",
           label: this.thirdDoseLabel,
           data: thirdDoseDaily,
           backgroundColor: this.thirdDoseColor,
@@ -205,6 +286,7 @@ export default {
           pointStyle: "circle",
         },
         {
+          type: "bar",
           label: this.secondDoseLabel,
           data: secondDoseDaily,
           backgroundColor: this.secondDoseColor,
@@ -212,11 +294,12 @@ export default {
           pointStyle: "circle",
         },
         {
+          type: "bar",
           label: this.firstDoseLabel,
           data: firstDoseDaily,
           backgroundColor: this.firstDoseColor,
           fill: true,
-          borderColor: this.secondDoseColor,
+          borderColor: this.firstDoseColor,
           pointStyle: "circle",
         },
       ]
@@ -238,8 +321,7 @@ export default {
         this.updateConfigAsNewObject(
           this.chartjs,
           this.dailyVaccineYAxis,
-          this.barOptions,
-          `bar`
+          this.barOptions
         )
       }
     },
@@ -251,6 +333,9 @@ export default {
     })
   },
   methods: {
+    updateChartType(type) {
+      this.$store.commit("updateSelection", type)
+    },
     genLineChart() {
       const ctx = document.getElementById("vaccine-chart")
       const chart = new Chart(ctx, {
@@ -272,7 +357,9 @@ export default {
       return format
     },
     updateConfigAsNewObject(chart, data, options, type) {
-      chart.config._config.type = type
+      if (type) {
+        chart.config._config.type = type
+      }
       chart.data.datasets = data
       chart.options = options
       chart.update()
@@ -335,15 +422,7 @@ export default {
 
         const bodyEl = document.createElement("div")
         bodyLines.forEach((body, i) => {
-          // const colors = tooltip.labelColors[i]
           const div = document.createElement("div")
-          // div.style.background = colors.backgroundColor
-          // div.style.borderColor = colors.borderColor
-          // div.style.borderWidth = "2px"
-          // div.style.marginRight = "10px"
-          // div.style.height = "10px"
-          // div.style.width = "10px"
-          // div.style.display = "inline-block"
           div.textContent = body
           bodyEl.appendChild(div)
         })
@@ -364,7 +443,6 @@ export default {
       tooltipEl.style.opacity = 1
       tooltipEl.style.left = positionX + tooltip.caretX + "px"
       tooltipEl.style.top = "0px"
-      // tooltipEl.style.top = positionY + tooltip.caretY + "px"
       tooltipEl.style.font = tooltip.options.bodyFont.string
       tooltipEl.style.padding =
         tooltip.options.padding + "px " + tooltip.options.padding + "px"
@@ -374,6 +452,34 @@ export default {
 </script>
 
 <style lang="scss">
+.dot {
+  display: inline-block;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  &.firstDose {
+    background-color: rgb(168, 218, 181);
+  }
+  &.secondDose {
+    background-color: rgb(91, 185, 116);
+  }
+  &.thirdDose {
+    background-color: rgb(12, 132, 63);
+  }
+}
+.line {
+  display: inline-block;
+  width: 40px;
+  height: 3px;
+  margin-right: 8px;
+
+  &.avgDose {
+    background-color: #303f9f;
+  }
+}
+
 .chart {
   top: 0;
   left: 0;
@@ -381,7 +487,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 canvas {
   background-color: white;
 }

@@ -5,8 +5,8 @@ export const state = () => ({
   selected: "Cumulative",
   menuOpened: false,
   thPopulation: 72034815,
-  popGoal1: 50000000,
-  popGoal2: 100000000,
+  popGoal50: 50000000,
+  popGoal100: 100000000,
 })
 
 export const mutations = {
@@ -28,10 +28,10 @@ export const getters = {
   thPopulation: (state) => {
     return state.thPopulation
   },
-  popGoal1: (state) => {
-    return state.popGoal1
+  popGoal50: (state) => {
+    return state.popGoal50
   },
-  popGoal2: (state) => {
-    return state.popGoal2
+  popGoal100: (state) => {
+    return state.popGoal100
   },
 }

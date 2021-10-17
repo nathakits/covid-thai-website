@@ -1,50 +1,46 @@
 <template lang="pug">
-//- todo add allocation by province
-//- horizontal bar chart
-div.vaccination-manufacturers
-  div.date-padding.dark-blue.pt-6
-    div.last-updated {{ `Last updated: ${getLastUpdated}` }}
-  div.vaccination-block.container-padding
-    div.explainer.pb-4(
-      class="lg:pb-0"
+div.container-padding
+  div.div.rounded-md.bg-white.p-6.shadow
+    div.flex.flex-col.justify-between.flex-wrap.gap-4(
+      class="sm:flex-row"
     )
-      h2.pb-2
-        | Vaccine Allocation
-        br
-        | By MOPH
-      p Vaccines allocated to different provinces and local agencies.
-      p
-        | Allocation data only includes
-        strong  Sinovac
-        |  ,
-        strong  AstraZeneca
-        |  and
-        strong  Pfizer
-        |  since these vaccines are handled directly by the MOPH (Ministry of Public Health),
-        |  whereas 
-        strong Sinopharm
-        |  is handled by Chulabhorn Hospital
-    div.progress-bar
-      div.card.grid.divide-y.divide-gray-300
-        div.card-item-padding.flex.justify-between
-          div.text-base.font-bold Vaccine
-          span.text-base.font-bold Allocated
-        div.card-item-padding.grid.grid-cols-2.gap-8(
-          v-for="vac in latestAllocation"
-        )
-          div
-            div.text-base.font-medium {{ vac.name }}
-          span.text-base.flex.justify-end.items-center.font-medium.text-gray-800 {{ vac.doses_allocated.toLocaleString() }}
-        div.card-item-padding.grid.grid-cols-2.gap-8
-          div.text-base.font-bold Total
-          span.text-base.flex.justify-end.items-center.font-bold.text-gray-800 {{ totalLatestAllocation }}
+      div.order-2(class="sm:order-1")
+        h2.pb-2
+          | Vaccine Allocation
+          br
+          | By MOPH
+      div.order-1(class="sm:order-2")
+        div.flex.justify-start.dark-blue(class="sm:justify-end")
+          div.last-updated {{ `Last updated: ${getLastUpdated}` }}
+    div.vaccination-block
+      div.explainer.pb-4(
+        class="lg:pb-0"
+      )
+        p.text-gray-600 Vaccines allocated to different provinces and local agencies.
+        p.text-gray-600
+          | Allocation data only includes Sinovac, AstraZeneca and Pfizer
+          | since these vaccines are handled directly by the MOPH (Ministry of Public Health),
+          | whereas Sinopharm is handled by Chulabhorn Hospital.
+      div.progress-bar
+        div.card.grid.divide-y.divide-gray-300
+          div.card-item-padding.flex.justify-between
+            div.text-base.font-bold Vaccine
+            span.text-base.font-bold Allocated
+          div.card-item-padding.grid.grid-cols-2.gap-8(
+            v-for="vac in latestAllocation"
+          )
+            div
+              div.text-sm.font-medium {{ vac.name }}
+            span.text-sm.flex.justify-end.items-center.font-bold.text-gray-800 {{ vac.doses_allocated.toLocaleString() }}
+          div.card-item-padding.grid.grid-cols-2.gap-8
+            div.text-base.font-bold Total
+            span.text-base.flex.justify-end.items-center.font-bold.text-gray-800 {{ totalLatestAllocation }}
 </template>
 
 <script>
 export default {
   data() {
     return {
-      // test: {},
       data: [],
       vacc_allocation: [
         {
@@ -63,12 +59,12 @@ export default {
     }
   },
   async fetch() {
-    this.data = await this.$axios.$get(
-      "https://nathakits.github.io/covid-tracker-twitter-bot/data/dylan/vac_allocation.json"
-    )
-    // this.test = await this.$axios.$get(
-    //   "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-delivery.json"
+    // this.data = await this.$axios.$get(
+    //   "https://nathakits.github.io/covid-tracker-twitter-bot/data/dylan/vac_allocation.json"
     // )
+    this.data = await this.$axios.$get(
+      "https://raw.githubusercontent.com/wiki/porames/the-researcher-covid-data/vaccination/vaccine-delivery.json"
+    )
   },
   computed: {
     totalSupply() {
@@ -82,23 +78,33 @@ export default {
     },
     latestAllocation() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
+        // const data = this.latestObj(this.data)
+        const data = this.data.data
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue
+        const sinovacArr = data.map((d) => d.delivered_sinovac)
+        const astraArr = data.map((d) => d.delivered_astrazeneca)
+        const pfizerArr = data.map((d) => d.delivered_pfizer)
+        const sinovacTotal = sinovacArr.reduce(reducer)
+        const astraTotal = astraArr.reduce(reducer)
+        const pfizerTotal = pfizerArr.reduce(reducer)
+
         const allocationArr = this.vacc_allocation.map((d) => {
           let obj = {}
           if (d.name === "Sinovac") {
             obj = {
               name: d.name,
-              doses_allocated: data.allocated_sinovac,
+              doses_allocated: sinovacTotal,
             }
           } else if (d.name === "AstraZeneca") {
             obj = {
               name: d.name,
-              doses_allocated: data.allocated_astrazeneca,
+              doses_allocated: astraTotal,
             }
           } else if (d.name === "Pfizer") {
             obj = {
               name: d.name,
-              doses_allocated: data.allocated_pfizer,
+              doses_allocated: pfizerTotal,
             }
           } else {
             obj = {
@@ -116,16 +122,28 @@ export default {
     },
     totalLatestAllocation() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
-        return data.allocated_total.toLocaleString()
+        // const data = this.latestObj(this.data)
+        // return data.allocated_total.toLocaleString()
+        const data = this.data.data
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue
+        const sinovacArr = data.map((d) => d.delivered_sinovac)
+        const astraArr = data.map((d) => d.delivered_astrazeneca)
+        const pfizerArr = data.map((d) => d.delivered_pfizer)
+        const sinovacTotal = sinovacArr.reduce(reducer)
+        const astraTotal = astraArr.reduce(reducer)
+        const pfizerTotal = pfizerArr.reduce(reducer)
+        const total = sinovacTotal + astraTotal + pfizerTotal
+        return total.toLocaleString()
       } else {
         return ``
       }
     },
     getLastUpdated() {
       if (!this.$fetchState.pending) {
-        const data = this.latestObj(this.data)
-        const date = data.date.split("-")
+        // const data = this.latestObj(this.data)
+        const data = this.data.update_date
+        const date = data.split("-")
         const year = date[0]
         const month = date[1]
         const day = date[2]
