@@ -47,7 +47,7 @@ div.bg-disclaimer.text-white
     div.container-padding
       div
         h3.pb-3 Disclaimer
-        p Data offered here is offered as is with no guarentees.
+        p Data offered here is offered as is with no guarantees.
         p Attempts are made to retrieve data from aforementioned sources everyday but is not guaranteed to be up to date.
         p
           | If you would like to report any issues or request features please contact me via email.
