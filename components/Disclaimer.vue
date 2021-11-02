@@ -6,9 +6,9 @@ div.bg-disclaimer.text-white
         h3.pb-3.text-white About The Data
         p
           | Data are extracted from DDC (Department of Disease Control) daily briefing PDFs.
-          | Otherwise, the data is manually input into the JSON with scripts to update other data.
+          | Otherwise, the data is gathered from other sources.
         p.pb-3
-          | Part of the data used are from Dylan Jay's COVID Thailand Github repository.
+          | Part of the data used are from Dylan Jay's and The Researcher Github Repository.
         p Source: 
           a.underline(
             target="_blank"
