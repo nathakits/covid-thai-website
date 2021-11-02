@@ -5,7 +5,7 @@ export const state = () => ({
   selected: "Cumulative",
   menuOpened: false,
   thPopulation: 72034815,
-  popGoal50: 50000000,
+  goal50: 50000000,
   popGoal100: 100000000,
 })
 
@@ -28,8 +28,8 @@ export const getters = {
   thPopulation: (state) => {
     return state.thPopulation
   },
-  popGoal50: (state) => {
-    return state.popGoal50
+  goal50: (state) => {
+    return state.goal50
   },
   popGoal100: (state) => {
     return state.popGoal100

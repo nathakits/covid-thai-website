@@ -68,15 +68,14 @@ div(style="background-color:#ebeef3;")
           )
             div
               div.flex.justify-between.items-center.flex-wrap.gap-2
-                div.flex.items-center.gap-2
-                  span.font-bold.text-sm.text-gray-900(class="lg:text-base")
-                    | 100M Doses Goal
-                span.text-sm.font-medium.pt-1.text-gray-500 Fully Vaccinated
+                span.font-bold.text-sm.text-gray-900(class="lg:text-base")
+                  | 50 Million Doses Goal
+                span.text-sm.font-medium.text-gray-500 Fully Vaccinated
               div.progress.py-2
                 span.flex.h-4.overflow-hidden.rounded-lg.bg-gray-200
                   span.goalBar(:style="`width:${popGoal}%`")
               div.flex.justify-between.items-center.flex-wrap.gap-2
-                span.text-sm.font-medium.text-gray-800.pt-1 % of 100 Million Doses
+                span.text-sm.font-medium.text-gray-800.pt-1 % of 50 Million 2nd Dose
                 span.text-sm.font-bold {{ `${popGoal}%` }}
 </template>
 
@@ -123,7 +122,7 @@ export default {
   computed: {
     ...mapGetters({
       population: "thPopulation",
-      popGoal100: "popGoal100",
+      goal50: "goal50",
     }),
     latestData() {
       if (this.all) {
@@ -135,9 +134,7 @@ export default {
     popGoal() {
       if (this.all) {
         const latest = this.latestData
-        const goal = ((latest.second_dose_cum / this.popGoal100) * 100).toFixed(
-          2
-        )
+        const goal = ((latest.second_dose_cum / this.goal50) * 100).toFixed(2)
         return goal
       } else {
         return 0

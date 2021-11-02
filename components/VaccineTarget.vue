@@ -5,16 +5,14 @@ div.container-padding
       div.explainer.text-gray-600
         h2.pb-2 Vaccination Goal
         p
-          | Government's vaccination goal of fully inoculating 50 million people with 2 doses of vaccines by the end of 2021.
+          | Thai Government's vaccination goal of fully inoculating 50 million people with 2 doses of vaccines by the end of 2021.
         p
-          |The 2nd dose 14-day average rate is way below the target dose needed to reach the 100 million doses in time.
-        p
-          | At this current rate, we should reach the goal in 2022.
+          |The 2nd dose 14-day average rate is on track to reach the 50 million doses in time.
       div.rounded-md.border.p-4.progress-bar
         div.grid.gap-6
           div
             div.flex.justify-between.items-center.pb-2
-              span.text-lg.font-medium.w-min(class="md:w-auto") 100M Doses
+              span.text-lg.font-medium.w-min(class="md:w-auto") 50 Million Doses
               span.text-2xl.font-bold.text-gray-900
                 | {{ latestData.second_dose_cum.toLocaleString() }}
             div.vac-goal-bar
@@ -23,7 +21,7 @@ div.container-padding
               )
               div.vac-bar(id="vac-goal")
             div.flex.justify-between.pt-3.font-medium
-              span.text-sm.text-gray-500 % of 100 Million Doses
+              span.text-sm.text-gray-500 % of 50 Million 2nd Dose
               span.text-base.font-bold.text-gray-900 {{ `${vacGoalPercentage}%` }}
           div.grid.gap-4
             div.flex.flex-col.gap-4(class="sm:justify-between sm:items-center sm:flex-row")
@@ -74,7 +72,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      popGoal100: "popGoal100",
+      goal50: "goal50",
     }),
     latestData() {
       if (!this.$fetchState.pending) {
@@ -105,7 +103,7 @@ export default {
     },
     calcTarget() {
       if (!this.$fetchState.pending) {
-        const targetDoses = this.popGoal100 - this.calcSecondDose
+        const targetDoses = this.goal50 - this.calcSecondDose
         const targetAvgDose = Math.ceil(targetDoses / this.endOfYear)
         return targetAvgDose.toLocaleString()
       } else {
@@ -135,7 +133,7 @@ export default {
     },
     calcGoalDays() {
       if (!this.$fetchState.pending) {
-        const dosesLeftTillTarget = this.popGoal100 - this.calcSecondDose
+        const dosesLeftTillTarget = this.goal50 - this.calcSecondDose
         const daysTillTarget = dosesLeftTillTarget / this.calcAverage
         return Math.ceil(daysTillTarget)
       } else {
@@ -200,7 +198,7 @@ export default {
     calcVacGoal() {
       if (!this.$fetchState.pending) {
         const secondDose = this.latestData.second_dose_cum
-        const percentage = (secondDose / this.popGoal100) * 100
+        const percentage = (secondDose / this.goal50) * 100
         this.vacGoalPercentage = percentage.toFixed(2)
       } else {
         return 0
